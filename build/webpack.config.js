@@ -64,7 +64,7 @@ const config = {
 		new CleanWebpackPlugin(path.resolve(__dirname, '../public/dist')),
 		new HtmlwebpackPlugin({
 			title: 'test',
-			template: path.resolve(__dirname, '../src/template/index.html'),
+			template: path.resolve(__dirname, '../template/index.html'),
 			filename: '../index.html',//相对于webpackConfig.output.path
 			hash: true
 		}),
