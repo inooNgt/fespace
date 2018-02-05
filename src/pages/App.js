@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { renderRoutes } from 'react-router-config'
 import Nav from '../common/Nav'
 
-import 'antd/dist/antd.css';
 import '../scss/main.scss';
 
 /**

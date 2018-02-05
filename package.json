@@ -1,14 +1,13 @@
 {
 	"name": "blog",
 	"version": "1.0.0",
-	"description": "blog",
+	"description": "thinkin",
 	"main": "webpack.config.js",
 	"scripts": {
 		"dev-node": "set NODE_ENV=dev&&node build/webpack.dev.config.js",
 		"dev": "set NODE_ENV=dev&&webpack-dev-server --config build/webpack.config.js --content-base public/ --host localhost --port 9000 --inline --history-api-fallback ",
-		"dev-mac": "NODE_ENV=dev webpack-dev-server --config build/webpack.config.js --content-base public/ --host localhost --port 9000 --open --inline --history-api-fallback ",
 		"build": "set NODE_ENV=prod&&webpack -p --config build/webpack.config.js",
-		"build-mac": "NODE_ENV=prod webpack -p --config build/webpack.config.js"
+		"marked": "cd build && node parser.js"
 	},
 	"author": "",
 	"license": "ISC",
@@ -37,7 +36,6 @@
 		"webpack-dev-server": "^2.10.0"
 	},
 	"dependencies": {
-		"antd": "^3.1.1",
 		"react": "^16.2.0",
 		"react-dom": "^16.2.0",
 		"react-redux": "^5.0.6",
