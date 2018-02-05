@@ -3,7 +3,7 @@ const webpack = require('webpack')
 const config = require('./webpack.config')
 const WebpackDevServer = require('webpack-dev-server')
 const PROT = 9000
-const HOST ='127.0.0.1'
+const HOST ='192.168.189'
 config.plugins = (config.plugins || []).concat([
 	new webpack.HotModuleReplacementPlugin()
 ])

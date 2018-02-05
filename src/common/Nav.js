@@ -1,9 +1,6 @@
 import React from 'react'
-import { Menu, Icon } from 'antd'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-const SubMenu = Menu.SubMenu
-const MenuItemGroup = Menu.ItemGroup
 
 import * as actions from '../redux/actions/index'
 
@@ -44,22 +41,18 @@ class Nav extends React.Component {
 			}
 		})
 		let Items = pages.map((v, k) => {
-			return <Menu.Item key={k}><Link to={v.path}>{v.name}</Link></Menu.Item>
+			return <div key={k}><Link to={v.path}>{v.name}</Link></div>
 		})
 		return (
-			<Menu
+			<div
 				onClick={this.handleClick}
 				style={{ width: 256 }}
-				defaultSelectedKeys={selectedKey}
-				defaultOpenKeys={['sub1']}
-				mode="inline"
 				className="nav"
-				theme="dark"
 			>
-				<SubMenu key="sub1" title={<span><Icon type="mail" /><span>Navigation One</span></span>}>
+				<div key="sub1">
 					{Items}
-				</SubMenu>
-			</Menu>
+				</div>
+			</div>
 		)
 	}
 }
