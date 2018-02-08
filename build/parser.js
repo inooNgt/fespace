@@ -4,9 +4,9 @@ const marked = require("marked");
 
 const getAllFiles = require("./file").getAllFiles;
 
-let files = getAllFiles(path.resolve(__dirname, "../markdown"));
-let header = fs.readFileSync(path.resolve(__dirname, "./templet/header"), { encoding: "utf-8" });
-let footer = fs.readFileSync(path.resolve(__dirname, "./templet/footer"), { encoding: "utf-8" });
+let articles = getAllFiles(path.resolve(__dirname, "../markdown")),
+	header = fs.readFileSync(path.resolve(__dirname, "./templet/header"), { encoding: "utf-8" }),
+	footer = fs.readFileSync(path.resolve(__dirname, "./templet/footer"), { encoding: "utf-8" });
 
 
 
@@ -22,15 +22,15 @@ marked.setOptions({
 	xhtml: false
 });
 
-files.forEach((v, k) => {
+articles.forEach((v, k) => {
 	let filename = `../src/articles/${path.basename(v, ".md")}.js`,
 		data = marked(
 			fs.readFileSync(v, {
 				encoding: "utf-8"
 			})
 		);
-		data=data.replace(/\s+class=/," className=")
-		data=`${header}${data}${footer}`
+	data = data.replace(/\s+class=/, " className=")
+	data = `${header}${data}${footer}`
 	fs.writeFileSync(filename, data, { encoding: "utf-8" });
 
 	console.info(`${path.basename(v)} parsed`)
