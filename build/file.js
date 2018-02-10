@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-
+/** */
 exports.getAllFiles = dir => {
     let filesArr = [];
     (function readFiles(dir) {

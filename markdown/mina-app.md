@@ -51,7 +51,56 @@ service 模块负责应用的后台逻辑，它由小程序的 js 代码以及�
 6.  WX后台再将数据进行简单封装， 最后转发给到 view 层
 7.  view 层接收到数据，将 data 与现有页面 data 合并， 然后virtual dom 模块进行 diff计算改变视图
 
-## 异步操作
+## Promise的顺序执行（sequence）
+
+``` javascript
+/**	
+* @param {*promise任务队列} tasks 
+*/
+const sequenceTasks = (tasks) => {
+    const recordValue = (results, value) => {
+        results.push(value);
+        return results;
+    }
+    const pushValue = recordValue.bind(null, []);
+	
+	
+    return tasks.reduce(function (promise, task) {
+        return promise.then(task).then(pushValue);
+	}, Promise.resolve());
+	
+	//task 返回值是promise，每次循环会新建一个promise对象
+	// let promise = Promise.resolve();
+    // for (let i = 0; i < tasks.length; i++) {
+    //     let task = tasks[i];
+    //     promise = promise.then(task).then(pushValue);
+    // }
+    // return promise;
+}
+
+const promise1= ()=> new Promise((resolve,rejecrt)=>{
+	setTimeout(()=>{
+		console.log("promise1 resolve")
+		resolve("promise1")
+	},1000)
+})
+
+const promise2= ()=> new Promise((resolve,rejecrt)=>{
+	setTimeout(()=>{
+		console.log("promise2 resolve")
+		resolve("promise2")
+	},1)
+})
+
+const tasks = [promise1, promise2];
+sequenceTasks(tasks).then(res=>{
+	console.log("res",res)
+});
+
+//promise1 resolve
+//promise2 resolve
+//res ["promise1", "promise2"]
+```
 
 ## 
 
