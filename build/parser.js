@@ -8,18 +8,19 @@ let articles = getAllFiles(path.resolve(__dirname, "../markdown")),
 	header = fs.readFileSync(path.resolve(__dirname, "./templet/header"), { encoding: "utf-8" }),
 	footer = fs.readFileSync(path.resolve(__dirname, "./templet/footer"), { encoding: "utf-8" });
 
-
-
 marked.setOptions({
-	renderer: new marked.Renderer(),
-	gfm: true,
-	tables: true,
-	breaks: false,
-	pedantic: false,
-	sanitize: false,
-	smartLists: true,
-	smartypants: false,
-	xhtml: false
+    renderer: new marked.Renderer(),
+    gfm: true,
+    tables: true,
+    breaks: false,
+    pedantic: false,
+    sanitize: false,
+    smartLists: true,
+    smartypants: false,
+    xhtml: false,
+    highlight: function(code) {
+        return require("highlight.js").highlightAuto(code).value;
+    }
 });
 
 articles.forEach((v, k) => {

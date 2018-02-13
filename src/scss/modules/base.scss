@@ -1,22 +1,51 @@
-*{
-	box-sizing: border-box;
+body {
+    background-image: url(http://p42jcfxfo.bkt.clouddn.com/images/thinkin/bg03.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
-.nav{
-	position: fixed;
-	width:256px;
-	height: 100%;
-	top:0;
-	left:0;
+.nav {
+    position: fixed;
+    width: 12.5%;
+    top: 0;
+    left: 0;
+    padding: 20px 0;
     z-index: 1;
-    background-color: #3f4652;
-	color: #fff;
 }
-.content{
-	position: relative;
-	padding-left:256px;
-	width:100%;
-	height:100%;
+
+.nav-item {
+    display: inline-block;
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 20px;
+    transition: 0.2s;
+    color: #fff;
+    &:hover {
+        background: rgba(40, 40, 40, 0.3);
+    }
 }
-.content-inner{
-	padding:20px;
-}  
+
+.content {
+    position: relative;
+    padding-left: 256px;
+    min-height: 100%;
+
+    width: 75%;
+    max-width: 850px;
+    min-width: 400px;
+    margin: 4rem auto;
+    background: #fff;
+    color: #383838;
+    padding: 2em;
+    border-radius: 3px;
+    box-shadow: 0 0 10px 0 rgba(40, 40, 40, 0.3);
+    word-break: break-all;
+}
+.content-inner {
+    padding: 20px;
+}
+
+.posts-item{
+    display: block;
+}

@@ -1,36 +1,35 @@
-import React, { Component } from 'react'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
-import { renderRoutes } from 'react-router-config'
-import Nav from '../common/Nav'
+import React, { Component } from "react";
+import { HashRouter as Router, Route } from "react-router-dom";
+import { renderRoutes } from "react-router-config";
+import Nav from "../common/Nav";
 
-import '../scss/main.scss';
+import "../scss/main.scss";
+
+/** 
+* todo, BrowserRouter bug
+*/
 
 /**
- * react router 
+ * react router
  */
 const routes = [
-	...require('./Index/router'),
-	...require('./My/router')
-]
-
+	...require("./Index/router"),
+	...require("./Posts/router")
+];
 
 export default class App extends Component {
-	constructor(props) {
-		super(props)
+    constructor(props) {
+        super(props);
+    }
 
-	}
-
-	render() {
-		return (
-			<Router>
-				<div>
-					<Nav />
-					<div className="content-inner">
-						{renderRoutes(routes)}
-					</div>
-				</div>
-			</Router>
-		)
-	}
+    render() {
+        return (
+            <Router>
+                <div>
+                    <Nav />
+                    <div className="content-inner">{renderRoutes(routes)}</div>
+                </div>
+            </Router>
+        );
+    }
 }
-

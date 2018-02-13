@@ -9,7 +9,7 @@ const HappyPack = require('happypack')
 const os = require('os')
 const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length })
 
-
+const host = "http://localhost:9000";
 const isDev = process.env.NODE_ENV === 'dev'
 
 const config = {
@@ -19,9 +19,9 @@ const config = {
 			path.resolve(__dirname, '../src/main.js')
 		]
 	},
-	output: {
+	output: { 
+		publicPath: '/dist/',  //虚拟目录，自动指向path编译目录('./public/dist')
 		path: path.resolve(__dirname, '../public/dist'),
-		publicPath: 'dist/',  //虚拟目录，自动指向path编译目录('./public/dist')
 		chunkFilename: isDev ? 'js/[name].js' : 'js/[name]-[hash:6].js',
 		filename: 'js/[name].js'
 	},
