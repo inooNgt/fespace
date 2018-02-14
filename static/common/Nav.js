@@ -9,8 +9,8 @@ const pages = [
         path: "/",
         name: "Index"
     },
-    {
-        path: "/posts",
+    { 
+        path: "/posts/index",
         name: "Post"
     }
 ];

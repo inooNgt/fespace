@@ -2,7 +2,7 @@ import asyncComponent from "../../../../components/AsyncComponent";
 
 module.exports = [
     {
-        path: "/posts/mina",
+        path: "/posts/index",
         component: asyncComponent(() => import("./components/Index"))
     }
 ];
