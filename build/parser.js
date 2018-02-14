@@ -24,7 +24,7 @@ marked.setOptions({
 });
 
 articles.forEach((v, k) => {
-	let filename = `../src/articles/${path.basename(v, ".md")}.js`,
+	let filename = `../static/articles/${path.basename(v, ".md")}.js`,
 		data = marked(
 			fs.readFileSync(v, {
 				encoding: "utf-8"

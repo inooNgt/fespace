@@ -16,7 +16,7 @@ const config = {
 	entry: {
 		main: [
 			'babel-polyfill',
-			path.resolve(__dirname, '../src/main.js')
+			path.resolve(__dirname, '../static/main.js')
 		]
 	},
 	output: { 
@@ -64,7 +64,7 @@ const config = {
 		new CleanWebpackPlugin(path.resolve(__dirname, '../public/dist')),
 		new HtmlwebpackPlugin({
 			title: 'test',
-			template: path.resolve(__dirname, '../src/template/index.html'),
+			template: path.resolve(__dirname, '../static/template/index.html'),
 			filename: '../index.html',//相对于webpackConfig.output.path
 			hash: true
 		}),

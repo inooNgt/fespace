@@ -31,7 +31,7 @@ class Nav extends React.Component {
     }
 
     render() {
-        console.log("render------", this.props.location);
+        // console.log("render------", this.props.location);
 
         let selectedKey = [];
         pages.forEach((v, k) => {
