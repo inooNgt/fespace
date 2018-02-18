@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 export default function asyncComponent(importComponent) {
-    class AsyncComponent extends Component {
+    class AsyncComponent extends Component {  
         constructor(props) {
             super(props)
 
@@ -19,9 +19,9 @@ export default function asyncComponent(importComponent) {
         }
 
         render() {
-            const C = this.state.component
+            const component = this.state.component
 
-            return C ? <C {...this.props} /> : null
+            return component ? <component {...this.props} /> : null
         }
     }
 
