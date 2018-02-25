@@ -19,9 +19,9 @@ export default function asyncComponent(importComponent) {
         }
 
         render() {
-            const component = this.state.component
+            const C = this.state.component
 
-            return component ? <component {...this.props} /> : null
+            return C ? <C {...this.props} /> : null
         }
     }
 

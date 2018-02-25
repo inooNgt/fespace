@@ -26,7 +26,7 @@ class Nav extends React.Component {
     };
 
     componentWillMount() {
-        console.log("Willdispatch:", location.pathname);
+        // console.log("Willdispatch:", location.pathname);
         this.props.dispatch(actions.changeLocation(location.pathname));
     }
 

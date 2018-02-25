@@ -1,7 +1,7 @@
 {
   "name": "blog",
   "version": "1.0.0",
-  "description": "thinkin",
+  "description": "imNgt.github.io",
   "main": "webpack.config.js",
   "scripts": {
     "dev-node": "set NODE_ENV=dev&&node build/webpack.dev.config.js",
