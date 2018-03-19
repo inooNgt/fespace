@@ -32,7 +32,6 @@
 			},
 			random = () => ((Math.random() > 0.5 ? 1 : -1) * Math.random() + 0.5);
 		let index = 0;
-
 		//圆形类
 		class Circle {
 			constructor(x, y, r, color) {
@@ -43,7 +42,6 @@
 				this.index = index++;
 				// 颜色的取值范围
 				this.color = "rgba(" + (parseInt(Math.random() * 240) + 9) + "," + (parseInt(Math.random() * 220) + 18) + ",203,0.85)";
-
 				//往数组中push自己
 				circleArr.push(this);
 			}
@@ -80,6 +78,7 @@
 			}
 		}
 
+		//创建圆
 		for (let i = 0; i < 500; i++) {
 			if (i == 0) new Circle(random() * width, random() * height, R, "orange");
 			else
@@ -87,7 +86,6 @@
 					new Circle(random() * width, random() * height, R, "orange");
 				}, i * 50)
 		}
-
 
 		//更新和绘制
 		const update = () => {
@@ -101,10 +99,8 @@
 			} else {
 				console.log("animation end")
 			}
-
 		}
 		requestAnimationFrame(update)
-
 	</script>
 </body>
 

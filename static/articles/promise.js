@@ -1,3 +1,5 @@
+import React, { Component } from "react";
+
 const article=`
 	<h1 id="promise-">Promise 顺序执行</h1>
 <h3 id="-">起源</h3>
@@ -77,4 +79,17 @@ sequenceTasks(tasks)
 <p>在 reduce 中第一个参数中被 return 的值,利用 reduce 方法使下一个 promise 指向 promise.then(task).then(pushValue)，从而实现 promise 链。</p>
 `
 
-export default article 
+
+class Index extends Component {
+    constructor(props) {
+        super(props);
+    }
+    rawMarkup() {
+        return { __html: article };
+    }
+    render() {
+        return <div dangerouslySetInnerHTML={this.rawMarkup()} />;
+    }
+}
+
+export default Index 

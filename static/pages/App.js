@@ -23,7 +23,6 @@ export default class App extends Component {
                 <div>
                     <Nav />
                     <div className="content-inner">
-                    5555555555555
                     {renderRoutes(routes)}
                     </div>
                 </div>

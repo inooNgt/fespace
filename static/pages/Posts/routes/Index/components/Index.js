@@ -9,6 +9,10 @@ const pages = [
     {
         path: "/posts/promise",
         name: "promise"
+	},
+	{
+        path: "/posts/Three-dimensional-perspective",
+        name: "perspective"
     }
 ];
 
