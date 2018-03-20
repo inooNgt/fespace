@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 
-const article=`
-	<h1 id="promise-">Promise 顺序执行</h1>
+const article=`<h1 id="promise-">Promise 顺序执行</h1>
 <h3 id="-">起源</h3>
 <p>JavaScript 在处理异步任务时，经常用到的手段是回调函数。奈何，面对多个需要顺序执行的异步任务很容易造成回调地狱(Callback Hell):</p>
 <pre><code className="lang-javascript">request(a, <span class="hljs-function"><span class="hljs-params">b</span> =&gt;</span> {

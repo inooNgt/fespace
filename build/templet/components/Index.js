@@ -1,16 +1,18 @@
 import React, { Component } from "react";
-import mina from "../../../../../articles/mina-app";
+
+const article=`{{component}}`
+
 
 class Index extends Component {
     constructor(props) {
         super(props);
     }
     rawMarkup() {
-        return { __html: mina };
+        return { __html: article };
     }
     render() {
         return <div dangerouslySetInnerHTML={this.rawMarkup()} />;
     }
 }
 
-export default Index;
+export default Index 

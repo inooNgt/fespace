@@ -60,7 +60,30 @@ const copyFolder = (srcdir, tardir, cb) => {
     });
 };
 
+const mkdirSync = (pathString, mode = 0o777) => {
+    if (!pathString || typeof pathString !== "string") return;
+    let pathArr = pathString.replace(/\//g, "\\").split("\\");
+    // '/a/b' './a/b'
+    if (pathArr[0] == "" || pathArr == ".") pathArr.shift();
+
+    const mkdir = p => {
+        try {
+            fs.mkdirSync(p, mode);
+        } catch (e) {
+            if (e.code == "EEXIST") {
+                // console.log(`文件夹${p}已存在`);
+            }
+        }
+        if (pathArr.length) {
+            mkdir(p + "/" + pathArr.shift());
+        }
+    };
+
+    pathArr.length && mkdir(pathArr.shift());
+};
+
 module.exports = {
-    copyFolder: copyFolder,
-    getAllFiles: getAllFiles
+    copyFolder,
+    mkdirSync,
+    getAllFiles
 };

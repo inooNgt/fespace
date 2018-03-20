@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 
-const article=`
-	<h1 id="-">竞赛小程序</h1>
+const article=`<h1 id="-">竞赛小程序</h1>
 <h2 id="-">页面构成</h2>
 <p>小程序包含一个描述整体程序的 app 和多个描述各自页面的 page。</p>
 <ul>

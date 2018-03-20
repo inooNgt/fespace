@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 
-const article=`
-	<h1 id="-canvas-">利用透视原理实现 canvas 第三维度</h1>
+const article=`<h1 id="-canvas-">利用透视原理实现 canvas 第三维度</h1>
 <p>canvas 2d 渲染上下文（The rendering context）只有 x、y 两个维度，若要表现物体的立体感和纵深感，就需要利用透视原理创建 z 维度，实现平面到立体的转变。</p>
 <h3 id="-">透视原理</h3>
 <p>透视是根据物体呈近大远小的空间关系，将立体三维空间的形象表现在二维平面上。透视的几个要素：</p>

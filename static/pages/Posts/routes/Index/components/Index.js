@@ -3,14 +3,18 @@ import { Link } from "react-router-dom";
 
 const pages = [
     {
-        path: "/posts/mina",
+        path: "/posts/mina-app",
         name: "mina"
     },
     {
         path: "/posts/promise",
         name: "promise"
-	},
-	{
+    },
+    {
+        path: "/posts/routing-partition",
+        name: "routing-partition"
+    },
+    {
         path: "/posts/Three-dimensional-perspective",
         name: "perspective"
     }

@@ -4,21 +4,19 @@ import { renderRoutes } from "react-router-config";
 
 const routes = [
     ...require("../routes/Index/router"),
-    ...require("../routes/Mina/router"),
-    ...require("../routes/Promise/router")
+    ...require("../routes/mina-app/router"),
+    ...require("../routes/routing-partition/router"),
+    ...require("../routes/Three-dimensional-perspective/router"),
+    ...require("../routes/promise/router")
 ];
 
 class Index extends Component {
     constructor(props) {
         super(props);
     }
-    
+
     render() {
-        return (
-            <div>
-                {renderRoutes(routes)}
-            </div>
-        );
+        return <div>{renderRoutes(routes)}</div>;
     }
 }
 
