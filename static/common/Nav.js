@@ -4,12 +4,14 @@ import { connect } from "react-redux";
 
 import * as actions from "../redux/actions/index";
 
+
+
 const pages = [
     {
         path: "/",
         name: "Index"
     },
-    { 
+    {
         path: "/posts/index",
         name: "Post"
     }
@@ -48,7 +50,7 @@ class Nav extends React.Component {
         });
         return (
             <div onClick={this.handleClick} className="nav">
-                {Items}
+                <div className="nav-inner">{Items}</div>
             </div>
         );
     }

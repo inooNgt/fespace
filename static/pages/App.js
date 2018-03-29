@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { renderRoutes } from "react-router-config";
-import Nav from "../common/Nav";
+import Header from "../components/Header";
 
 import "../scss/main.scss";
 
@@ -20,11 +20,9 @@ export default class App extends Component {
         console.log("renderRoutes(routes):", renderRoutes(routes));
         return (
             <Router>
-                <div>
-                    <Nav />
-                    <div className="content-inner">
-                    {renderRoutes(routes)}
-                    </div>
+                <div className="app-wrap">
+                    <Header />
+                    <div className="content">{renderRoutes(routes)}</div>
                 </div>
             </Router>
         );

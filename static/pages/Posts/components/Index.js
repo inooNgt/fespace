@@ -10,6 +10,7 @@ const routes = [
     ...require("../routes/promise/router")
 ];
 
+
 class Index extends Component {
     constructor(props) {
         super(props);
