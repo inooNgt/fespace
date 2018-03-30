@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import * as actions from "../redux/actions/index";
 
 import {
@@ -26,9 +26,7 @@ class Header extends React.Component {
         super();
     }
 
-    handleClick(e) {
-		
-	}
+    handleClick(e) {}
 
     componentWillMount() {}
 
@@ -37,17 +35,15 @@ class Header extends React.Component {
 
         let Items = pages.map((v, k) => {
             return (
-                <Link
-                    className={
-                        location.pathname === v.path
-                            ? "nav-item  nav-active"
-                            : "nav-item "
-                    }
+                <NavLink
+                    className="nav-item"
+                    exact
+                    activeClassName="nav-active"
                     key={k}
                     to={v.path}
                 >
                     {v.name}
-                </Link>
+                </NavLink>
             );
         });
         return (
