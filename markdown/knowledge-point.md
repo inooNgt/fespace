@@ -123,6 +123,7 @@ str.match(/(?<=<pre><code>)[\s\S]*?(?=<\/code><\/pre>)/gi);  // 获得,/somePatt
 str.replace(/(?<=<pre><code>)[\s\S]*?(?=<\/code><\/pre>)/gi, 'asdf');  // 替换
 ```
 
+
 ### React/Vue 不同组件之间是的通信方式
 
 #### Vue

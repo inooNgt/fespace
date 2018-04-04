@@ -9,3 +9,5 @@ render(
     </Provider>,
     document.getElementById("app")
 );
+
+console.log(new App(),<App />);
