@@ -47,8 +47,11 @@ class Header extends React.Component {
             );
         });
         return (
-            <div onClick={this.handleClick} className="nav">
-                <div className="nav-inner">{Items}</div>
+            <div onClick={this.handleClick} className="header">
+                <div className="nav">
+                    <div className="logo">inoongt</div>
+                    <div>{Items}</div>
+                </div>
             </div>
         );
     }

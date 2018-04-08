@@ -26,9 +26,7 @@ w# 竞赛小程序
 在开发工具上， 小程序的 javascript 代码是运行在 nwjs 中，是由 Chrome Webview 来渲染的。
 
 NW.js 基于 Chromium 内核与 Node.js。
-NW.js 让您在编写应用时可以使用 Node.js 及其 modules 与 web 开发技术。而且，您可以非常容易的将一个 WEB 应用打包成一个原生应用。
-
-Html5 的界面是由浏览器内核渲染出来的，小程序代码经过微信 App 内的引擎处理，最终会把界面翻译成系统原生的控件，体验比 HTML5 好。
+NW.js 让您在编写应用时可以使用 Node.js 及其 modules 与 web 开发技术。而且，您可以非常容易的将一个 WEB 应用打包成一个原生应用
 
 ## 内部构架
 
@@ -102,6 +100,5 @@ sequenceTasks(tasks).then(res => {
 //res ["promise1", "promise2"]
 ```
 
-##
+## 
 
-## 待优化
