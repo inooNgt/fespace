@@ -40,6 +40,16 @@ body {
     padding: 2rem;
 }
 
+.contnet-inner {
+    position: relative;
+    width: 100%;
+    min-height: 35rem;
+}
+
+.animated {
+    user-select: none;
+}
+
 .nav {
     margin: 0 auto;
     display: flex;

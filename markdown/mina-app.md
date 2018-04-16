@@ -48,7 +48,29 @@ service 模块负责应用的后台逻辑，它由小程序的 js 代码以及�
 6.  WX 后台再将数据进行简单封装， 最后转发给到 view 层
 7.  view 层接收到数据，将 data 与现有页面 data 合并， 然后 virtual dom 模块进行 diff 计算改变视图
 
-## Promise 的顺序执行（sequence）
+## 异步任务的顺序执行（sequence）
+
+模拟 async/await 实现异步任务的顺序执行
+
+```javascript
+const sleep = time => {
+    return new Promise(resolve =>
+        setTimeout(() => {
+            console.log("resolve", time);
+            resolve(time);
+        }, time)
+    );
+};
+
+const tasks = async function() {
+    await sleep(1000);
+    await sleep(2000);
+};
+
+tasks();
+```
+
+### Promise
 
 ```javascript
 /**
@@ -60,45 +82,42 @@ const sequenceTasks = tasks => {
         return results;
     };
     const pushValue = recordValue.bind(null, []);
-
+    //array.reduce(function(total, currentValue, currentIndex, arr), initialValue)
     return tasks.reduce(function(promise, task) {
         return promise.then(task).then(pushValue);
     }, Promise.resolve());
-
-    //task 返回值是promise，每次循环会新建一个promise对象
-    // let promise = Promise.resolve();
-    // for (let i = 0; i < tasks.length; i++) {
-    //     let task = tasks[i];
-    //     promise = promise.then(task).then(pushValue);
-    // }
-    // return promise;
 };
 
-const promise1 = () =>
-    new Promise((resolve, rejecrt) => {
-        setTimeout(() => {
-            console.log("promise1 resolve");
-            resolve("promise1");
-        }, 1000);
-    });
-
-const promise2 = () =>
-    new Promise((resolve, rejecrt) => {
-        setTimeout(() => {
-            console.log("promise2 resolve");
-            resolve("promise2");
-        }, 1);
-    });
-
-const tasks = [promise1, promise2];
+const tasks = [sleep(1000), sleep(2000)];
 sequenceTasks(tasks).then(res => {
     console.log("res", res);
 });
-
-//promise1 resolve
-//promise2 resolve
-//res ["promise1", "promise2"]
 ```
 
-## 
+### Generator
 
+Generator 函数是一个状态机，封装了多个内部状态,执行 Generator 函数会返回一个遍历器对象。每次调用遍历器对象的 next 方法，内部指针就从函数头部或上一次停下来的地方开始执行，直到遇到下一个 yield 表达式（或 return 语句）为止。
+next 方法返回一个对象，它的 value 属性就是当前 yield 表达式的值，done 属性表示遍历是否结束。
+
+```javascript
+function* gen() {
+    yield sleep(1000);
+    yield sleep(2000);
+    return "end";
+}
+
+const g = gen();
+​
+g.next().value.then(res=>{
+	console.log("1",res)
+	return res
+}).then(res1=>{
+	g.next().value.then(res=>{
+		console.log("2",res)
+	})
+})
+```
+
+### co 模块
+
+co 模块可以让你不用编写 Generator 函数的执行器，它会自动执行 Generator 函数。
