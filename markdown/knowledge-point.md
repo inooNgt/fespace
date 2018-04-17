@@ -123,7 +123,6 @@ str.match(/(?<=<pre><code>)[\s\S]*?(?=<\/code><\/pre>)/gi);  // 获得,/somePatt
 str.replace(/(?<=<pre><code>)[\s\S]*?(?=<\/code><\/pre>)/gi, 'asdf');  // 替换
 ```
 
-
 ### React/Vue 不同组件之间是的通信方式
 
 #### Vue
@@ -139,3 +138,27 @@ str.replace(/(?<=<pre><code>)[\s\S]*?(?=<\/code><\/pre>)/gi, 'asdf');  // 替换
 *   非父子组件,用发布订阅模式的 Event 模块
 *   项目复杂的话用 Redux、Mobx 等全局状态管理管库
 *   用新的 Context Api
+
+### Thunk 函数
+
+将多参数函数替换成单参数的版本，且只接受回调函数作为参数。
+
+```
+const Thunk=(fn)=>{
+	return (...args)=>{
+		return (callback)=>{
+			fn.call(this,...args,callback)
+		}
+	}
+}
+
+const readFileThunk = Thunk(fs.readFile);
+readFileThunk(path)(callback);
+```
+
+### this 指向
+
+*   纯粹的函数调用,this 就代表全局对象 Global
+*   作为对象方法的调用,this 就指向上级对象
+*   作为构造函数调用,this 就指向新对象
+*   apply/call 调用,this 指向第一个参数提供的对象
