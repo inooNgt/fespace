@@ -123,7 +123,7 @@ str.match(/(?<=<pre><code>)[\s\S]*?(?=<\/code><\/pre>)/gi);  // 获得,/somePatt
 str.replace(/(?<=<pre><code>)[\s\S]*?(?=<\/code><\/pre>)/gi, 'asdf');  // 替换
 ```
 
-### React/Vue 不同组件之间是的通信方式
+### React/Vue 不同组件之间的通信方式
 
 #### Vue
 
@@ -162,3 +162,30 @@ readFileThunk(path)(callback);
 *   作为对象方法的调用,this 就指向上级对象
 *   作为构造函数调用,this 就指向新对象
 *   apply/call 调用,this 指向第一个参数提供的对象
+
+### Cookie
+
+功能：按照一定规范来储存这些信息，并在随后的请求中将这些信息发送至服务器，cookie 的值被存储在名为 Cookie 的 HTTP 消息头中。
+
+给 document 赋值并不会覆盖原有的值。
+
+```
+const setCookie=(key,value,expires)=>{
+    document.cookie=!expires?
+	    `${key}=${value}`:
+		`${key}=${value};expires=${`expires`};
+
+}
+
+const getCookie=(key)=>{
+    const reg =new RegExp(`(?<=${key}=)(\w)+(?=\;)`,'g');
+    let result="";
+    let cookie=document.cookie;
+    if(cookie){
+    	result=cookie.match(r)[0]
+    }
+
+    return result;
+
+}
+```
