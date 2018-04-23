@@ -5,9 +5,9 @@ import App from "./pages/App";
 
 render(
     <Provider>
-        <App />
+        <App>app child</App>
     </Provider>,
     document.getElementById("app")
 );
 
-console.log(new App(),<App />);
+console.log("new App", new App());

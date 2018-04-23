@@ -189,3 +189,40 @@ const getCookie=(key)=>{
 
 }
 ```
+
+### 快速排序
+
+算法思想：
+
+*   在数据集之中，选择一个元素作为"基准"（pivot）。
+
+*   所有小于"基准"的元素，都移到"基准"的左边；所有大于"基准"的元素，都移到"基准"的右边。
+
+*   对"基准"左边和右边的两个子集，不断重复第一步和第二步，直到所有子集只剩下一个元素为止。
+
+实现：
+
+```
+quickSort = (arr)=> {
+	let mid= arr.splice(Math.floor(arr.length/2),1)[0];
+    let left =[],right=[];
+
+    arr.forEach((v,i)=>{
+        if(v>mid){
+            right.push(v)
+        }else{
+            left.push(v)
+        }
+    })
+	if(left.length>1) left = quickSort(left)
+	if(right.length>1) right = quickSort(right)
+
+
+
+
+    return [...left,mid,...right]
+
+};
+
+quickSort([3,5,0,2,4,8,1,9,7,6,2])
+```

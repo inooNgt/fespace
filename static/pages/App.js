@@ -17,7 +17,11 @@ export default class App extends Component {
     }
 
     render() {
-        console.log("renderRoutes(routes):", renderRoutes(routes));
+        console.log("this.props.children", this.props.children);
+        React.Children.map(this.props.children, child => {
+            console.log("child", child);
+        });
+
         return (
             <Router>
                 <div className="app-wrap">
