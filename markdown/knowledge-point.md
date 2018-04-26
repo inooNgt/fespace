@@ -226,3 +226,253 @@ quickSort = (arr)=> {
 
 quickSort([3,5,0,2,4,8,1,9,7,6,2])
 ```
+
+### 执行上下文(Execution Context)
+
+js 的运行有三种环境：
+
+*   Global Code, JavaScript 代码开始运行的默认环境
+*   Function Code, 代码进入一个 JavaScript 函数
+*   Eval Code, 使用 eval()执行代码
+
+为了表示不同的运行环境，JavaScript 中有一个执行上下文（Execution context，EC）的概念。也就是说，当 JavaScript 代码执行的时候，会进入不同的执行上下文，这些执行上下文就构成了一个执行上下文栈（Execution context stack，ECS）。
+
+执行上下文有三个重要的属性:
+
+*   变量对象（Variable object，VO）,进入一个执行上下文时被激活（Activation object，AO）
+*   作用域链（Scope chain）
+*   this
+
+解释器执行代码的伪逻辑:
+
+1.  查找调用函数的代码
+2.  执行代码之前，先进入创建上下文阶段
+    *   分析形参
+    *   扫描上下文的函数声明
+        *   为发现的每一个函数，在变量对象上创建一个属性——确切的说是函数的名字——其有一个指向函数在内存中的引用
+        *   如果函数的名字已经存在，引用指针将被重写
+    *   扫描上下文的变量声明
+        *   为发现的每个变量声明，在变量对象上创建一个属性——就是变量的名字，并且将变量的值初始化为 undefined
+        *   如果变量的名字已经在变量对象里存在，将不会进行任何操作并继续扫描。
+    *   求出上下文内部“this”的值。
+3.  执行代码阶段
+    *   在当前上下文上运行/解释函数代码，并随着代码一行行执行指派变量的值。
+
+VO 对应第二阶段，AO 对应第三阶段。
+
+### Promise 的实现
+
+```
+var PENDING = 0;
+var FULFILLED = 1;
+var REJECTED = 2;
+
+class Promise{
+
+	constructor(fn){
+        //promise的状态
+        this.state=PENDING; //[PENDING,FULFILLED,REJECTED]
+        //FULFILLED 或者 REJECTED 时的返回值
+        this.value=null;
+        //回调函数
+        this.handlers=[];
+		this.resolve=this.resolve.bind(this);
+		this.reject=this.reject.bind(this);
+		this.done=this.done.bind(this);
+		this.handle=this.handle.bind(this);
+
+
+
+		doResolve(fn, this.resolve, this.reject);
+	}
+
+	fulfill(value){
+		this.state=FULFILLED;
+		this.value=value;
+		//执行回调
+		this.handlers.forEach(this.handle)
+		this.handlers=null
+		console.log("fulfill: value",value,"state",this.state)
+	}
+
+	reject(error){
+		this.state=REJECTED;
+		this.value=error;
+		//执行回调
+		this.handlers.forEach(this.handle)
+		this.handlers=null
+		console.log("reject",error)
+	}
+
+	//相当于发布者
+	resolve(value){
+		console.log("in resolve")
+		try{
+			//若value为 Promise 则返回该 Promise 的 then 方法，即value.then
+			var then =getThen(value);
+			if(then){
+				 console.log("value is promise")
+				 //若value为promise，递归 resolve 待解析的 Promise
+				 doResolve(then.bind(value),this.resolve,this.reject);
+				 return;
+			}
+			this.fulfill(value);
+		}catch(e){
+			console.log(e)
+			this.reject(e);
+		}
+
+	}
+
+	//观察者接口
+	then(onFulfilled, onRejected) {
+ 	    const self = this
+
+        return new Promise(function (resolve, reject) {
+
+        return self.done.call(self,function (result) {
+          if (typeof onFulfilled === 'function') {
+            try {
+              return resolve(onFulfilled(result))
+            } catch (ex) {
+              return reject(ex)
+            }
+          } else return resolve(result)
+        }, function (error) {
+          if (typeof onRejected === 'function') {
+            try {
+              return resolve(onRejected(error))
+            } catch (ex) {
+              return reject(ex)
+            }
+          } else return reject(error)
+        })
+      })
+    }
+
+	//观察者接口
+	done(onFulfilled, onRejected){
+		// 保证 done 总是异步执行
+        setTimeout(() =>{
+            this.handle({
+                onFulfilled: onFulfilled,
+                onRejected: onRejected
+            })
+        }, 0)
+	}
+
+	 // 保证 done 中回调的执行
+    handle (handler) {
+
+        if (this.state === PENDING) {
+          this.handlers.push(handler)
+          console.log("push to handlers",this.handlers)
+        } else {
+          if (this.state === FULFILLED &&
+            typeof handler.onFulfilled === 'function') {
+            handler.onFulfilled(this.value)
+          }
+          if (this.state === REJECTED &&
+            typeof handler.onRejected === 'function') {
+            handler.onRejected(this.value)
+          }
+        }
+    }
+
+	catch(callback){
+
+
+	}
+}
+
+function getThen(value) {
+  var t = typeof value;
+  if (value && (t === 'object' || t === 'function')) {
+    var then = value.then;
+    if (typeof then === 'function') {
+      return then;
+    }
+  }
+  return null;
+}
+
+function doResolve(fn, onFulfilled, onRejected) {
+  var done = false;
+  try {
+    fn(function (value) {
+      if (done) return
+      done = true
+      onFulfilled(value)
+    }, function (reason) {
+      if (done) return
+      done = true
+      onRejected(reason)
+    })
+  } catch (e) {
+	console.log("doResolve",e)
+    if (done) return
+    done = true
+    onRejected(e)
+  }
+}
+
+
+
+
+p1 =new Promise((resolve,reject)=>{
+	console.log("1")
+	setTimeout(()=>{
+		resolve("p1")
+	},1500)
+
+})
+
+
+p1.then(res=>{
+	console.log("res",res)
+	return "then--res"
+})
+```
+
+### 闭包
+
+闭包是即使被外部函数返回，依然可以访问到外部（封闭）函数作用域的函数。
+
+### 事件捕获 vs 事件冒泡
+
+*   事件冒泡：事件从内层元素开始触发，向外层传播，直到 document。
+*   事件捕获：事件从外层元素（document）开始触发，向内层传播，直到 目标元素（target）。
+
+事件冒泡是由微软提出的，而事件捕获是由网景公司提出的，后来 w3c 制定了统一的方案：先捕获再冒泡。
+
+对于当事件捕获和事件冒泡一起存在的情况，事件触发过程如下：
+
+1.  document 往 target 节点，捕获前进，遇到注册的捕获事件立即触发执行
+
+2.  到达 target 节点，触发事件（对于 target 节点上，是先捕获还是先冒泡则捕获事件和冒泡事件的注册顺序，先注册先执行）
+
+3.  target 节点 往 document 方向，冒泡前进，遇到注册的冒泡事件立即触发
+
+事件捕获与事件冒泡的用用--事件代理
+
+### 服务端渲染
+
+在后端将数据拼接到 HTML 字符串上发送给客户端，浏览器从服务器接收 HTML 并渲染。服务端渲染的优势:
+
+*   SEO
+    *   爬虫可以抓取页面的关键字等信息
+*   首屏直出
+    *   减少首屏渲染时间
+
+### 浮点数知识
+
+根据国际标准 IEEE 754，任意一个二进制浮点数 V 可以表示成下面的形式：
+V=(-1)<sup>s</sup>*M*2<sup>E</sup>
+
+*   (-1)^s 表示符号位
+*   表示有效数字，大于等于 1，小于 2
+*   2^E 表示指数位
+
+对于 32 位的浮点数，最高的 1 位是符号位 s，接着的 8 位是指数 E，剩下的 23 位为有效数字 M。
+
+Javascript 浮点数运算会先把十进制数转化为二进制数（乘二取整），然而有可能得到无限循环二进制数，然后再进行运算，然后再将结果转化为十进制数返回。
