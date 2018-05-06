@@ -80,7 +80,29 @@ const clone=(obj)=>{
 
 ### JSONP 跨域原理
 
-在同源策略下，在某个服务器下的页面是无法获取到该服务器以外的数据的，但 img、iframe、script 等标签是个例外，这些标签可以通过 src 属性请求到其他服务器上的数据。利用 script 标签的开放策略，我们可以实现跨域请求数据，当然，也需要服务端的配合。当我们正常地请求一个 JSON 数据的时候，服务端返回的是一串 JSON 类型的数据，而我们使用 JSONP 模式来请求数据的时候，服务端返回的是一段可执行的 JavaScript 代码。
+在同源策略下，在某个服务器下的页面是无法获取到该服务器以外的数据的，但 img、iframe、script 等标签是个例外，这些标签可以通过 src 属性请求到其他服务器上的数据。利用 script 标签的开放策略，我们可以实现跨域请求数据，当然，也需要服务端的配合。当我们正常地请求一个 JSON 数据的时候，服务端返回的是一串 JSON 类型的数据，而我们使用 JSONP 模式来请求数据的时候，服务端返回的是一段可执行的 JavaScript 代码。例如：
+
+客户端请求,并指定回调函数的名字：
+
+```
+function appendScript(src){
+    let script=document.createElement("script");
+    script.src=src;
+    document.appendChild(script)
+}
+
+function somefun(data){
+    console.log("data:",data)
+}
+
+appdendScript("http://a.com&callback=somefun");
+```
+
+服务端返回 Javascript 代码：
+
+```
+"somefun({key:somevalue});"
+```
 
 ### 正则表达式之后向引用
 
@@ -545,3 +567,34 @@ liItem.innerText = "hello";
 fragment.appendChild(liItem);
 document.body.appendChild(fragment);
 ```
+
+### 同源策咯
+
+同源策略限制了从同一个源加载的文档或脚本如何与来自另一个源的资源进行交互。这是一个用于隔离潜在恶意文件的重要安全机制。
+
+同源是指：从协议、域名到端口都必须相同。
+
+限制范围包括：
+
+*   Cookie
+    *   Cookie 是服务器写入浏览器的一小段信息，只有同源的网页才能共享。
+*   iframe
+
+    *   如果两个网页不同源，就无法拿到对方的 DOM。
+
+*   AJAX
+
+    *   同源政策规定，AJAX 请求只能发给同源的网址，否则就报错。可以使用 JSONP、WebSocket、CORS 等技术解决问题。
+
+### 事件循环
+
+"Event Loop 是一个程序结构，用于等待和发送消息和事件。（a programming construct that waits for and dispatches events or messages in a program.）"
+
+简单说，就是在程序中设置两个线程：一个负责程序本身的运行，称为"主线程"；另一个负责主线程与其他进程（主要是各种 I/O 操作）的通信，被称为"Event Loop 线程"（可以译为"消息线程"）。
+
+每当遇到 I/O 的时候，主线程就让 Event Loop 线程去通知相应的 I/O 程序，然后接着往后运行，所以不存在红色的等待时间。等到 I/O 程序完成操作，Event Loop 线程再把结果返回主线程。主线程就调用事先设定的回调函数，完成整个任务。
+
+js 引擎遇到一个异步事件后并不会一直等待其返回结果，而是会将这个事件挂起，继续执行执行栈中的其他任务。当一个异步事件返回结果后，js 会将这个事件加入与当前执行栈不同的另一个队列，我们称之为事件队列。被放入事件队列不会立刻执行其回调，而是等待当前执行栈中的所有任务都执行完毕， 主线程处于闲置状态时，主线程会去查找事件队列是否有任务。如果有，那么主线程会从中取出排在第一位的事件，并把这个事件对应的回调放入执行栈中，然后执行其中的同步代码...，如此反复，这样就形成了一个无限的循环。这就是这个过程被称为“事件循环（Event Loop）”的原因。
+
+当前执行栈执行完毕时会立刻先处理所有微任务队列（Promise）中的事件，然后再去宏任务队列（setTimeout）中取出一个事件。同一次事件循环中，微任务永远在宏任务之前执行。
+https://zhuanlan.zhihu.com/p/33058983

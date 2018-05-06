@@ -4,19 +4,19 @@ import { Link } from "react-router-dom";
 const pages = [
     {
         path: "/posts/mina-app",
-        name: "mina"
+        name: "微信小程序原理"
     },
     {
         path: "/posts/promise",
-        name: "promise"
+        name: "Promise顺序与并行执行异步任务"
     },
     {
         path: "/posts/routing-partition",
-        name: "routing-partition"
+        name: "React路由分拆"
     },
     {
         path: "/posts/Three-dimensional-perspective",
-        name: "perspective"
+        name: "利用透视原理实现 canvas 第三维度"
     }
 ];
 
@@ -31,7 +31,12 @@ class Index extends Component {
                 {v.name}
             </Link>
         ));
-        return <div>{items}</div>;
+        return (
+            <div>
+                <h3 className="posts-head">文章列表</h3>
+                {items}
+            </div>
+        );
     }
 }
 

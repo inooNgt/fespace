@@ -49,7 +49,7 @@ class Header extends React.Component {
         return (
             <div onClick={this.handleClick} className="header">
                 <div className="nav">
-                    <div className="logo">inoongt</div>
+                    <div className="logo">inooNgt</div>
                     <div>{Items}</div>
                 </div>
             </div>

@@ -11,21 +11,23 @@ const defaultStyles = {
     justifyContent: "center",
     alignItems: "center",
     color: "white",
+    flexDirection: "column",
     fontWeight: 800,
-    fontSize: "16em"
+    fontSize: "1.2em"
 };
 const A = styles => (
     <animated.div
         style={{ ...defaultStyles, ...styles, backgroundColor: "#247BA0" }}
     >
-        A
+        <p>"可可·香奈儿生命的前一天，她还在工作室检查裙边，</p>
+        <p>前一年，她还在学吉他。"</p>
     </animated.div>
 );
 const B = styles => (
     <animated.div
         style={{ ...defaultStyles, ...styles, backgroundColor: "#B2DBBF" }}
     >
-        B
+        现在,公元2018年......
     </animated.div>
 );
 

@@ -87,4 +87,8 @@ body {
 
 .posts-item {
     display: block;
+    margin: 1rem 0;
+    &:hover {
+        color: $mainColor;
+    }
 }

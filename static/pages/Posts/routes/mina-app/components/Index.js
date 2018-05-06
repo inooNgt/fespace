@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-const article=`<h1 id="-">竞赛小程序</h1>
+const article=`<p>w# 竞赛小程序</p>
 <h2 id="-">页面构成</h2>
 <p>小程序包含一个描述整体程序的 app 和多个描述各自页面的 page。</p>
 <ul>
@@ -21,8 +21,7 @@ const article=`<h1 id="-">竞赛小程序</h1>
 <h2 id="-">运行环境</h2>
 <p>在开发工具上， 小程序的 javascript 代码是运行在 nwjs 中，是由 Chrome Webview 来渲染的。</p>
 <p>NW.js 基于 Chromium 内核与 Node.js。
-NW.js 让您在编写应用时可以使用 Node.js 及其 modules 与 web 开发技术。而且，您可以非常容易的将一个 WEB 应用打包成一个原生应用。</p>
-<p>Html5 的界面是由浏览器内核渲染出来的，小程序代码经过微信 App 内的引擎处理，最终会把界面翻译成系统原生的控件，体验比 HTML5 好。</p>
+NW.js 让您在编写应用时可以使用 Node.js 及其 modules 与 web 开发技术。而且，您可以非常容易的将一个 WEB 应用打包成一个原生应用</p>
 <h2 id="-">内部构架</h2>
 <p>小程序自身分为两个主要部分独立运行：view 模块和 service 模块。</p>
 <p>view 模块负责 UI 显示，它由开发者编写的 wxml 和 wxss 转换后代码以及微信提供相关辅助模块组成。 一个 view 模块对应一个 webview 组件。</p>
@@ -39,8 +38,26 @@ NW.js 让您在编写应用时可以使用 Node.js 及其 modules 与 web 开发
 <li>WX 后台再将数据进行简单封装， 最后转发给到 view 层</li>
 <li>view 层接收到数据，将 data 与现有页面 data 合并， 然后 virtual dom 模块进行 diff 计算改变视图</li>
 </ol>
-<h2 id="promise-sequence-">Promise 的顺序执行（sequence）</h2>
-<pre><code className="lang-javascript"><span class="hljs-comment">/**
+<h2 id="-sequence-">异步任务的顺序执行（sequence）</h2>
+<p>模拟 async/await 实现异步任务的顺序执行</p>
+<pre><code className="lang-javascript"><span class="hljs-keyword">const</span> sleep = <span class="hljs-function"><span class="hljs-params">time</span> =&gt;</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-params">resolve</span> =&gt;</span>
+        setTimeout(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"resolve"</span>, time);
+            resolve(time);
+        }, time)
+    );
+};
+
+<span class="hljs-keyword">const</span> tasks = <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">await</span> sleep(<span class="hljs-number">1000</span>);
+    <span class="hljs-keyword">await</span> sleep(<span class="hljs-number">2000</span>);
+};
+
+tasks();
+</code></pre>
+<h3 id="promise">Promise</h3>
+<pre><code class="lang-javascript"><span class="hljs-comment">/**
  * @param {*promise任务队列} tasks
  */</span>
 <span class="hljs-keyword">const</span> sequenceTasks = <span class="hljs-function"><span class="hljs-params">tasks</span> =&gt;</span> {
@@ -49,47 +66,44 @@ NW.js 让您在编写应用时可以使用 Node.js 及其 modules 与 web 开发
         <span class="hljs-keyword">return</span> results;
     };
     <span class="hljs-keyword">const</span> pushValue = recordValue.bind(<span class="hljs-literal">null</span>, []);
-
+    <span class="hljs-comment">//array.reduce(function(total, currentValue, currentIndex, arr), initialValue)</span>
     <span class="hljs-keyword">return</span> tasks.reduce(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">promise, task</span>) </span>{
         <span class="hljs-keyword">return</span> promise.then(task).then(pushValue);
     }, <span class="hljs-built_in">Promise</span>.resolve());
-
-    <span class="hljs-comment">//task 返回值是promise，每次循环会新建一个promise对象</span>
-    <span class="hljs-comment">// let promise = Promise.resolve();</span>
-    <span class="hljs-comment">// for (let i = 0; i &lt; tasks.length; i++) {</span>
-    <span class="hljs-comment">//     let task = tasks[i];</span>
-    <span class="hljs-comment">//     promise = promise.then(task).then(pushValue);</span>
-    <span class="hljs-comment">// }</span>
-    <span class="hljs-comment">// return promise;</span>
 };
 
-<span class="hljs-keyword">const</span> promise1 = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span>
-    <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, rejecrt</span>) =&gt;</span> {
-        setTimeout(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
-            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"promise1 resolve"</span>);
-            resolve(<span class="hljs-string">"promise1"</span>);
-        }, <span class="hljs-number">1000</span>);
-    });
-
-<span class="hljs-keyword">const</span> promise2 = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span>
-    <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, rejecrt</span>) =&gt;</span> {
-        setTimeout(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
-            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"promise2 resolve"</span>);
-            resolve(<span class="hljs-string">"promise2"</span>);
-        }, <span class="hljs-number">1</span>);
-    });
-
-<span class="hljs-keyword">const</span> tasks = [promise1, promise2];
+<span class="hljs-keyword">const</span> tasks = [sleep(<span class="hljs-number">1000</span>), sleep(<span class="hljs-number">2000</span>)];
 sequenceTasks(tasks).then(<span class="hljs-function"><span class="hljs-params">res</span> =&gt;</span> {
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"res"</span>, res);
 });
-
-<span class="hljs-comment">//promise1 resolve</span>
-<span class="hljs-comment">//promise2 resolve</span>
-<span class="hljs-comment">//res ["promise1", "promise2"]</span>
 </code></pre>
-<p>##</p>
-<h2 id="-">待优化</h2>
+<h3 id="generator">Generator</h3>
+<p>Generator 函数是一个状态机，封装了多个内部状态,执行 Generator 函数会返回一个遍历器对象。每次调用遍历器对象的 next 方法，内部指针就从函数头部或上一次停下来的地方开始执行，直到遇到下一个 yield 表达式（或 return 语句）为止。
+next 方法返回一个对象，它的 value 属性就是当前 yield 表达式的值，done 属性表示遍历是否结束。</p>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span>* <span class="hljs-title">gen</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">yield</span> sleep(<span class="hljs-number">1000</span>);
+    <span class="hljs-keyword">yield</span> sleep(<span class="hljs-number">2000</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-string">"end"</span>;
+}
+
+<span class="hljs-keyword">const</span> g = gen();
+
+g.next().value.then(<span class="hljs-function"><span class="hljs-params">res</span>=&gt;</span>{
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"1"</span>,res)
+    <span class="hljs-keyword">return</span> res
+}).then(<span class="hljs-function"><span class="hljs-params">res1</span>=&gt;</span>{
+    g.next().value.then(<span class="hljs-function"><span class="hljs-params">res</span>=&gt;</span>{
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"2"</span>,res)
+    })
+})
+</code></pre>
+<p>以上代码</p>
+<h3 id="co-">co 模块</h3>
+<p>Generator需要手动调用next方法，</p>
+<p>co 模块可以让你不用编写 Generator 函数的执行器，它会自动执行 Generator 函数。</p>
+<h3 id="-">观察者模式(发布者-订阅者模式)</h3>
+<p>观察者模式又叫做发布订阅模式，它定义了一种一对多的关系，让多个观察者对象同时监听某一个主题对象，这个主题对象的状态发生改变时就会通知所有观察着对象。它是由两类对象组成，主题和观察者，主题负责发布事件，同时观察者通过订阅这些事件来观察该主体，发布者和订阅者是完全解耦的，彼此不知道对方的存在，两者仅仅共享一个自定义事件的名称。
+在 Nodejs 中通过 EventEmitter 实现了原生的对于这一模式的支持。在 JavaScript 中事件监听机制就可以理解为一种观察者模式。</p>
 `
 
 
