@@ -1,5 +1,30 @@
 # Javascript Knowledge Point
 
+Guides:
+
+1.  <a href="#g1" target="_self">undefined and null</a>
+2.  <a href="#g2" target="_self">浏览器 Event loop 事件循环</a>
+3.  <a href="#g3" target="_self">对象深拷贝</a>
+4.  <a href="#g4" target="_self"> JSONP 跨域原理</a>
+5.  <a href="#g5" target="_self"> 正则表达式之后向引用</a>
+6.  <a href="#g6" target="_self"> React/Vue 不同组件之间的通信方式</a>
+7.  <a href="#g7" target="_self"> 正则表达式之后向引用</a>
+8.  <a href="#g8" target="_self"> this 指向</a>
+9.  <a href="#g9" target="_self"> Cookie</a>
+10. <a href="#g10" target="_self"> 快速排序</a>
+11. <a href="#g11" target="_self"> 执行上下文(Execution Context)</a>
+12. <a href="#g12" target="_self"> Promise 的实现</a>
+13. <a href="#g13" target="_self"> 闭包</a>
+14. <a href="#g14" target="_self"> 事件捕获 vs 事件冒泡</a>
+15. <a href="#g15" target="_self"> 服务端渲染</a>
+16. <a href="#g10" target="_self"> 浮点数知识</a>
+17. <a href="#g17" target="_self"> const 、let、块级作用域</a>
+18. <a href="#g18" target="_self"> DocumentFragment</a>
+19. <a href="#19" target="_self"> 同源策咯</a>
+20. <a href="#g20" target="_self"> 事件循环</a>
+
+<span id="g1"></span>
+
 ### 1、undefined and null
 
 JavaScript 的最初版本是这样区分的：<b>null 是一个表示"无"的对象，转为数值时为 0；undefined 是一个表示"无"的原始值，转为数值时为 NaN</b>。
@@ -21,6 +46,8 @@ Object.getPrototypeOf(Object.prototype)
 2.  调用函数时，没有提供对应的参数，该参数就等于 undefined。
 3.  对象没有赋值的属性，其值就是 undefined。
 4.  函数没有返回值时，默认返回 undefined。
+
+<span id="g2"></span>
 
 ### 2、浏览器 Event loop 事件循环
 
@@ -56,6 +83,8 @@ JS 种的基本数据类型与指向对象的地址存放在栈内存中，此�
 
 5.  重复 3 和 4。
 
+<span id="g3"></span>
+
 ### 3、对象深拷贝
 
 ```
@@ -78,7 +107,9 @@ const clone=(obj)=>{
 }
 ```
 
-### JSONP 跨域原理
+<span id="g4"></span>
+
+### 4、 JSONP 跨域原理
 
 在同源策略下，在某个服务器下的页面是无法获取到该服务器以外的数据的，但 img、iframe、script 等标签是个例外，这些标签可以通过 src 属性请求到其他服务器上的数据。利用 script 标签的开放策略，我们可以实现跨域请求数据，当然，也需要服务端的配合。当我们正常地请求一个 JSON 数据的时候，服务端返回的是一串 JSON 类型的数据，而我们使用 JSONP 模式来请求数据的时候，服务端返回的是一段可执行的 JavaScript 代码。例如：
 
@@ -104,7 +135,9 @@ appdendScript("http://a.com&callback=somefun");
 "somefun({key:somevalue});"
 ```
 
-### 正则表达式之后向引用
+<span id="g5"></span>
+
+### 5、 正则表达式之后向引用
 
 #### 分组
 
@@ -145,7 +178,9 @@ str.match(/(?<=<pre><code>)[\s\S]*?(?=<\/code><\/pre>)/gi);  // 获得,/somePatt
 str.replace(/(?<=<pre><code>)[\s\S]*?(?=<\/code><\/pre>)/gi, 'asdf');  // 替换
 ```
 
-### React/Vue 不同组件之间的通信方式
+<span id="g6"></span>
+
+### 6、 React/Vue 不同组件之间的通信方式
 
 #### Vue
 
@@ -161,7 +196,9 @@ str.replace(/(?<=<pre><code>)[\s\S]*?(?=<\/code><\/pre>)/gi, 'asdf');  // 替换
 *   项目复杂的话用 Redux、Mobx 等全局状态管理管库
 *   用新的 Context Api
 
-### Thunk 函数
+<span id="g7"></span>
+
+### 7、 Thunk 函数
 
 将多参数函数替换成单参数的版本，且只接受回调函数作为参数。
 
@@ -178,14 +215,18 @@ const readFileThunk = Thunk(fs.readFile);
 readFileThunk(path)(callback);
 ```
 
-### this 指向
+<span id="g8"></span>
+
+### 8、this 指向
 
 *   纯粹的函数调用,this 就代表全局对象 Global
 *   作为对象方法的调用,this 就指向上级对象
 *   作为构造函数调用,this 就指向新对象
 *   apply/call 调用,this 指向第一个参数提供的对象
 
-### Cookie
+<span id="g9"></span>
+
+### 9、Cookie
 
 功能：按照一定规范来储存这些信息，并在随后的请求中将这些信息发送至服务器，cookie 的值被存储在名为 Cookie 的 HTTP 消息头中。
 
@@ -204,7 +245,7 @@ const getCookie=(key)=>{
     let result="";
     let cookie=document.cookie;
     if(cookie){
-    	result=cookie.match(r)[0]
+    	result=cookie.match(reg)[0]
     }
 
     return result;
@@ -212,7 +253,9 @@ const getCookie=(key)=>{
 }
 ```
 
-### 快速排序
+<span id="g10"></span>
+
+### 10、快速排序
 
 算法思想：
 
@@ -249,7 +292,9 @@ quickSort = (arr)=> {
 quickSort([3,5,0,2,4,8,1,9,7,6,2])
 ```
 
-### 执行上下文(Execution Context)
+<span id="g11"></span>
+
+### 11、执行上下文(Execution Context)
 
 js 的运行有三种环境：
 
@@ -282,7 +327,9 @@ js 的运行有三种环境：
 
 VO 对应第二阶段，AO 对应第三阶段。
 
-### Promise 的实现
+<span id="g12"></span>
+
+### 12、 Promise 的实现
 
 ```
 var PENDING = 0;
@@ -456,11 +503,15 @@ p1.then(res=>{
 })
 ```
 
-### 闭包
+<span id="g13"></span>
+
+### 13、 闭包
 
 闭包是即使被外部函数返回，依然可以访问到外部（封闭）函数作用域的函数。
 
-### 事件捕获 vs 事件冒泡
+<span id="g14"></span>
+
+### 14、事件捕获 vs 事件冒泡
 
 *   事件冒泡：事件从内层元素开始触发，向外层传播，直到 document。
 *   事件捕获：事件从外层元素（document）开始触发，向内层传播，直到 目标元素（target）。
@@ -477,16 +528,18 @@ p1.then(res=>{
 
 事件捕获与事件冒泡的用用--事件代理
 
-### 服务端渲染
+<span id="g15"></span>
+
+### 15、服务端渲染
 
 在后端将数据拼接到 HTML 字符串上发送给客户端，浏览器从服务器接收 HTML 并渲染。服务端渲染的优势:
 
 *   SEO
     *   爬虫可以抓取页面的关键字等信息
-*   首屏直出
-    *   减少首屏渲染时间
+*   首屏直出 \* 减少首屏渲染时间
+    <span id="g16"></span>
 
-### 浮点数知识
+### 16、浮点数知识
 
 根据国际标准 IEEE 754，任意一个二进制浮点数 V 可以表示成下面的形式：
 V=(-1)<sup>s</sup>*M*2<sup>E</sup>
@@ -498,8 +551,9 @@ V=(-1)<sup>s</sup>*M*2<sup>E</sup>
 对于 32 位的浮点数，最高的 1 位是符号位 s，接着的 8 位是指数 E，剩下的 23 位为有效数字 M。
 
 Javascript 浮点数运算会先把十进制数转化为二进制数（乘二取整），然而有可能得到无限循环二进制数，然后再进行运算，然后再将结果转化为十进制数返回。
+<span id="g17"></span>
 
-### const 、let、块级作用域
+### 17、const 、let、块级作用域
 
 #### 暂时性死区
 
@@ -554,7 +608,9 @@ foo.prop // 123
 foo = {}; // TypeError: "foo" is read-only
 ```
 
-### DocumentFragment
+<span id="g18"></span>
+
+### 18、 DocumentFragment
 
 The DocumentFragment interface represents a minimal document object that has no parent. It is used as a lightweight version of Document that stores a segment of a document structure comprised of nodes just like a standard document. The key difference is that because the document fragment isn't part of the active document tree structure, changes made to the fragment don't affect the document, cause reflow, or incur any performance impact that can occur when changes are made.
 
@@ -568,7 +624,9 @@ fragment.appendChild(liItem);
 document.body.appendChild(fragment);
 ```
 
-### 同源策咯
+<span id="g19"></span>
+
+### 19、同源策咯
 
 同源策略限制了从同一个源加载的文档或脚本如何与来自另一个源的资源进行交互。这是一个用于隔离潜在恶意文件的重要安全机制。
 
@@ -584,9 +642,11 @@ document.body.appendChild(fragment);
 
 *   AJAX
 
-    *   同源政策规定，AJAX 请求只能发给同源的网址，否则就报错。可以使用 JSONP、WebSocket、CORS 等技术解决问题。
+        *   同源政策规定，AJAX 请求只能发给同源的网址，否则就报错。可以使用 JSONP、WebSocket、CORS 等技术解决问题。
 
-### 事件循环
+    <span id="g20"></span>
+
+### 20、事件循环
 
 "Event Loop 是一个程序结构，用于等待和发送消息和事件。（a programming construct that waits for and dispatches events or messages in a program.）"
 
@@ -598,3 +658,5 @@ js 引擎遇到一个异步事件后并不会一直等待其返回结果，而�
 
 当前执行栈执行完毕时会立刻先处理所有微任务队列（Promise）中的事件，然后再去宏任务队列（setTimeout）中取出一个事件。同一次事件循环中，微任务永远在宏任务之前执行。
 https://zhuanlan.zhihu.com/p/33058983
+
+### 继承的实现方式
