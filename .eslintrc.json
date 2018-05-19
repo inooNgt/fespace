@@ -7,8 +7,7 @@
         "prettier/react"
     ],
     "rules": {
-        "eqeqeq": "warn",
-        "strict": "off",
+        "indent": ["error", 4],
         "prettier/prettier": "error"
     },
     "plugins": [
