@@ -1,4 +1,4 @@
-# Javascript Knowledge Point
+# Javascript Notes
 
 Guides:
 
@@ -660,3 +660,5 @@ js 引擎遇到一个异步事件后并不会一直等待其返回结果，而�
 https://zhuanlan.zhihu.com/p/33058983
 
 ### 继承的实现方式
+
+原型链

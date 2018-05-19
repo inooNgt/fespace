@@ -5,18 +5,24 @@
     "main": "webpack.config.js",
     "scripts": {
         "dev-node": "set NODE_ENV=dev&&node build/webpack.dev.config.js",
-        "dev":
-            "set NODE_ENV=dev&&webpack-dev-server --config build/webpack.config.js --content-base public/ --host localhost --port 9000 --inline --history-api-fallback ",
-        "build":
-            "set NODE_ENV=prod&&webpack -p --config build/webpack.config.js && cd build && node copy.js",
+        "dev": "set NODE_ENV=dev&&webpack-dev-server --config build/webpack.config.js --content-base public/ --host localhost --port 9000 --inline --history-api-fallback ",
+        "build": "set NODE_ENV=prod&&webpack -p --config build/webpack.config.js && cd build && node copy.js",
         "marked": "cd build && node parser.js",
         "copy": "cd build && node copy.js",
-        "server": "cd server && node server.js"
+        "server": "cd server && node server.js",
+        "precommit": "lint-staged"
+    },
+    "lint-staged": {
+        "static/**/*.js": [
+            "prettier --write",
+            "git add"
+        ]
     },
     "author": "",
     "license": "ISC",
     "devDependencies": {
         "babel-core": "^6.26.0",
+        "babel-eslint": "^8.2.3",
         "babel-loader": "^7.1.2",
         "babel-plugin-syntax-dynamic-import": "^6.18.0",
         "babel-polyfill": "^6.26.0",
@@ -26,14 +32,24 @@
         "clean-webpack-plugin": "^0.1.17",
         "css-loader": "^0.28.8",
         "cssnano": "^3.10.0",
+        "eslint": "^4.19.1",
+        "eslint-config-prettier": "^2.9.0",
+        "eslint-config-react-app": "^2.1.0",
+        "eslint-plugin-flowtype": "^2.46.3",
+        "eslint-plugin-import": "^2.12.0",
+        "eslint-plugin-prettier": "^2.6.0",
+        "eslint-plugin-react": "^7.8.2",
         "extract-text-webpack-plugin": "^3.0.2",
         "happypack": "^4.0.0",
         "highlight.js": "^9.12.0",
         "html-webpack-plugin": "^2.30.1",
+        "husky": "^0.14.3",
+        "lint-staged": "^7.1.1",
         "node-sass": "^4.7.2",
         "postcss-cssnext": "^3.0.2",
         "postcss-import": "^11.0.0",
         "postcss-loader": "^2.0.10",
+        "prettier": "^1.12.1",
         "react-spring": "^4.0.1",
         "sass-loader": "^6.0.6",
         "style-loader": "^0.19.1",
