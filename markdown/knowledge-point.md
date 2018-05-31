@@ -2,29 +2,29 @@
 
 Guides:
 
-1.  <a href="javascript:;" target="_self">undefined and null</a>
-2.  <a href="javascript:;" target="_self">浏览器 Event loop 事件循环</a>
-3.  <a href="javascript:;" target="_self">对象深拷贝</a>
-4.  <a href="javascript:;" target="_self"> JSONP 跨域原理及 CORS</a>
-5.  <a href="javascript:;" target="_self"> 正则表达式之后向引用</a>
-6.  <a href="javascript:;" target="_self"> React/Vue 不同组件之间的通信方式</a>
-7.  <a href="javascript:;" target="_self"> 正则表达式之后向引用</a>
-8.  <a href="javascript:;" target="_self"> this 指向</a>
-9.  <a href="javascript:;" target="_self"> Cookie</a>
-10. <a href="javascript:;" target="_self"> 快速排序</a>
-11. <a href="javascript:;" target="_self"> 执行上下文(Execution Context)</a>
-12. <a href="javascript:;" target="_self"> Promise 的实现</a>
-13. <a href="javascript:;" target="_self"> 闭包</a>
-14. <a href="javascript:;" target="_self"> 事件捕获 vs 事件冒泡</a>
-15. <a href="javascript:;" target="_self"> 服务端渲染</a>
-16. <a href="javascript:;" target="_self"> 浮点数知识</a>
-17. <a href="javascript:;" target="_self"> const 、let、块级作用域</a>
-18. <a href="javascript:;" target="_self"> DocumentFragment</a>
-19. <a href="javascript:;" target="_self"> 同源策咯</a>
-20. <a href="javascript:;" target="_self"> 事件循环</a>
-21. <a href="javascript:;" target="_self"> https 过程</a>
-22. <a href="javascript:;" target="_self"> 订阅/发布模式（subscribe&publish）</a>
-23. <a href="javascript:;" target="_self"> vue 双向数据绑定实现原理</a>
+1.  <a href="javascript:;" onclick="document.getElementById('g1').scrollIntoView();">undefined and null</a>
+2.  <a href="javascript:;" onclick="document.getElementById('g2').scrollIntoView();">浏览器 Event loop 事件循环</a>
+3.  <a href="javascript:;" onclick="document.getElementById('g3').scrollIntoView();">对象深拷贝</a>
+4.  <a href="javascript:;" onclick="document.getElementById('g4').scrollIntoView();"> JSONP 跨域原理及 CORS</a>
+5.  <a href="javascript:;" onclick="document.getElementById('g5').scrollIntoView();"> 正则表达式之后向引用</a>
+6.  <a href="javascript:;" onclick="document.getElementById('g6').scrollIntoView();"> React/Vue 不同组件之间的通信方式</a>
+7.  <a href="javascript:;" onclick="document.getElementById('g7').scrollIntoView();"> 正则表达式之后向引用</a>
+8.  <a href="javascript:;" onclick="document.getElementById('g8').scrollIntoView();"> this 指向</a>
+9.  <a href="javascript:;" onclick="document.getElementById('g9').scrollIntoView();"> Cookie</a>
+10. <a href="javascript:;" onclick="document.getElementById('g10').scrollIntoView();"> 快速排序</a>
+11. <a href="javascript:;" onclick="document.getElementById('g11').scrollIntoView();"> 执行上下文(Execution Context)</a>
+12. <a href="javascript:;" onclick="document.getElementById('g12').scrollIntoView();"> Promise 的实现</a>
+13. <a href="javascript:;" onclick="document.getElementById('g13').scrollIntoView();"> 闭包</a>
+14. <a href="javascript:;" onclick="document.getElementById('g14').scrollIntoView();"> 事件捕获 vs 事件冒泡</a>
+15. <a href="javascript:;" onclick="document.getElementById('g15').scrollIntoView();"> 服务端渲染</a>
+16. <a href="javascript:;" onclick="document.getElementById('g16').scrollIntoView();"> 浮点数知识</a>
+17. <a href="javascript:;" onclick="document.getElementById('g17').scrollIntoView();"> const 、let、块级作用域</a>
+18. <a href="javascript:;" onclick="document.getElementById('g18').scrollIntoView();"> DocumentFragment</a>
+19. <a href="javascript:;" onclick="document.getElementById('g19').scrollIntoView();"> 同源策咯</a>
+20. <a href="javascript:;" onclick="document.getElementById('g20').scrollIntoView();"> 事件循环</a>
+21. <a href="javascript:;" onclick="document.getElementById('g21').scrollIntoView();"> https 过程</a>
+22. <a href="javascript:;" onclick="document.getElementById('g22').scrollIntoView();"> 订阅/发布模式（subscribe&publish）</a>
+23. <a href="javascript:;" onclick="document.getElementById('g23').scrollIntoView();"> vue 双向数据绑定实现原理</a>
 
 <span id="g1"></span>
 
