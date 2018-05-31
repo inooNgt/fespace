@@ -1,7 +1,34 @@
 import React, { Component } from "react";
 
-const article=`<h1 id="javascript-knowledge-point">Javascript Knowledge Point</h1>
-<h3 id="1-undefined-and-null">1、undefined and null</h3>
+const article = `<h1 id="javascript-notes">Javascript Notes</h1>
+<p>Guides:</p>
+<ol>
+<li><a href="#g1" target="_self">undefined and null</a></li>
+<li><a href="#g2" target="_self">浏览器 Event loop 事件循环</a></li>
+<li><a href="#g3" target="_self">对象深拷贝</a></li>
+<li><a href="#g4" target="_self"> JSONP 跨域原理及 CORS</a></li>
+<li><a href="#g5" target="_self"> 正则表达式之后向引用</a></li>
+<li><a href="#g6" target="_self"> React/Vue 不同组件之间的通信方式</a></li>
+<li><a href="#g7" target="_self"> 正则表达式之后向引用</a></li>
+<li><a href="#g8" target="_self"> this 指向</a></li>
+<li><a href="#g9" target="_self"> Cookie</a></li>
+<li><a href="#g10" target="_self"> 快速排序</a></li>
+<li><a href="#g11" target="_self"> 执行上下文(Execution Context)</a></li>
+<li><a href="#g12" target="_self"> Promise 的实现</a></li>
+<li><a href="#g13" target="_self"> 闭包</a></li>
+<li><a href="#g14" target="_self"> 事件捕获 vs 事件冒泡</a></li>
+<li><a href="#g15" target="_self"> 服务端渲染</a></li>
+<li><a href="#g10" target="_self"> 浮点数知识</a></li>
+<li><a href="#g17" target="_self"> const 、let、块级作用域</a></li>
+<li><a href="#g18" target="_self"> DocumentFragment</a></li>
+<li><a href="#19" target="_self"> 同源策咯</a></li>
+<li><a href="#g20" target="_self"> 事件循环</a></li>
+<li><a href="#g21" target="_self"> https 过程</a></li>
+<li><a href="#g22" target="_self"> 订阅/发布模式（subscribe&amp;publish）</a></li>
+<li><a href="#g23" target="_self"> vue 双向数据绑定实现原理</a></li>
+</ol>
+<pre><code><span className="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"g1"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+</code></pre><h3 id="1-undefined-and-null">1、undefined and null</h3>
 <p>JavaScript 的最初版本是这样区分的：<b>null 是一个表示&quot;无&quot;的对象，转为数值时为 0；undefined 是一个表示&quot;无&quot;的原始值，转为数值时为 NaN</b>。</p>
 <p>目前的用法：
 <b>null 表示&quot;没有对象&quot;，即该处不应该有值</b>。典型用法是：</p>
@@ -9,7 +36,7 @@ const article=`<h1 id="javascript-knowledge-point">Javascript Knowledge Point</h
 <li>作为函数的参数，表示该函数的参数不是对象。</li>
 <li>作为原型链的终点。</li>
 </ol>
-<pre><code><span className="hljs-built_in">Object</span>.getPrototypeOf(<span class="hljs-built_in">Object</span>.prototype)
+<pre><code><span class="hljs-built_in">Object</span>.getPrototypeOf(<span class="hljs-built_in">Object</span>.prototype)
 <span class="hljs-comment">// null</span>
 </code></pre><p><b>undefined 表示&quot;缺少值&quot;，就是此处应该有一个值，但是还没有定义</b>。典型用法是：</p>
 <ol>
@@ -18,6 +45,7 @@ const article=`<h1 id="javascript-knowledge-point">Javascript Knowledge Point</h
 <li>对象没有赋值的属性，其值就是 undefined。</li>
 <li>函数没有返回值时，默认返回 undefined。</li>
 </ol>
+<p><span id="g2"></span></p>
 <h3 id="2-event-loop-">2、浏览器 Event loop 事件循环</h3>
 <h4 id="-heap-">堆（heap）</h4>
 <p>程序运行时申请的动态内存，在 JS 运行时用来存放对象。</p>
@@ -49,6 +77,7 @@ const article=`<h1 id="javascript-knowledge-point">Javascript Knowledge Point</h
 <li><p>重复 3 和 4。</p>
 </li>
 </ol>
+<p><span id="g3"></span></p>
 <h3 id="3-">3、对象深拷贝</h3>
 <pre><code><span class="hljs-comment">/*缺点：如果需要属性值是函数或者是undefined，就会被过滤掉 */</span>
 <span class="hljs-keyword">const</span> clone=<span class="hljs-function">(<span class="hljs-params">obj</span>)=&gt;</span>{
@@ -64,7 +93,9 @@ const article=`<h1 id="javascript-knowledge-point">Javascript Knowledge Point</h
   }
   <span class="hljs-keyword">return</span> result;
 }
-</code></pre><h3 id="jsonp-">JSONP 跨域原理</h3>
+</code></pre><p><span id="g4"></span></p>
+<h3 id="4-jsonp-cors">4、 JSONP 跨域原理及 CORS</h3>
+<h4 id="jsonp">JSONP</h4>
 <p>在同源策略下，在某个服务器下的页面是无法获取到该服务器以外的数据的，但 img、iframe、script 等标签是个例外，这些标签可以通过 src 属性请求到其他服务器上的数据。利用 script 标签的开放策略，我们可以实现跨域请求数据，当然，也需要服务端的配合。当我们正常地请求一个 JSON 数据的时候，服务端返回的是一串 JSON 类型的数据，而我们使用 JSONP 模式来请求数据的时候，服务端返回的是一段可执行的 JavaScript 代码。例如：</p>
 <p>客户端请求,并指定回调函数的名字：</p>
 <pre><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">appendScript</span>(<span class="hljs-params">src</span>)</span>{
@@ -80,7 +111,10 @@ const article=`<h1 id="javascript-knowledge-point">Javascript Knowledge Point</h
 appdendScript(<span class="hljs-string">"http://a.com&amp;callback=somefun"</span>);
 </code></pre><p>服务端返回 Javascript 代码：</p>
 <pre><code>"<span class="hljs-selector-tag">somefun</span>({<span class="hljs-attribute">key</span>:somevalue});"
-</code></pre><h3 id="-">正则表达式之后向引用</h3>
+</code></pre><h4 id="cors">CORS</h4>
+<p>跨域资源共享标准新增了一组 HTTP 首部字段，允许服务器声明哪些源站有权限访问哪些资源。另外，规范要求，对那些可能对服务器数据产生副作用的 HTTP 请求方法（特别是 GET 以外的 HTTP 请求，或者搭配某些 MIME 类型的 POST 请求），浏览器必须首先使用 OPTIONS 方法发起一个预检请求（preflight request），从而获知服务端是否允许该跨域请求。服务器确认允许之后，才发起实际的 HTTP 请求。在预检请求的返回中，服务器端也可以通知客户端，是否需要携带身份凭证（包括 Cookies 和 HTTP 认证相关数据）。</p>
+<p><span id="g5"></span></p>
+<h3 id="5-">5、 正则表达式之后向引用</h3>
 <h4 id="-">分组</h4>
 <p>组的定义：</p>
 <p>正则表达式通过使用括号将表达式分为不同的分组，识别的方法是通过从左至右搜寻左半括号，遇到第一个左半括号时，则该左半括号与对应的右半括号所包含的内容即为第一分组，以此类推 。例如，在表达式((A)(B(C)))，有四个这样的组：((A)(B(C)))、(A)、(B(C))、(C)</p>
@@ -98,16 +132,17 @@ appdendScript(<span class="hljs-string">"http://a.com&amp;callback=somefun"</spa
 <p>当正则表达式中包含能接受重复的限定符时，通常的行为是（在使整个表达式能得到匹配的前提下）匹配尽可能多的字符。以这个表达式为例：a.*b，它将会匹配最长的以 a 开始，以 b 结束的字符串。被称为贪婪匹配。</p>
 <p>有时，我们更需要懒惰匹配，也就是匹配尽可能少的字符。要在它后面加上一个问号?。这样.*?就意味着匹配任意数量的重复，但是在能使整个匹配成功的前提下使用最少的重复。</p>
 <p>例子：</p>
-<pre><code>let str = `
+<pre><code>let str = \`
   <span class="hljs-attribute">&lt;p&gt;</span>第一个<span class="hljs-attribute">&lt;/p&gt;</span>
   <span class="hljs-attribute">&lt;pre&gt;</span><span class="hljs-attribute">&lt;code&gt;</span>console.log(1);<span class="hljs-attribute">&lt;/code&gt;</span><span class="hljs-attribute">&lt;/pre&gt;</span>
   <span class="hljs-attribute">&lt;p&gt;</span>第二个<span class="hljs-attribute">&lt;/p&gt;</span>
-  <span class="hljs-attribute">&lt;pre&gt;</span><span class="hljs-attribute">&lt;code&gt;</span>console.log(2);<span class="hljs-attribute">&lt;/code&gt;</span><span class="hljs-attribute">&lt;/pre&gt;</span>`;
+  <span class="hljs-attribute">&lt;pre&gt;</span><span class="hljs-attribute">&lt;code&gt;</span>console.log(2);<span class="hljs-attribute">&lt;/code&gt;</span><span class="hljs-attribute">&lt;/pre&gt;</span>\`;
 
 str.match(/(?<span class="hljs-attribute">&lt;=&lt;pre&gt;</span><span class="hljs-attribute">&lt;code&gt;</span>)[\s\S]*?(?=<span class="hljs-attribute">&lt;\/code&gt;</span><span class="hljs-attribute">&lt;\/pre&gt;</span>)/gi);  // 获得,/somePattern*?/是懒惰匹配。
 
 str.replace(/(?<span class="hljs-attribute">&lt;=&lt;pre&gt;</span><span class="hljs-attribute">&lt;code&gt;</span>)[\s\S]*?(?=<span class="hljs-attribute">&lt;\/code&gt;</span><span class="hljs-attribute">&lt;\/pre&gt;</span>)/gi, 'asdf');  // 替换
-</code></pre><h3 id="react-vue-">React/Vue 不同组件之间的通信方式</h3>
+</code></pre><p><span id="g6"></span></p>
+<h3 id="6-react-vue-">6、 React/Vue 不同组件之间的通信方式</h3>
 <h4 id="vue">Vue</h4>
 <ul>
 <li>父子组件用 Props 通信</li>
@@ -122,7 +157,8 @@ str.replace(/(?<span class="hljs-attribute">&lt;=&lt;pre&gt;</span><span class="
 <li>项目复杂的话用 Redux、Mobx 等全局状态管理管库</li>
 <li>用新的 Context Api</li>
 </ul>
-<h3 id="thunk-">Thunk 函数</h3>
+<p><span id="g7"></span></p>
+<h3 id="7-thunk-">7、 Thunk 函数</h3>
 <p>将多参数函数替换成单参数的版本，且只接受回调函数作为参数。</p>
 <pre><code><span class="hljs-keyword">const</span> Thunk=<span class="hljs-function">(<span class="hljs-params">fn</span>)=&gt;</span>{
     <span class="hljs-keyword">return</span> <span class="hljs-function">(<span class="hljs-params">...args</span>)=&gt;</span>{
@@ -134,35 +170,40 @@ str.replace(/(?<span class="hljs-attribute">&lt;=&lt;pre&gt;</span><span class="
 
 <span class="hljs-keyword">const</span> readFileThunk = Thunk(fs.readFile);
 readFileThunk(path)(callback);
-</code></pre><h3 id="this-">this 指向</h3>
+</code></pre><p><span id="g8"></span></p>
+<h3 id="8-this-">8、this 指向</h3>
 <ul>
 <li>纯粹的函数调用,this 就代表全局对象 Global</li>
 <li>作为对象方法的调用,this 就指向上级对象</li>
 <li>作为构造函数调用,this 就指向新对象</li>
 <li>apply/call 调用,this 指向第一个参数提供的对象</li>
 </ul>
-<h3 id="cookie">Cookie</h3>
+<p><span id="g9"></span></p>
+<h3 id="9-cookie">9、Cookie</h3>
 <p>功能：按照一定规范来储存这些信息，并在随后的请求中将这些信息发送至服务器，cookie 的值被存储在名为 Cookie 的 HTTP 消息头中。</p>
 <p>给 document 赋值并不会覆盖原有的值。</p>
 <pre><code>const setCookie=<span class="hljs-function"><span class="hljs-params">(key,value,expires)</span>=&gt;</span>{
     <span class="hljs-built_in">document</span>.cookie=!expires?
-        `<span class="javascript">${key}=${value}</span>`:
-        `<span class="javascript">${key}=${value};expires=${</span>`expires`<span class="javascript">};
+        \`<span class="javascript">${key}=${value}</span>\`:
+        \`<span class="javascript">${key}=${value};expires=${expires};
 
 }
 
 <span class="hljs-keyword">const</span> getCookie=<span class="hljs-function">(<span class="hljs-params">key</span>)=&gt;</span>{
-    <span class="hljs-keyword">const</span> reg =<span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(</span>`(?&lt;=${key}=)(\w)+(?=\;)`<span class="javascript">,<span class="hljs-string">'g'</span>);
+    <span class="hljs-keyword">const</span> reg =<span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(</span>\`(?&lt;=${key}=)(\w)+(?=\;)\`<span class="javascript">,<span class="hljs-string">'g'</span>);
     <span class="hljs-keyword">let</span> result=<span class="hljs-string">""</span>;
     <span class="hljs-keyword">let</span> cookie=<span class="hljs-built_in">document</span>.cookie;
     <span class="hljs-keyword">if</span>(cookie){
-        result=cookie.match(r)[<span class="hljs-number">0</span>]
+        result=cookie.match(reg)[<span class="hljs-number">0</span>]
     }
 
     <span class="hljs-keyword">return</span> result;
 
 }</span>
-</code></pre><h3 id="-">快速排序</h3>
+</code></pre><p>Session:
+创建于服务器端，保存于服务器，维护于服务器端,每创建一个新的 Session,服务器端都会分配一个唯一的 ID，并且把这个 ID 保存到客户端的 Cookie 中，保存形式是以 JSESSIONID 来保存的。</p>
+<p><span id="g10"></span></p>
+<h3 id="10-">10、快速排序</h3>
 <p>算法思想：</p>
 <ul>
 <li><p>在数据集之中，选择一个元素作为&quot;基准&quot;（pivot）。</p>
@@ -195,7 +236,8 @@ readFileThunk(path)(callback);
 };
 
 <span class="hljs-built_in">quickSort</span>([<span class="hljs-number">3</span>,<span class="hljs-number">5</span>,<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">8</span>,<span class="hljs-number">1</span>,<span class="hljs-number">9</span>,<span class="hljs-number">7</span>,<span class="hljs-number">6</span>,<span class="hljs-number">2</span>])
-</code></pre><h3 id="-execution-context-">执行上下文(Execution Context)</h3>
+</code></pre><p><span id="g11"></span></p>
+<h3 id="11-execution-context-">11、执行上下文(Execution Context)</h3>
 <p>js 的运行有三种环境：</p>
 <ul>
 <li>Global Code, JavaScript 代码开始运行的默认环境</li>
@@ -233,7 +275,12 @@ readFileThunk(path)(callback);
 </li>
 </ol>
 <p>VO 对应第二阶段，AO 对应第三阶段。</p>
-<h3 id="promise-">Promise 的实现</h3>
+<p>作用域链：</p>
+<p>对于自由变量，即当前作用域中没有定义的变量，需要向父级作用域寻找,
+如果父级中没有找到，则再一层一层向上查找，直到全局作用域。这种一层一层间的关系，就是作用域链。</p>
+<p>注意：自由变量的查找依据的是函数定义时的作用域，而不是执行时的作用预,例如闭包。</p>
+<p><span id="g12"></span></p>
+<h3 id="12-promise-">12、 Promise 的实现</h3>
 <pre><code><span class="hljs-keyword">var</span> PENDING = <span class="hljs-number">0</span>;
 <span class="hljs-keyword">var</span> FULFILLED = <span class="hljs-number">1</span>;
 <span class="hljs-keyword">var</span> REJECTED = <span class="hljs-number">2</span>;
@@ -403,9 +450,11 @@ p1.then(res=&gt;{
     console.log(<span class="hljs-string">"res"</span>,res)
     <span class="hljs-keyword">return</span> <span class="hljs-string">"then--res"</span>
 })
-</code></pre><h3 id="-">闭包</h3>
+</code></pre><p><span id="g13"></span></p>
+<h3 id="13-">13、 闭包</h3>
 <p>闭包是即使被外部函数返回，依然可以访问到外部（封闭）函数作用域的函数。</p>
-<h3 id="-vs-">事件捕获 vs 事件冒泡</h3>
+<p><span id="g14"></span></p>
+<h3 id="14-vs-">14、事件捕获 vs 事件冒泡</h3>
 <ul>
 <li>事件冒泡：事件从内层元素开始触发，向外层传播，直到 document。</li>
 <li>事件捕获：事件从外层元素（document）开始触发，向内层传播，直到 目标元素（target）。</li>
@@ -421,19 +470,18 @@ p1.then(res=&gt;{
 </li>
 </ol>
 <p>事件捕获与事件冒泡的用用--事件代理</p>
-<h3 id="-">服务端渲染</h3>
+<p><span id="g15"></span></p>
+<h3 id="15-">15、服务端渲染</h3>
 <p>在后端将数据拼接到 HTML 字符串上发送给客户端，浏览器从服务器接收 HTML 并渲染。服务端渲染的优势:</p>
 <ul>
 <li>SEO<ul>
 <li>爬虫可以抓取页面的关键字等信息</li>
 </ul>
 </li>
-<li>首屏直出<ul>
-<li>减少首屏渲染时间</li>
+<li>首屏直出 * 减少首屏渲染时间
+<span id="g16"></span></li>
 </ul>
-</li>
-</ul>
-<h3 id="-">浮点数知识</h3>
+<h3 id="16-">16、浮点数知识</h3>
 <p>根据国际标准 IEEE 754，任意一个二进制浮点数 V 可以表示成下面的形式：
 V=(-1)<sup>s</sup><em>M</em>2<sup>E</sup></p>
 <ul>
@@ -442,8 +490,9 @@ V=(-1)<sup>s</sup><em>M</em>2<sup>E</sup></p>
 <li>2^E 表示指数位</li>
 </ul>
 <p>对于 32 位的浮点数，最高的 1 位是符号位 s，接着的 8 位是指数 E，剩下的 23 位为有效数字 M。</p>
-<p>Javascript 浮点数运算会先把十进制数转化为二进制数（乘二取整），然而有可能得到无限循环二进制数，然后再进行运算，然后再将结果转化为十进制数返回。</p>
-<h3 id="const-let-">const 、let、块级作用域</h3>
+<p>Javascript 浮点数运算会先把十进制数转化为二进制数（乘二取整），然而有可能得到无限循环二进制数，然后再进行运算，然后再将结果转化为十进制数返回。
+<span id="g17"></span></p>
+<h3 id="17-const-let-">17、const 、let、块级作用域</h3>
 <h4 id="-">暂时性死区</h4>
 <p>ES6 明确规定，如果区块中存在 let 和 const 命令，这个区块对这些命令声明的变量，从一开始就形成了封闭作用域。凡是在声明之前就使用这些变量，就会报错。</p>
 <p>总之，在代码块内，使用 let 命令声明变量之前，该变量都是不可用的。这在语法上，称为“暂时性死区”（temporal dead zone，简称 TDZ）。</p>
@@ -481,7 +530,8 @@ foo.<span class="hljs-keyword">prop</span> <span class="hljs-comment">// 123</sp
 
 <span class="hljs-comment">// 将 foo 指向另一个对象，就会报错</span>
 foo = {}; <span class="hljs-comment">// TypeError: "foo" is read-only</span>
-</code></pre><h3 id="documentfragment">DocumentFragment</h3>
+</code></pre><p><span id="g18"></span></p>
+<h3 id="18-documentfragment">18、 DocumentFragment</h3>
 <p>The DocumentFragment interface represents a minimal document object that has no parent. It is used as a lightweight version of Document that stores a segment of a document structure comprised of nodes just like a standard document. The key difference is that because the document fragment isn&#39;t part of the active document tree structure, changes made to the fragment don&#39;t affect the document, cause reflow, or incur any performance impact that can occur when changes are made.</p>
 <p>example:</p>
 <pre><code>const fragment = document.createDocumentFragment()<span class="hljs-comment">;</span>
@@ -489,7 +539,8 @@ const liItem = document.createElement(<span class="hljs-string">"li"</span>)<spa
 liItem.innerText = <span class="hljs-string">"hello"</span><span class="hljs-comment">;</span>
 fragment.appendChild(liItem)<span class="hljs-comment">;</span>
 document.body.appendChild(fragment)<span class="hljs-comment">;</span>
-</code></pre><h3 id="-">同源策咯</h3>
+</code></pre><p><span id="g19"></span></p>
+<h3 id="19-">19、同源策咯</h3>
 <p>同源策略限制了从同一个源加载的文档或脚本如何与来自另一个源的资源进行交互。这是一个用于隔离潜在恶意文件的重要安全机制。</p>
 <p>同源是指：从协议、域名到端口都必须相同。</p>
 <p>限制范围包括：</p>
@@ -504,20 +555,55 @@ document.body.appendChild(fragment)<span class="hljs-comment">;</span>
 </ul>
 </li>
 <li><p>AJAX</p>
-<ul>
-<li>同源政策规定，AJAX 请求只能发给同源的网址，否则就报错。可以使用 JSONP、WebSocket、CORS 等技术解决问题。</li>
-</ul>
+<pre><code><span class="hljs-bullet">*   </span>同源政策规定，AJAX 请求只能发给同源的网址，否则就报错。可以使用 JSONP、WebSocket、CORS 等技术解决问题。
+</code></pre><p><span id="g20"></span></p>
 </li>
 </ul>
-<h3 id="-">事件循环</h3>
+<h3 id="20-">20、事件循环</h3>
 <p>&quot;Event Loop 是一个程序结构，用于等待和发送消息和事件。（a programming construct that waits for and dispatches events or messages in a program.）&quot;</p>
 <p>简单说，就是在程序中设置两个线程：一个负责程序本身的运行，称为&quot;主线程&quot;；另一个负责主线程与其他进程（主要是各种 I/O 操作）的通信，被称为&quot;Event Loop 线程&quot;（可以译为&quot;消息线程&quot;）。</p>
 <p>每当遇到 I/O 的时候，主线程就让 Event Loop 线程去通知相应的 I/O 程序，然后接着往后运行，所以不存在红色的等待时间。等到 I/O 程序完成操作，Event Loop 线程再把结果返回主线程。主线程就调用事先设定的回调函数，完成整个任务。</p>
 <p>js 引擎遇到一个异步事件后并不会一直等待其返回结果，而是会将这个事件挂起，继续执行执行栈中的其他任务。当一个异步事件返回结果后，js 会将这个事件加入与当前执行栈不同的另一个队列，我们称之为事件队列。被放入事件队列不会立刻执行其回调，而是等待当前执行栈中的所有任务都执行完毕， 主线程处于闲置状态时，主线程会去查找事件队列是否有任务。如果有，那么主线程会从中取出排在第一位的事件，并把这个事件对应的回调放入执行栈中，然后执行其中的同步代码...，如此反复，这样就形成了一个无限的循环。这就是这个过程被称为“事件循环（Event Loop）”的原因。</p>
 <p>当前执行栈执行完毕时会立刻先处理所有微任务队列（Promise）中的事件，然后再去宏任务队列（setTimeout）中取出一个事件。同一次事件循环中，微任务永远在宏任务之前执行。
 <a href="https://zhuanlan.zhihu.com/p/33058983">https://zhuanlan.zhihu.com/p/33058983</a></p>
-`
+<p><span id="g21"></span></p>
+<h3 id="https-">https 过程</h3>
+<p>客户端和服务器握手过程大致如下:
+第一步，客户端给出协议版本号、一个客户端生成的随机数（Client random），以及客户端支持的加密方法。</p>
+<p>第二步，服务器确认双方使用的加密方法，并给出数字证书、以及一个服务器生成的随机数（Server random）。</p>
+<p>第三步，客户端确认数字证书有效，然后生成一个新的随机数（Premaster secret），并使用数字证书中的公钥，加密这个随机数，发给服务器。</p>
+<p>第四步，服务器使用自己的私钥，获取客户端发来的随机数（即 Premaster secret）。</p>
+<p>第五步，客户端和服务器根据约定的加密方法，使用前面的三个随机数，生成&quot;对话密钥&quot;（session key），用来加密接下来的整个对话过程。</p>
+<p>参考<a href="http://www.ruanyifeng.com/blog/2014/09/illustration-ssl.html">图解 SSL/TLS 协议</a></p>
+<p><span id="g22"></span></p>
+<h3 id="-subscribepublish-">订阅/发布模式（subscribe&amp;publish）</h3>
+<p>订阅发布模式（又称观察者模式）定义了一种一对多的关系，让多个观察者同时监听某一个主题对象，这个主题对象的状态发生改变时就会通知所有观察者对象。模式流程：发布者发出通知 =&gt; 主题对象收到通知并推送给订阅者 =&gt; 订阅者执行相应操作</p>
+<pre><code><span class="hljs-comment">//发布者</span>
+<span class="hljs-keyword">let</span> pub={
+  <span class="hljs-attr">publish</span>:<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">dep</span>)</span>{
+    dep.notify();
+  }
+}
+<span class="hljs-comment">//订阅者</span>
+<span class="hljs-keyword">let</span> sub1={<span class="hljs-attr">update</span>:<span class="hljs-function"><span class="hljs-params">()</span>=&gt;</span>{<span class="hljs-built_in">console</span>.log(<span class="hljs-number">1</span>)}}
+<span class="hljs-keyword">let</span> sub2={<span class="hljs-attr">update</span>:<span class="hljs-function"><span class="hljs-params">()</span>=&gt;</span>{<span class="hljs-built_in">console</span>.log(<span class="hljs-number">2</span>)}}
 
+<span class="hljs-comment">//主题</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Dep</span></span>{
+  <span class="hljs-keyword">constructor</span>(subs){
+    <span class="hljs-keyword">this</span>.subs=subs||[]
+  }
+  notify(){
+    <span class="hljs-keyword">this</span>.subs.forEach(<span class="hljs-function">(<span class="hljs-params">sub</span>)=&gt;</span>sub.update())
+  }
+}
+
+<span class="hljs-keyword">let</span> dep =<span class="hljs-keyword">new</span> Dep([sub1,sub2])
+<span class="hljs-comment">//发布者发布消息，主题对象执行notify方法，进而触发订阅者的update方法</span>
+pub.publish(dep);
+</code></pre><h3 id="vue-">vue 双向数据绑定实现原理</h3>
+<p><a href="https://juejin.im/entry/59116fa6a0bb9f0058aaaa4c">vue 双向数据绑定实现原理</a></p>
+`;
 
 class Index extends Component {
     constructor(props) {
@@ -531,4 +617,4 @@ class Index extends Component {
     }
 }
 
-export default Index 
+export default Index;

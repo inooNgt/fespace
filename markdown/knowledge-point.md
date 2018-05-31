@@ -246,7 +246,7 @@ readFileThunk(path)(callback);
 const setCookie=(key,value,expires)=>{
     document.cookie=!expires?
 	    `${key}=${value}`:
-		`${key}=${value};expires=${`expires`};
+		`${key}=${value};expires=${expires};
 
 }
 
