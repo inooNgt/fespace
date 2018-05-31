@@ -5,7 +5,7 @@ Guides:
 1.  <a href="#g1" target="_self">undefined and null</a>
 2.  <a href="#g2" target="_self">浏览器 Event loop 事件循环</a>
 3.  <a href="#g3" target="_self">对象深拷贝</a>
-4.  <a href="#g4" target="_self"> JSONP 跨域原理</a>
+4.  <a href="#g4" target="_self"> JSONP 跨域原理及 CORS</a>
 5.  <a href="#g5" target="_self"> 正则表达式之后向引用</a>
 6.  <a href="#g6" target="_self"> React/Vue 不同组件之间的通信方式</a>
 7.  <a href="#g7" target="_self"> 正则表达式之后向引用</a>
@@ -22,8 +22,12 @@ Guides:
 18. <a href="#g18" target="_self"> DocumentFragment</a>
 19. <a href="#19" target="_self"> 同源策咯</a>
 20. <a href="#g20" target="_self"> 事件循环</a>
+21. <a href="#g21" target="_self"> https 过程</a>
+22. <a href="#g22" target="_self"> 订阅/发布模式（subscribe&publish）</a>
+23. <a href="#g23" target="_self"> vue 双向数据绑定实现原理</a>
 
-<span id="g1"></span>
+
+    <span id="g1"></span>
 
 ### 1、undefined and null
 
@@ -109,7 +113,9 @@ const clone=(obj)=>{
 
 <span id="g4"></span>
 
-### 4、 JSONP 跨域原理
+### 4、 JSONP 跨域原理及 CORS
+
+#### JSONP
 
 在同源策略下，在某个服务器下的页面是无法获取到该服务器以外的数据的，但 img、iframe、script 等标签是个例外，这些标签可以通过 src 属性请求到其他服务器上的数据。利用 script 标签的开放策略，我们可以实现跨域请求数据，当然，也需要服务端的配合。当我们正常地请求一个 JSON 数据的时候，服务端返回的是一串 JSON 类型的数据，而我们使用 JSONP 模式来请求数据的时候，服务端返回的是一段可执行的 JavaScript 代码。例如：
 
@@ -134,6 +140,10 @@ appdendScript("http://a.com&callback=somefun");
 ```
 "somefun({key:somevalue});"
 ```
+
+#### CORS
+
+跨域资源共享标准新增了一组 HTTP 首部字段，允许服务器声明哪些源站有权限访问哪些资源。另外，规范要求，对那些可能对服务器数据产生副作用的 HTTP 请求方法（特别是 GET 以外的 HTTP 请求，或者搭配某些 MIME 类型的 POST 请求），浏览器必须首先使用 OPTIONS 方法发起一个预检请求（preflight request），从而获知服务端是否允许该跨域请求。服务器确认允许之后，才发起实际的 HTTP 请求。在预检请求的返回中，服务器端也可以通知客户端，是否需要携带身份凭证（包括 Cookies 和 HTTP 认证相关数据）。
 
 <span id="g5"></span>
 
@@ -252,6 +262,9 @@ const getCookie=(key)=>{
 
 }
 ```
+
+Session:
+创建于服务器端，保存于服务器，维护于服务器端,每创建一个新的 Session,服务器端都会分配一个唯一的 ID，并且把这个 ID 保存到客户端的 Cookie 中，保存形式是以 JSESSIONID 来保存的。
 
 <span id="g10"></span>
 
@@ -666,6 +679,55 @@ js 引擎遇到一个异步事件后并不会一直等待其返回结果，而�
 当前执行栈执行完毕时会立刻先处理所有微任务队列（Promise）中的事件，然后再去宏任务队列（setTimeout）中取出一个事件。同一次事件循环中，微任务永远在宏任务之前执行。
 https://zhuanlan.zhihu.com/p/33058983
 
-### 继承的实现方式
+<span id="g21"></span>
 
-原型链
+### https 过程
+
+客户端和服务器握手过程大致如下:
+第一步，客户端给出协议版本号、一个客户端生成的随机数（Client random），以及客户端支持的加密方法。
+
+第二步，服务器确认双方使用的加密方法，并给出数字证书、以及一个服务器生成的随机数（Server random）。
+
+第三步，客户端确认数字证书有效，然后生成一个新的随机数（Premaster secret），并使用数字证书中的公钥，加密这个随机数，发给服务器。
+
+第四步，服务器使用自己的私钥，获取客户端发来的随机数（即 Premaster secret）。
+
+第五步，客户端和服务器根据约定的加密方法，使用前面的三个随机数，生成"对话密钥"（session key），用来加密接下来的整个对话过程。
+
+参考[图解 SSL/TLS 协议](http://www.ruanyifeng.com/blog/2014/09/illustration-ssl.html)
+
+<span id="g22"></span>
+
+### 订阅/发布模式（subscribe&publish）
+
+订阅发布模式（又称观察者模式）定义了一种一对多的关系，让多个观察者同时监听某一个主题对象，这个主题对象的状态发生改变时就会通知所有观察者对象。模式流程：发布者发出通知 => 主题对象收到通知并推送给订阅者 => 订阅者执行相应操作
+
+```
+//发布者
+let pub={
+  publish:function(dep){
+    dep.notify();
+  }
+}
+//订阅者
+let sub1={update:()=>{console.log(1)}}
+let sub2={update:()=>{console.log(2)}}
+
+//主题
+class Dep{
+  constructor(subs){
+    this.subs=subs||[]
+  }
+  notify(){
+    this.subs.forEach((sub)=>sub.update())
+  }
+}
+
+let dep =new Dep([sub1,sub2])
+//发布者发布消息，主题对象执行notify方法，进而触发订阅者的update方法
+pub.publish(dep);
+```
+
+### vue 双向数据绑定实现原理
+
+[vue 双向数据绑定实现原理](https://juejin.im/entry/59116fa6a0bb9f0058aaaa4c)
