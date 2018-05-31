@@ -37,7 +37,7 @@ const copyFolder = (srcdir, tardir, cb) => {
         }
 
         files.forEach(file => {
-            console.log(file);
+            // console.log(file);
             let srcPath = path.join(srcdir, file);
             let tarPath = path.join(tardir, file);
 

@@ -2,29 +2,29 @@
 
 Guides:
 
-1.  <a href="#g1" target="_self">undefined and null</a>
-2.  <a href="#g2" target="_self">浏览器 Event loop 事件循环</a>
-3.  <a href="#g3" target="_self">对象深拷贝</a>
-4.  <a href="#g4" target="_self"> JSONP 跨域原理及 CORS</a>
-5.  <a href="#g5" target="_self"> 正则表达式之后向引用</a>
-6.  <a href="#g6" target="_self"> React/Vue 不同组件之间的通信方式</a>
-7.  <a href="#g7" target="_self"> 正则表达式之后向引用</a>
-8.  <a href="#g8" target="_self"> this 指向</a>
-9.  <a href="#g9" target="_self"> Cookie</a>
-10. <a href="#g10" target="_self"> 快速排序</a>
-11. <a href="#g11" target="_self"> 执行上下文(Execution Context)</a>
-12. <a href="#g12" target="_self"> Promise 的实现</a>
-13. <a href="#g13" target="_self"> 闭包</a>
-14. <a href="#g14" target="_self"> 事件捕获 vs 事件冒泡</a>
-15. <a href="#g15" target="_self"> 服务端渲染</a>
-16. <a href="#g10" target="_self"> 浮点数知识</a>
-17. <a href="#g17" target="_self"> const 、let、块级作用域</a>
-18. <a href="#g18" target="_self"> DocumentFragment</a>
-19. <a href="#19" target="_self"> 同源策咯</a>
-20. <a href="#g20" target="_self"> 事件循环</a>
-21. <a href="#g21" target="_self"> https 过程</a>
-22. <a href="#g22" target="_self"> 订阅/发布模式（subscribe&publish）</a>
-23. <a href="#g23" target="_self"> vue 双向数据绑定实现原理</a>
+1.  <a href="javascript:;" target="_self">undefined and null</a>
+2.  <a href="javascript:;" target="_self">浏览器 Event loop 事件循环</a>
+3.  <a href="javascript:;" target="_self">对象深拷贝</a>
+4.  <a href="javascript:;" target="_self"> JSONP 跨域原理及 CORS</a>
+5.  <a href="javascript:;" target="_self"> 正则表达式之后向引用</a>
+6.  <a href="javascript:;" target="_self"> React/Vue 不同组件之间的通信方式</a>
+7.  <a href="javascript:;" target="_self"> 正则表达式之后向引用</a>
+8.  <a href="javascript:;" target="_self"> this 指向</a>
+9.  <a href="javascript:;" target="_self"> Cookie</a>
+10. <a href="javascript:;" target="_self"> 快速排序</a>
+11. <a href="javascript:;" target="_self"> 执行上下文(Execution Context)</a>
+12. <a href="javascript:;" target="_self"> Promise 的实现</a>
+13. <a href="javascript:;" target="_self"> 闭包</a>
+14. <a href="javascript:;" target="_self"> 事件捕获 vs 事件冒泡</a>
+15. <a href="javascript:;" target="_self"> 服务端渲染</a>
+16. <a href="javascript:;" target="_self"> 浮点数知识</a>
+17. <a href="javascript:;" target="_self"> const 、let、块级作用域</a>
+18. <a href="javascript:;" target="_self"> DocumentFragment</a>
+19. <a href="javascript:;" target="_self"> 同源策咯</a>
+20. <a href="javascript:;" target="_self"> 事件循环</a>
+21. <a href="javascript:;" target="_self"> https 过程</a>
+22. <a href="javascript:;" target="_self"> 订阅/发布模式（subscribe&publish）</a>
+23. <a href="javascript:;" target="_self"> vue 双向数据绑定实现原理</a>
 
 <span id="g1"></span>
 
