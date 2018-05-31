@@ -4,19 +4,19 @@
     "description": "inooNgt.github.io",
     "main": "webpack.config.js",
     "scripts": {
-        "dev-node": "set NODE_ENV=dev&&node build/webpack.dev.config.js",
-        "dev": "set NODE_ENV=dev&&webpack-dev-server --config build/webpack.config.js --content-base public/ --host localhost --port 9000 --inline --history-api-fallback ",
-        "build": "set NODE_ENV=prod&&webpack -p --config build/webpack.config.js && cd build && node copy.js",
+        "dev-node":
+            "set NODE_ENV=development&&node build/webpack.dev.config.js",
+        "dev":
+            "set NODE_ENV=development&&webpack-dev-server --config build/webpack.config.js --content-base public/ --host localhost --port 9000 --inline --history-api-fallback ",
+        "build":
+            "set NODE_ENV=production&&webpack -p --config build/webpack.config.js && cd build && node copy.js",
         "marked": "cd build && node parser.js",
         "copy": "cd build && node copy.js",
         "server": "cd server && node server.js",
         "precommit": "lint-staged"
     },
     "lint-staged": {
-        "static/**/*.js": [
-            "prettier --write",
-            "git add"
-        ]
+        "static/**/*.js": ["prettier --write", "git add"]
     },
     "author": "",
     "license": "ISC",

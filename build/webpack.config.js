@@ -10,7 +10,9 @@ const os = require("os");
 const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
 
 const host = "http://localhost:9000";
-const isDev = process.env.NODE_ENV === "dev";
+const isDev = process.env.NODE_ENV === "development";
+
+console.log("isDev:", isDev);
 
 const config = {
     entry: {
@@ -69,11 +71,12 @@ const config = {
         }),
         new ExtractTextPlugin("css/[name].css")
     ],
-    devtool: isDev ? "eval-source-map" : "cheap-source-map",
     resolve: {
         alias: {},
         extensions: ["*", ".js", ".json", ".scss"]
     }
 };
+
+if (isDev) config.devtool = "eval-source-map";
 
 module.exports = config;

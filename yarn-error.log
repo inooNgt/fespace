@@ -332,28 +332,7 @@ Lockfile:
   atob@^2.0.0:
     version "2.1.0"
     resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.0.tgz#ab2b150e51d7b122b9efc8d7340c06b6c41076bc"
-  
-  autoprefixer@^6.3.1:
-    version "6.7.7"
-    resolved "https://registry.yarnpkg.com/autoprefixer/-/autoprefixer-6.7.7.tgz#1dbd1c835658e35ce3f9984099db00585c782014"
-    dependencies:
-      browserslist "^1.7.6"
-      caniuse-db "^1.0.30000634"
-      normalize-range "^0.1.2"
-      num2fraction "^1.2.2"
-      postcss "^5.2.16"
-      postcss-value-parser "^3.2.3"
-  
-  autoprefixer@^7.1.1:
-    version "7.2.6"
-    resolved "https://registry.yarnpkg.com/autoprefixer/-/autoprefixer-7.2.6.tgz#256672f86f7c735da849c4f07d008abb056067dc"
-    dependencies:
-      browserslist "^2.11.3"
-      caniuse-lite "^1.0.30000805"
-      normalize-range "^0.1.2"
-      num2fraction "^1.2.2"
-      postcss "^6.0.17"
-      postcss-value-parser "^3.2.3"
+
   
   aws-sign2@~0.6.0:
     version "0.6.0"
@@ -1821,7 +1800,6 @@ Lockfile:
     version "3.10.0"
     resolved "https://registry.yarnpkg.com/cssnano/-/cssnano-3.10.0.tgz#4f38f6cea2b9b17fa01490f23f1dc68ea65c1c38"
     dependencies:
-      autoprefixer "^6.3.1"
       decamelize "^1.1.2"
       defined "^1.0.0"
       has "^1.0.1"
@@ -4633,7 +4611,6 @@ Lockfile:
     version "3.1.0"
     resolved "https://registry.yarnpkg.com/postcss-cssnext/-/postcss-cssnext-3.1.0.tgz#927dc29341a938254cde38ea60a923b9dfedead9"
     dependencies:
-      autoprefixer "^7.1.1"
       caniuse-api "^2.0.0"
       chalk "^2.0.1"
       pixrem "^4.0.0"
