@@ -44,6 +44,8 @@ articles.forEach((v, k) => {
 
     component = component.replace(/\s+class=/, " className=");
     component = component.replace(/\`/g, "\\`");
+    component = component.replace(/\{/g, "\\{");
+    component = component.replace(/\}/g, "\\}");
     component = componentTpl.replace(/{{component}}/, component);
 
     //创建目录

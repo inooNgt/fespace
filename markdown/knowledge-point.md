@@ -26,8 +26,7 @@ Guides:
 22. <a href="#g22" target="_self"> 订阅/发布模式（subscribe&publish）</a>
 23. <a href="#g23" target="_self"> vue 双向数据绑定实现原理</a>
 
-
-    <span id="g1"></span>
+<span id="g1"></span>
 
 ### 1、undefined and null
 

@@ -27,8 +27,8 @@ const article = `<h1 id="javascript-notes">Javascript Notes</h1>
 <li><a href="#g22" target="_self"> 订阅/发布模式（subscribe&amp;publish）</a></li>
 <li><a href="#g23" target="_self"> vue 双向数据绑定实现原理</a></li>
 </ol>
-<pre><code><span className="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"g1"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
-</code></pre><h3 id="1-undefined-and-null">1、undefined and null</h3>
+<p><span id="g1"></span></p>
+<h3 id="1-undefined-and-null">1、undefined and null</h3>
 <p>JavaScript 的最初版本是这样区分的：<b>null 是一个表示&quot;无&quot;的对象，转为数值时为 0；undefined 是一个表示&quot;无&quot;的原始值，转为数值时为 NaN</b>。</p>
 <p>目前的用法：
 <b>null 表示&quot;没有对象&quot;，即该处不应该有值</b>。典型用法是：</p>
@@ -36,7 +36,7 @@ const article = `<h1 id="javascript-notes">Javascript Notes</h1>
 <li>作为函数的参数，表示该函数的参数不是对象。</li>
 <li>作为原型链的终点。</li>
 </ol>
-<pre><code><span class="hljs-built_in">Object</span>.getPrototypeOf(<span class="hljs-built_in">Object</span>.prototype)
+<pre><code><span className="hljs-built_in">Object</span>.getPrototypeOf(<span class="hljs-built_in">Object</span>.prototype)
 <span class="hljs-comment">// null</span>
 </code></pre><p><b>undefined 表示&quot;缺少值&quot;，就是此处应该有一个值，但是还没有定义</b>。典型用法是：</p>
 <ol>
@@ -80,37 +80,37 @@ const article = `<h1 id="javascript-notes">Javascript Notes</h1>
 <p><span id="g3"></span></p>
 <h3 id="3-">3、对象深拷贝</h3>
 <pre><code><span class="hljs-comment">/*缺点：如果需要属性值是函数或者是undefined，就会被过滤掉 */</span>
-<span class="hljs-keyword">const</span> clone=<span class="hljs-function">(<span class="hljs-params">obj</span>)=&gt;</span>{
+<span class="hljs-keyword">const</span> clone=<span class="hljs-function">(<span class="hljs-params">obj</span>)=&gt;</span>\{
     <span class="hljs-keyword">let</span> _obj=<span class="hljs-built_in">JSON</span>.parse(<span class="hljs-built_in">JSON</span>.stringify(obj))
-}  
-</code></pre><pre><code><span class="hljs-keyword">const</span> clone=<span class="hljs-function">(<span class="hljs-params">obj</span>)=&gt;</span>{
-  <span class="hljs-keyword">if</span>(!obj&amp;&amp; <span class="hljs-keyword">typeof</span> obj!== <span class="hljs-string">'object'</span>){
+\}  
+</code></pre><pre><code><span class="hljs-keyword">const</span> clone=<span class="hljs-function">(<span class="hljs-params">obj</span>)=&gt;</span>\{
+  <span class="hljs-keyword">if</span>(!obj&amp;&amp; <span class="hljs-keyword">typeof</span> obj!== <span class="hljs-string">'object'</span>)\{
     <span class="hljs-keyword">return</span>;
-  }
-  <span class="hljs-keyword">let</span> result=obj.constructor===<span class="hljs-built_in">Object</span>?{}:[];
-  <span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> key <span class="hljs-keyword">in</span> obj){
+  \}
+  <span class="hljs-keyword">let</span> result=obj.constructor===<span class="hljs-built_in">Object</span>?\{\}:[];
+  <span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> key <span class="hljs-keyword">in</span> obj)\{
     result[key] =(obj[key]&amp;&amp;<span class="hljs-keyword">typeof</span> obj[key]===<span class="hljs-string">'object'</span>)?clone(obj[key]):obj[key];
-  }
+  \}
   <span class="hljs-keyword">return</span> result;
-}
+\}
 </code></pre><p><span id="g4"></span></p>
 <h3 id="4-jsonp-cors">4、 JSONP 跨域原理及 CORS</h3>
 <h4 id="jsonp">JSONP</h4>
 <p>在同源策略下，在某个服务器下的页面是无法获取到该服务器以外的数据的，但 img、iframe、script 等标签是个例外，这些标签可以通过 src 属性请求到其他服务器上的数据。利用 script 标签的开放策略，我们可以实现跨域请求数据，当然，也需要服务端的配合。当我们正常地请求一个 JSON 数据的时候，服务端返回的是一串 JSON 类型的数据，而我们使用 JSONP 模式来请求数据的时候，服务端返回的是一段可执行的 JavaScript 代码。例如：</p>
 <p>客户端请求,并指定回调函数的名字：</p>
-<pre><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">appendScript</span>(<span class="hljs-params">src</span>)</span>{
+<pre><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">appendScript</span>(<span class="hljs-params">src</span>)</span>\{
     <span class="hljs-keyword">let</span> script=<span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">"script"</span>);
     script.src=src;
     <span class="hljs-built_in">document</span>.appendChild(script)
-}
+\}
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">somefun</span>(<span class="hljs-params">data</span>)</span>{
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">somefun</span>(<span class="hljs-params">data</span>)</span>\{
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"data:"</span>,data)
-}
+\}
 
 appdendScript(<span class="hljs-string">"http://a.com&amp;callback=somefun"</span>);
 </code></pre><p>服务端返回 Javascript 代码：</p>
-<pre><code>"<span class="hljs-selector-tag">somefun</span>({<span class="hljs-attribute">key</span>:somevalue});"
+<pre><code>"<span class="hljs-selector-tag">somefun</span>(\{<span class="hljs-attribute">key</span>:somevalue\});"
 </code></pre><h4 id="cors">CORS</h4>
 <p>跨域资源共享标准新增了一组 HTTP 首部字段，允许服务器声明哪些源站有权限访问哪些资源。另外，规范要求，对那些可能对服务器数据产生副作用的 HTTP 请求方法（特别是 GET 以外的 HTTP 请求，或者搭配某些 MIME 类型的 POST 请求），浏览器必须首先使用 OPTIONS 方法发起一个预检请求（preflight request），从而获知服务端是否允许该跨域请求。服务器确认允许之后，才发起实际的 HTTP 请求。在预检请求的返回中，服务器端也可以通知客户端，是否需要携带身份凭证（包括 Cookies 和 HTTP 认证相关数据）。</p>
 <p><span id="g5"></span></p>
@@ -160,13 +160,13 @@ str.replace(/(?<span class="hljs-attribute">&lt;=&lt;pre&gt;</span><span class="
 <p><span id="g7"></span></p>
 <h3 id="7-thunk-">7、 Thunk 函数</h3>
 <p>将多参数函数替换成单参数的版本，且只接受回调函数作为参数。</p>
-<pre><code><span class="hljs-keyword">const</span> Thunk=<span class="hljs-function">(<span class="hljs-params">fn</span>)=&gt;</span>{
-    <span class="hljs-keyword">return</span> <span class="hljs-function">(<span class="hljs-params">...args</span>)=&gt;</span>{
-        <span class="hljs-keyword">return</span> <span class="hljs-function">(<span class="hljs-params">callback</span>)=&gt;</span>{
+<pre><code><span class="hljs-keyword">const</span> Thunk=<span class="hljs-function">(<span class="hljs-params">fn</span>)=&gt;</span>\{
+    <span class="hljs-keyword">return</span> <span class="hljs-function">(<span class="hljs-params">...args</span>)=&gt;</span>\{
+        <span class="hljs-keyword">return</span> <span class="hljs-function">(<span class="hljs-params">callback</span>)=&gt;</span>\{
             fn.call(<span class="hljs-keyword">this</span>,...args,callback)
-        }
-    }
-}
+        \}
+    \}
+\}
 
 <span class="hljs-keyword">const</span> readFileThunk = Thunk(fs.readFile);
 readFileThunk(path)(callback);
@@ -182,24 +182,24 @@ readFileThunk(path)(callback);
 <h3 id="9-cookie">9、Cookie</h3>
 <p>功能：按照一定规范来储存这些信息，并在随后的请求中将这些信息发送至服务器，cookie 的值被存储在名为 Cookie 的 HTTP 消息头中。</p>
 <p>给 document 赋值并不会覆盖原有的值。</p>
-<pre><code>const setCookie=<span class="hljs-function"><span class="hljs-params">(key,value,expires)</span>=&gt;</span>{
+<pre><code>const setCookie=<span class="hljs-function"><span class="hljs-params">(key,value,expires)</span>=&gt;</span>\{
     <span class="hljs-built_in">document</span>.cookie=!expires?
-        \`<span class="javascript">${key}=${value}</span>\`:
-        \`<span class="javascript">${key}=${value};expires=${expires};
+        \`<span class="javascript">$\{key\}=$\{value\}</span>\`:
+        \`<span class="javascript">$\{key\}=$\{value\};expires=$\{expires\};
 
-}
+\}
 
-<span class="hljs-keyword">const</span> getCookie=<span class="hljs-function">(<span class="hljs-params">key</span>)=&gt;</span>{
-    <span class="hljs-keyword">const</span> reg =<span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(</span>\`(?&lt;=${key}=)(\w)+(?=\;)\`<span class="javascript">,<span class="hljs-string">'g'</span>);
+<span class="hljs-keyword">const</span> getCookie=<span class="hljs-function">(<span class="hljs-params">key</span>)=&gt;</span>\{
+    <span class="hljs-keyword">const</span> reg =<span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(</span>\`(?&lt;=$\{key\}=)(\w)+(?=\;)\`<span class="javascript">,<span class="hljs-string">'g'</span>);
     <span class="hljs-keyword">let</span> result=<span class="hljs-string">""</span>;
     <span class="hljs-keyword">let</span> cookie=<span class="hljs-built_in">document</span>.cookie;
-    <span class="hljs-keyword">if</span>(cookie){
+    <span class="hljs-keyword">if</span>(cookie)\{
         result=cookie.match(reg)[<span class="hljs-number">0</span>]
-    }
+    \}
 
     <span class="hljs-keyword">return</span> result;
 
-}</span>
+\}</span>
 </code></pre><p>Session:
 创建于服务器端，保存于服务器，维护于服务器端,每创建一个新的 Session,服务器端都会分配一个唯一的 ID，并且把这个 ID 保存到客户端的 Cookie 中，保存形式是以 JSESSIONID 来保存的。</p>
 <p><span id="g10"></span></p>
@@ -214,17 +214,17 @@ readFileThunk(path)(callback);
 </li>
 </ul>
 <p>实现：</p>
-<pre><code><span class="hljs-built_in">quickSort</span> = (arr)=&gt; {
+<pre><code><span class="hljs-built_in">quickSort</span> = (arr)=&gt; \{
     <span class="hljs-keyword">let</span> mid= arr.splice(<span class="hljs-type">Math</span>.floor(arr.length/<span class="hljs-number">2</span>),<span class="hljs-number">1</span>)[<span class="hljs-number">0</span>];
     <span class="hljs-keyword">let</span> <span class="hljs-keyword">left</span> =[],<span class="hljs-keyword">right</span>=[];
 
-    arr.forEach((v,i)=&gt;{
-        <span class="hljs-keyword">if</span>(v&gt;mid){
+    arr.forEach((v,i)=&gt;\{
+        <span class="hljs-keyword">if</span>(v&gt;mid)\{
             <span class="hljs-keyword">right</span>.push(v)
-        }<span class="hljs-keyword">else</span>{
+        \}<span class="hljs-keyword">else</span>\{
             <span class="hljs-keyword">left</span>.push(v)
-        }
-    })
+        \}
+    \})
     <span class="hljs-keyword">if</span>(<span class="hljs-keyword">left</span>.length&gt;<span class="hljs-number">1</span>) <span class="hljs-keyword">left</span> = <span class="hljs-built_in">quickSort</span>(<span class="hljs-keyword">left</span>)
     <span class="hljs-keyword">if</span>(<span class="hljs-keyword">right</span>.length&gt;<span class="hljs-number">1</span>) <span class="hljs-keyword">right</span> = <span class="hljs-built_in">quickSort</span>(<span class="hljs-keyword">right</span>)
 
@@ -233,7 +233,7 @@ readFileThunk(path)(callback);
 
     <span class="hljs-keyword">return</span> [...<span class="hljs-keyword">left</span>,mid,...<span class="hljs-keyword">right</span>]
 
-};
+\};
 
 <span class="hljs-built_in">quickSort</span>([<span class="hljs-number">3</span>,<span class="hljs-number">5</span>,<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">8</span>,<span class="hljs-number">1</span>,<span class="hljs-number">9</span>,<span class="hljs-number">7</span>,<span class="hljs-number">6</span>,<span class="hljs-number">2</span>])
 </code></pre><p><span id="g11"></span></p>
@@ -285,9 +285,9 @@ readFileThunk(path)(callback);
 <span class="hljs-keyword">var</span> FULFILLED = <span class="hljs-number">1</span>;
 <span class="hljs-keyword">var</span> REJECTED = <span class="hljs-number">2</span>;
 
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Promise</span></span>{
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Promise</span></span>\{
 
-    <span class="hljs-keyword">constructor</span>(fn){
+    <span class="hljs-keyword">constructor</span>(fn)\{
         <span class="hljs-comment">//promise的状态</span>
         <span class="hljs-keyword">this</span>.state=PENDING; <span class="hljs-comment">//[PENDING,FULFILLED,REJECTED]</span>
         <span class="hljs-comment">//FULFILLED 或者 REJECTED 时的返回值</span>
@@ -302,154 +302,154 @@ readFileThunk(path)(callback);
 
 
         doResolve(fn, <span class="hljs-keyword">this</span>.resolve, <span class="hljs-keyword">this</span>.reject);
-    }
+    \}
 
-    fulfill(value){
+    fulfill(value)\{
         <span class="hljs-keyword">this</span>.state=FULFILLED;
         <span class="hljs-keyword">this</span>.value=value;
         <span class="hljs-comment">//执行回调</span>
         <span class="hljs-keyword">this</span>.handlers.forEach(<span class="hljs-keyword">this</span>.handle)
         <span class="hljs-keyword">this</span>.handlers=<span class="hljs-literal">null</span>
         console.log(<span class="hljs-string">"fulfill: value"</span>,value,<span class="hljs-string">"state"</span>,<span class="hljs-keyword">this</span>.state)
-    }
+    \}
 
-    reject(error){
+    reject(error)\{
         <span class="hljs-keyword">this</span>.state=REJECTED;
         <span class="hljs-keyword">this</span>.value=error;
         <span class="hljs-comment">//执行回调</span>
         <span class="hljs-keyword">this</span>.handlers.forEach(<span class="hljs-keyword">this</span>.handle)
         <span class="hljs-keyword">this</span>.handlers=<span class="hljs-literal">null</span>
         console.log(<span class="hljs-string">"reject"</span>,error)
-    }
+    \}
 
     <span class="hljs-comment">//相当于发布者</span>
-    resolve(value){
+    resolve(value)\{
         console.log(<span class="hljs-string">"in resolve"</span>)
-        <span class="hljs-keyword">try</span>{
+        <span class="hljs-keyword">try</span>\{
             <span class="hljs-comment">//若value为 Promise 则返回该 Promise 的 then 方法，即value.then</span>
             <span class="hljs-keyword">var</span> then =getThen(value);
-            <span class="hljs-keyword">if</span>(then){
+            <span class="hljs-keyword">if</span>(then)\{
                  console.log(<span class="hljs-string">"value is promise"</span>)
                  <span class="hljs-comment">//若value为promise，递归 resolve 待解析的 Promise</span>
                  doResolve(then.bind(value),<span class="hljs-keyword">this</span>.resolve,<span class="hljs-keyword">this</span>.reject);
                  <span class="hljs-keyword">return</span>;
-            }
+            \}
             <span class="hljs-keyword">this</span>.fulfill(value);
-        }<span class="hljs-keyword">catch</span>(e){
+        \}<span class="hljs-keyword">catch</span>(e)\{
             console.log(e)
             <span class="hljs-keyword">this</span>.reject(e);
-        }
+        \}
 
-    }
+    \}
 
     <span class="hljs-comment">//观察者接口</span>
-    then(onFulfilled, onRejected) {
+    then(onFulfilled, onRejected) \{
          const self = <span class="hljs-keyword">this</span>
 
-        <span class="hljs-keyword">return</span> new Promise(function (resolve, reject) {
+        <span class="hljs-keyword">return</span> new Promise(function (resolve, reject) \{
 
-        <span class="hljs-keyword">return</span> self.done.call(self,function (result) {
-          <span class="hljs-keyword">if</span> (typeof onFulfilled === <span class="hljs-string">'function'</span>) {
-            <span class="hljs-keyword">try</span> {
+        <span class="hljs-keyword">return</span> self.done.call(self,function (result) \{
+          <span class="hljs-keyword">if</span> (typeof onFulfilled === <span class="hljs-string">'function'</span>) \{
+            <span class="hljs-keyword">try</span> \{
               <span class="hljs-keyword">return</span> resolve(onFulfilled(result))
-            } <span class="hljs-keyword">catch</span> (ex) {
+            \} <span class="hljs-keyword">catch</span> (ex) \{
               <span class="hljs-keyword">return</span> reject(ex)
-            }
-          } <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> resolve(result)
-        }, function (error) {
-          <span class="hljs-keyword">if</span> (typeof onRejected === <span class="hljs-string">'function'</span>) {
-            <span class="hljs-keyword">try</span> {
+            \}
+          \} <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> resolve(result)
+        \}, function (error) \{
+          <span class="hljs-keyword">if</span> (typeof onRejected === <span class="hljs-string">'function'</span>) \{
+            <span class="hljs-keyword">try</span> \{
               <span class="hljs-keyword">return</span> resolve(onRejected(error))
-            } <span class="hljs-keyword">catch</span> (ex) {
+            \} <span class="hljs-keyword">catch</span> (ex) \{
               <span class="hljs-keyword">return</span> reject(ex)
-            }
-          } <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> reject(error)
-        })
-      })
-    }
+            \}
+          \} <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> reject(error)
+        \})
+      \})
+    \}
 
     <span class="hljs-comment">//观察者接口</span>
-    done(onFulfilled, onRejected){
+    done(onFulfilled, onRejected)\{
         <span class="hljs-comment">// 保证 done 总是异步执行</span>
-        setTimeout(() =&gt;{
-            <span class="hljs-keyword">this</span>.handle({
+        setTimeout(() =&gt;\{
+            <span class="hljs-keyword">this</span>.handle(\{
                 onFulfilled: onFulfilled,
                 onRejected: onRejected
-            })
-        }, <span class="hljs-number">0</span>)
-    }
+            \})
+        \}, <span class="hljs-number">0</span>)
+    \}
 
      <span class="hljs-comment">// 保证 done 中回调的执行</span>
-    handle (handler) {
+    handle (handler) \{
 
-        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.state === PENDING) {
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.state === PENDING) \{
           <span class="hljs-keyword">this</span>.handlers.push(handler)
           console.log(<span class="hljs-string">"push to handlers"</span>,<span class="hljs-keyword">this</span>.handlers)
-        } <span class="hljs-keyword">else</span> {
+        \} <span class="hljs-keyword">else</span> \{
           <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.state === FULFILLED &amp;&amp;
-            typeof handler.onFulfilled === <span class="hljs-string">'function'</span>) {
+            typeof handler.onFulfilled === <span class="hljs-string">'function'</span>) \{
             handler.onFulfilled(<span class="hljs-keyword">this</span>.value)
-          }
+          \}
           <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.state === REJECTED &amp;&amp;
-            typeof handler.onRejected === <span class="hljs-string">'function'</span>) {
+            typeof handler.onRejected === <span class="hljs-string">'function'</span>) \{
             handler.onRejected(<span class="hljs-keyword">this</span>.value)
-          }
-        }
-    }
+          \}
+        \}
+    \}
 
-    <span class="hljs-keyword">catch</span>(callback){
+    <span class="hljs-keyword">catch</span>(callback)\{
 
 
-    }
-}
+    \}
+\}
 
-function getThen(value) {
+function getThen(value) \{
   <span class="hljs-keyword">var</span> t = typeof value;
-  <span class="hljs-keyword">if</span> (value &amp;&amp; (t === <span class="hljs-string">'object'</span> || t === <span class="hljs-string">'function'</span>)) {
+  <span class="hljs-keyword">if</span> (value &amp;&amp; (t === <span class="hljs-string">'object'</span> || t === <span class="hljs-string">'function'</span>)) \{
     <span class="hljs-keyword">var</span> then = value.then;
-    <span class="hljs-keyword">if</span> (typeof then === <span class="hljs-string">'function'</span>) {
+    <span class="hljs-keyword">if</span> (typeof then === <span class="hljs-string">'function'</span>) \{
       <span class="hljs-keyword">return</span> then;
-    }
-  }
+    \}
+  \}
   <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
-}
+\}
 
-function doResolve(fn, onFulfilled, onRejected) {
+function doResolve(fn, onFulfilled, onRejected) \{
   <span class="hljs-keyword">var</span> done = <span class="hljs-literal">false</span>;
-  <span class="hljs-keyword">try</span> {
-    fn(function (value) {
+  <span class="hljs-keyword">try</span> \{
+    fn(function (value) \{
       <span class="hljs-keyword">if</span> (done) <span class="hljs-keyword">return</span>
       done = <span class="hljs-literal">true</span>
       onFulfilled(value)
-    }, function (reason) {
+    \}, function (reason) \{
       <span class="hljs-keyword">if</span> (done) <span class="hljs-keyword">return</span>
       done = <span class="hljs-literal">true</span>
       onRejected(reason)
-    })
-  } <span class="hljs-keyword">catch</span> (e) {
+    \})
+  \} <span class="hljs-keyword">catch</span> (e) \{
     console.log(<span class="hljs-string">"doResolve"</span>,e)
     <span class="hljs-keyword">if</span> (done) <span class="hljs-keyword">return</span>
     done = <span class="hljs-literal">true</span>
     onRejected(e)
-  }
-}
+  \}
+\}
 
 
 
 
-p1 =new Promise((resolve,reject)=&gt;{
+p1 =new Promise((resolve,reject)=&gt;\{
     console.log(<span class="hljs-string">"1"</span>)
-    setTimeout(()=&gt;{
+    setTimeout(()=&gt;\{
         resolve(<span class="hljs-string">"p1"</span>)
-    },<span class="hljs-number">1500</span>)
+    \},<span class="hljs-number">1500</span>)
 
-})
+\})
 
 
-p1.then(res=&gt;{
+p1.then(res=&gt;\{
     console.log(<span class="hljs-string">"res"</span>,res)
     <span class="hljs-keyword">return</span> <span class="hljs-string">"then--res"</span>
-})
+\})
 </code></pre><p><span id="g13"></span></p>
 <h3 id="13-">13、 闭包</h3>
 <p>闭包是即使被外部函数返回，依然可以访问到外部（封闭）函数作用域的函数。</p>
@@ -498,10 +498,10 @@ V=(-1)<sup>s</sup><em>M</em>2<sup>E</sup></p>
 <p>总之，在代码块内，使用 let 命令声明变量之前，该变量都是不可用的。这在语法上，称为“暂时性死区”（temporal dead zone，简称 TDZ）。</p>
 <pre><code><span class="hljs-keyword">var</span> tmp = <span class="hljs-number">123</span>;
 
-<span class="hljs-keyword">if</span> (<span class="hljs-literal">true</span>) {
+<span class="hljs-keyword">if</span> (<span class="hljs-literal">true</span>) \{
   tmp = <span class="hljs-string">'abc'</span>; <span class="hljs-comment">// ReferenceError</span>
   <span class="hljs-keyword">let</span> tmp;
-}
+\}
 </code></pre><h4 id="-">块级作用域与函数声明</h4>
 <p>ES6 规定，块级作用域之中，函数声明语句的行为类似于 let，在块级作用域之外不可引用。但是在 ES6 环境的浏览器（或者 nodejs 环境）可以有自己的行为：</p>
 <ul>
@@ -510,26 +510,26 @@ V=(-1)<sup>s</sup><em>M</em>2<sup>E</sup></p>
 <li>同时，函数声明还会提升到所在的块级作用域的头部。</li>
 </ul>
 <pre><code><span class="hljs-comment">// 浏览器的 ES6 环境</span>
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">f</span>(<span class="hljs-params"></span>) </span>{ <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'I am outside!'</span>); }
-(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">f</span>(<span class="hljs-params"></span>) </span>\{ <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'I am outside!'</span>); \}
+(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>\{
   <span class="hljs-keyword">var</span> f = <span class="hljs-literal">undefined</span>;
-  <span class="hljs-keyword">if</span> (<span class="hljs-literal">false</span>) {
-    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">f</span>(<span class="hljs-params"></span>) </span>{ <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'I am inside!'</span>); }
-  }
+  <span class="hljs-keyword">if</span> (<span class="hljs-literal">false</span>) \{
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">f</span>(<span class="hljs-params"></span>) </span>\{ <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'I am inside!'</span>); \}
+  \}
 
   f();
-}());
+\}());
 </code></pre><p>考虑到环境导致的行为差异太大，应该避免在块级作用域内声明函数。如果确实需要，也应该写成函数表达式，而不是函数声明语句。</p>
 <h4 id="const-">const 的本质</h4>
 <p>const 实际上保证的，并不是变量的值不得改动，而是变量指向的那个内存地址不得改动。对于简单类型的数据（数值、字符串、布尔值），值就保存在变量指向的那个内存地址，因此等同于常量。但对于复合类型的数据（主要是对象和数组），变量指向的内存地址，保存的只是一个指针，const 只能保证这个指针是固定的，至于它指向的数据结构是不是可变的，就完全不能控制了。</p>
-<pre><code><span class="hljs-keyword">const</span> foo = {};
+<pre><code><span class="hljs-keyword">const</span> foo = \{\};
 
 <span class="hljs-comment">// 为 foo 添加一个属性，可以成功</span>
 foo.<span class="hljs-keyword">prop</span> = 123;
 foo.<span class="hljs-keyword">prop</span> <span class="hljs-comment">// 123</span>
 
 <span class="hljs-comment">// 将 foo 指向另一个对象，就会报错</span>
-foo = {}; <span class="hljs-comment">// TypeError: "foo" is read-only</span>
+foo = \{\}; <span class="hljs-comment">// TypeError: "foo" is read-only</span>
 </code></pre><p><span id="g18"></span></p>
 <h3 id="18-documentfragment">18、 DocumentFragment</h3>
 <p>The DocumentFragment interface represents a minimal document object that has no parent. It is used as a lightweight version of Document that stores a segment of a document structure comprised of nodes just like a standard document. The key difference is that because the document fragment isn&#39;t part of the active document tree structure, changes made to the fragment don&#39;t affect the document, cause reflow, or incur any performance impact that can occur when changes are made.</p>
@@ -579,24 +579,24 @@ document.body.appendChild(fragment)<span class="hljs-comment">;</span>
 <h3 id="-subscribepublish-">订阅/发布模式（subscribe&amp;publish）</h3>
 <p>订阅发布模式（又称观察者模式）定义了一种一对多的关系，让多个观察者同时监听某一个主题对象，这个主题对象的状态发生改变时就会通知所有观察者对象。模式流程：发布者发出通知 =&gt; 主题对象收到通知并推送给订阅者 =&gt; 订阅者执行相应操作</p>
 <pre><code><span class="hljs-comment">//发布者</span>
-<span class="hljs-keyword">let</span> pub={
-  <span class="hljs-attr">publish</span>:<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">dep</span>)</span>{
+<span class="hljs-keyword">let</span> pub=\{
+  <span class="hljs-attr">publish</span>:<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">dep</span>)</span>\{
     dep.notify();
-  }
-}
+  \}
+\}
 <span class="hljs-comment">//订阅者</span>
-<span class="hljs-keyword">let</span> sub1={<span class="hljs-attr">update</span>:<span class="hljs-function"><span class="hljs-params">()</span>=&gt;</span>{<span class="hljs-built_in">console</span>.log(<span class="hljs-number">1</span>)}}
-<span class="hljs-keyword">let</span> sub2={<span class="hljs-attr">update</span>:<span class="hljs-function"><span class="hljs-params">()</span>=&gt;</span>{<span class="hljs-built_in">console</span>.log(<span class="hljs-number">2</span>)}}
+<span class="hljs-keyword">let</span> sub1=\{<span class="hljs-attr">update</span>:<span class="hljs-function"><span class="hljs-params">()</span>=&gt;</span>\{<span class="hljs-built_in">console</span>.log(<span class="hljs-number">1</span>)\}\}
+<span class="hljs-keyword">let</span> sub2=\{<span class="hljs-attr">update</span>:<span class="hljs-function"><span class="hljs-params">()</span>=&gt;</span>\{<span class="hljs-built_in">console</span>.log(<span class="hljs-number">2</span>)\}\}
 
 <span class="hljs-comment">//主题</span>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Dep</span></span>{
-  <span class="hljs-keyword">constructor</span>(subs){
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Dep</span></span>\{
+  <span class="hljs-keyword">constructor</span>(subs)\{
     <span class="hljs-keyword">this</span>.subs=subs||[]
-  }
-  notify(){
+  \}
+  notify()\{
     <span class="hljs-keyword">this</span>.subs.forEach(<span class="hljs-function">(<span class="hljs-params">sub</span>)=&gt;</span>sub.update())
-  }
-}
+  \}
+\}
 
 <span class="hljs-keyword">let</span> dep =<span class="hljs-keyword">new</span> Dep([sub1,sub2])
 <span class="hljs-comment">//发布者发布消息，主题对象执行notify方法，进而触发订阅者的update方法</span>

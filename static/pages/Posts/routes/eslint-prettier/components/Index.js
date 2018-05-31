@@ -13,34 +13,34 @@ const article = `<p>Eslint 和 Prettier 配置自动格式化代码</p>
 <pre><code>touch <span class="hljs-selector-class">.eslintrc</span><span class="hljs-selector-class">.json</span>
 touch <span class="hljs-selector-class">.prettierrc</span><span class="hljs-selector-class">.json</span>
 </code></pre><p>在.eslintrc.json 写入一下内容:</p>
-<pre><code>{
+<pre><code>\{
     <span class="hljs-attr">"parser"</span>: <span class="hljs-string">"babel-eslint"</span>,
     <span class="hljs-attr">"extends"</span>: [
         <span class="hljs-string">"prettier"</span>,
         <span class="hljs-string">"prettier/flowtype"</span> // if you are using flow
     ],
-    <span class="hljs-attr">"rules"</span>: {
+    <span class="hljs-attr">"rules"</span>: \{
         <span class="hljs-attr">"indent"</span>: [<span class="hljs-string">"error"</span>, <span class="hljs-number">4</span>],
         <span class="hljs-attr">"prettier/prettier"</span>: <span class="hljs-string">"error"</span>
-    },
+    \},
     <span class="hljs-attr">"plugins"</span>: [
         /* Flow type linting rules for ESLint. */
         <span class="hljs-string">"flowtype"</span>,
         <span class="hljs-string">"prettier"</span>
     ]
-}
+\}
 </code></pre><p>在.prettierrc.json 写入一下内容:</p>
-<pre><code>{
+<pre><code>\{
     <span class="hljs-attr">"tabWidth"</span>: <span class="hljs-number">4</span>
-}
+\}
 </code></pre><h4 id="-">开发工具的配置</h4>
 <p>例如，将以下配置加入配置文件：</p>
-<pre><code>    {
+<pre><code>    \{
         <span class="hljs-attr">"editor.formatOnSave"</span>: <span class="hljs-literal">true</span>,
         <span class="hljs-attr">"prettier.disableLanguages"</span>: [<span class="hljs-string">"js"</span>],
         <span class="hljs-attr">"eslint.autoFixOnSave"</span>: <span class="hljs-literal">true</span>,
         <span class="hljs-attr">"eslint.alwaysShowStatus"</span>: <span class="hljs-literal">true</span>
-    }
+    \}
 </code></pre><h4 id="-husky-lint-staged-">使用 Husky + Lint-Staged 在代码提交前自定检查并修正代码</h4>
 <ul>
 <li>由于 husky 在 .git/hooks 中写入了 pre-commit 钩子，该钩子在 git commit 执行时被触发</li>
@@ -48,15 +48,15 @@ touch <span class="hljs-selector-class">.prettierrc</span><span class="hljs-sele
 </ul>
 <pre><code>yarn <span class="hljs-keyword">add</span><span class="bash">  precommit husky --dev</span>
 </code></pre><p>在 package.json 添加配置</p>
-<pre><code>    <span class="hljs-string">"scripts"</span>: {
+<pre><code>    <span class="hljs-string">"scripts"</span>: \{
         <span class="hljs-string">"precommit"</span>: <span class="hljs-string">"lint-staged"</span> <span class="hljs-string">//husky</span> 在 <span class="hljs-string">.git/hooks</span> 中写入了 钩子
-    },
-    <span class="hljs-string">"lint-staged"</span>: {
+    \},
+    <span class="hljs-string">"lint-staged"</span>: \{
         <span class="hljs-string">"src/**/*.js"</span>: [
             <span class="hljs-string">"prettier --write"</span>,
             <span class="hljs-string">"git add"</span>
         ]
-    },
+    \},
 </code></pre>`;
 
 class Index extends Component {

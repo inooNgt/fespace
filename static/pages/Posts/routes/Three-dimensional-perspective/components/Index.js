@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-const article=`<h1 id="-canvas-">利用透视原理实现 canvas 第三维度</h1>
+const article = `<h1 id="-canvas-">利用透视原理实现 canvas 第三维度</h1>
 <p>canvas 2d 渲染上下文（The rendering context）只有 x、y 两个维度，若要表现物体的立体感和纵深感，就需要利用透视原理创建 z 维度，实现平面到立体的转变。</p>
 <h3 id="-">透视原理</h3>
 <p>透视是根据物体呈近大远小的空间关系，将立体三维空间的形象表现在二维平面上。透视的几个要素：</p>
@@ -34,14 +34,14 @@ const article=`<h1 id="-canvas-">利用透视原理实现 canvas 第三维度</h
     <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"utf-8"</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>泡泡<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">style</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/css"</span>&gt;</span><span class="css">
-        <span class="hljs-selector-tag">body</span> {
+        <span class="hljs-selector-tag">body</span> \{
             <span class="hljs-attribute">background</span>: <span class="hljs-number">#262626</span>;
-        }
+        \}
 
-        <span class="hljs-selector-tag">canvas</span> {
+        <span class="hljs-selector-tag">canvas</span> \{
             <span class="hljs-attribute">display</span>: block;
             <span class="hljs-attribute">margin</span>: <span class="hljs-number">100px</span> auto;
-        }
+        \}
     </span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
 
@@ -55,15 +55,15 @@ const article=`<h1 id="-canvas-">利用透视原理实现 canvas 第三维度</h
             R = <span class="hljs-number">30</span>,
             width = canvas.width,
             height = canvas.height,
-            center = {
+            center = \{
                 <span class="hljs-attr">x</span>: width / <span class="hljs-number">2</span>,
                 <span class="hljs-attr">y</span>: height / <span class="hljs-number">2</span>
-            },
+            \},
             random = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> ((<span class="hljs-built_in">Math</span>.random() &gt; <span class="hljs-number">0.5</span> ? <span class="hljs-number">1</span> : <span class="hljs-number">-1</span>) * <span class="hljs-built_in">Math</span>.random() + <span class="hljs-number">0.5</span>);
         <span class="hljs-keyword">let</span> index = <span class="hljs-number">0</span>;
         <span class="hljs-comment">//圆形类</span>
-        <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Circle</span> </span>{
-            <span class="hljs-keyword">constructor</span>(x, y, r, color) {
+        <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Circle</span> </span>\{
+            <span class="hljs-keyword">constructor</span>(x, y, r, color) \{
                 <span class="hljs-keyword">this</span>.x = x;
                 <span class="hljs-keyword">this</span>.y = y;
                 <span class="hljs-keyword">this</span>.r = r;
@@ -73,10 +73,10 @@ const article=`<h1 id="-canvas-">利用透视原理实现 canvas 第三维度</h
                 <span class="hljs-keyword">this</span>.color = <span class="hljs-string">"rgba("</span> + (<span class="hljs-built_in">parseInt</span>(<span class="hljs-built_in">Math</span>.random() * <span class="hljs-number">240</span>) + <span class="hljs-number">9</span>) + <span class="hljs-string">","</span> + (<span class="hljs-built_in">parseInt</span>(<span class="hljs-built_in">Math</span>.random() * <span class="hljs-number">220</span>) + <span class="hljs-number">18</span>) + <span class="hljs-string">",203,0.85)"</span>;
                 <span class="hljs-comment">//往数组中push自己</span>
                 circleArr.push(<span class="hljs-keyword">this</span>);
-            }
+            \}
 
             <span class="hljs-comment">//绘制</span>
-            print() {
+            print() \{
                 <span class="hljs-comment">//新建一条路径</span>
                 ctx.beginPath();
                 <span class="hljs-comment">//创建一个圆</span>
@@ -85,58 +85,57 @@ const article=`<h1 id="-canvas-">利用透视原理实现 canvas 第三维度</h
                 ctx.fillStyle = <span class="hljs-keyword">this</span>.color;
                 <span class="hljs-comment">//通过填充路径的内容区域生成实心的图形</span>
                 ctx.fill();
-            }
+            \}
 
             <span class="hljs-comment">//更新</span>
-            update() {
+            update() \{
                 <span class="hljs-keyword">this</span>.z += <span class="hljs-number">0.4</span>
                 <span class="hljs-keyword">let</span> scale = fl / (fl + <span class="hljs-keyword">this</span>.z);
                 <span class="hljs-keyword">this</span>.x = center.x + scale * (<span class="hljs-keyword">this</span>.x - center.x)
                 <span class="hljs-keyword">this</span>.y = center.y + scale * (<span class="hljs-keyword">this</span>.y - center.y)
                 <span class="hljs-keyword">this</span>.r = <span class="hljs-keyword">this</span>.r * scale;
                 <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.index == <span class="hljs-number">1</span>) <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"scale:"</span>, scale.toFixed(<span class="hljs-number">2</span>) * <span class="hljs-number">1</span>, <span class="hljs-string">"r:"</span>, <span class="hljs-keyword">this</span>.r.toFixed(<span class="hljs-number">2</span>) * <span class="hljs-number">1</span>, <span class="hljs-string">" z:"</span>, <span class="hljs-keyword">this</span>.z.toFixed(<span class="hljs-number">2</span>) * <span class="hljs-number">1</span>)
-                <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.r &lt; <span class="hljs-number">0.1</span>) {
-                    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; circleArr.length; i++) {
-                        <span class="hljs-keyword">if</span> (circleArr[i] === <span class="hljs-keyword">this</span>) {
+                <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.r &lt; <span class="hljs-number">0.1</span>) \{
+                    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; circleArr.length; i++) \{
+                        <span class="hljs-keyword">if</span> (circleArr[i] === <span class="hljs-keyword">this</span>) \{
                             circleArr.splice(i, <span class="hljs-number">1</span>);
-                        };
-                    }
+                        \};
+                    \}
                     <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
-                }
+                \}
                 <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
-            }
-        }
+            \}
+        \}
 
         <span class="hljs-comment">//创建圆</span>
-        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">500</span>; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">500</span>; i++) \{
             <span class="hljs-keyword">if</span> (i == <span class="hljs-number">0</span>) <span class="hljs-keyword">new</span> Circle(random() * width, random() * height, R, <span class="hljs-string">"orange"</span>);
             <span class="hljs-keyword">else</span>
-                setTimeout(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+                setTimeout(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> \{
                     <span class="hljs-keyword">new</span> Circle(random() * width, random() * height, R, <span class="hljs-string">"orange"</span>);
-                }, i * <span class="hljs-number">50</span>)
-        }
+                \}, i * <span class="hljs-number">50</span>)
+        \}
 
         <span class="hljs-comment">//更新和绘制</span>
-        <span class="hljs-keyword">const</span> update = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+        <span class="hljs-keyword">const</span> update = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> \{
             ctx.clearRect(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1000</span>, <span class="hljs-number">600</span>)
 
-            <span class="hljs-keyword">if</span> (circleArr.length &gt; <span class="hljs-number">0</span>) {
-                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; circleArr.length; i++) {
+            <span class="hljs-keyword">if</span> (circleArr.length &gt; <span class="hljs-number">0</span>) \{
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; circleArr.length; i++) \{
                     <span class="hljs-keyword">if</span> (circleArr[i]) circleArr[i].update() &amp;&amp; circleArr[i].print();
-                };
+                \};
                 requestAnimationFrame(update)
-            } <span class="hljs-keyword">else</span> {
+            \} <span class="hljs-keyword">else</span> \{
                 <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"animation end"</span>)
-            }
-        }
+            \}
+        \}
         requestAnimationFrame(update)
     </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
 
 <span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span>
 </code></pre>
-`
-
+`;
 
 class Index extends Component {
     constructor(props) {
@@ -150,4 +149,4 @@ class Index extends Component {
     }
 }
 
-export default Index 
+export default Index;
