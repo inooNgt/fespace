@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-const article = `<p>w# 竞赛小程序</p>
+const article = `<h1 id="-">小程序实践总结</h1>
 <h2 id="-">页面构成</h2>
 <p>小程序包含一个描述整体程序的 app 和多个描述各自页面的 page。</p>
 <ul>
@@ -88,18 +88,20 @@ next 方法返回一个对象，它的 value 属性就是当前 yield 表达式�
 
 <span class="hljs-keyword">const</span> g = gen();
 
-g.next().value.then(<span class="hljs-function"><span class="hljs-params">res</span>=&gt;</span>\{
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"1"</span>,res)
-    <span class="hljs-keyword">return</span> res
-\}).then(<span class="hljs-function"><span class="hljs-params">res1</span>=&gt;</span>\{
-    g.next().value.then(<span class="hljs-function"><span class="hljs-params">res</span>=&gt;</span>\{
-        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"2"</span>,res)
+g.next()
+    .value.then(<span class="hljs-function"><span class="hljs-params">res</span> =&gt;</span> \{
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"1"</span>, res);
+        <span class="hljs-keyword">return</span> res;
     \})
-\})
+    .then(<span class="hljs-function"><span class="hljs-params">res1</span> =&gt;</span> \{
+        g.next().value.then(<span class="hljs-function"><span class="hljs-params">res</span> =&gt;</span> \{
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"2"</span>, res);
+        \});
+    \});
 </code></pre>
 <p>以上代码</p>
 <h3 id="co-">co 模块</h3>
-<p>Generator需要手动调用next方法，</p>
+<p>Generator 需要手动调用 next 方法，</p>
 <p>co 模块可以让你不用编写 Generator 函数的执行器，它会自动执行 Generator 函数。</p>
 <h3 id="-">观察者模式(发布者-订阅者模式)</h3>
 <p>观察者模式又叫做发布订阅模式，它定义了一种一对多的关系，让多个观察者对象同时监听某一个主题对象，这个主题对象的状态发生改变时就会通知所有观察着对象。它是由两类对象组成，主题和观察者，主题负责发布事件，同时观察者通过订阅这些事件来观察该主体，发布者和订阅者是完全解耦的，彼此不知道对方的存在，两者仅仅共享一个自定义事件的名称。

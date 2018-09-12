@@ -1,21 +1,21 @@
-w# 竞赛小程序
+# 小程序实践总结
 
 ## 页面构成
 
 小程序包含一个描述整体程序的 app 和多个描述各自页面的 page。
 
-*   JSON 配置
-*   WXML 模板
-*   WXSS 样式
-*   JS 逻辑交互
+-   JSON 配置
+-   WXML 模板
+-   WXSS 样式
+-   JS 逻辑交互
 
 ## 逻辑层
 
 逻辑层将数据进行处理后发送给视图层，同时接受视图层的事件反馈，由 JavaScript 编写。
 
-*   每个页面有独立的作用域，并提供模块化能力。
-*   由于框架并非运行在浏览器中，所以 JavaScript 在 web 中一些能力都无法使用，如 document，window 等。
-*   开发者写的所有代码最终将会打包成一份 JavaScript，并在小程序启动的时候运行，直到小程序销毁。
+-   每个页面有独立的作用域，并提供模块化能力。
+-   由于框架并非运行在浏览器中，所以 JavaScript 在 web 中一些能力都无法使用，如 document，window 等。
+-   开发者写的所有代码最终将会打包成一份 JavaScript，并在小程序启动的时候运行，直到小程序销毁。
 
 ## 视图层
 
@@ -108,19 +108,23 @@ function* gen() {
 
 const g = gen();
 
-g.next().value.then(res=>{
-	console.log("1",res)
-	return res
-}).then(res1=>{
-	g.next().value.then(res=>{
-		console.log("2",res)
-	})
-})
+g.next()
+    .value.then(res => {
+        console.log("1", res);
+        return res;
+    })
+    .then(res1 => {
+        g.next().value.then(res => {
+            console.log("2", res);
+        });
+    });
 ```
+
 以上代码
 
 ### co 模块
-Generator需要手动调用next方法，
+
+Generator 需要手动调用 next 方法，
 
 co 模块可以让你不用编写 Generator 函数的执行器，它会自动执行 Generator 函数。
 
@@ -128,4 +132,3 @@ co 模块可以让你不用编写 Generator 函数的执行器，它会自动执
 
 观察者模式又叫做发布订阅模式，它定义了一种一对多的关系，让多个观察者对象同时监听某一个主题对象，这个主题对象的状态发生改变时就会通知所有观察着对象。它是由两类对象组成，主题和观察者，主题负责发布事件，同时观察者通过订阅这些事件来观察该主体，发布者和订阅者是完全解耦的，彼此不知道对方的存在，两者仅仅共享一个自定义事件的名称。
 在 Nodejs 中通过 EventEmitter 实现了原生的对于这一模式的支持。在 JavaScript 中事件监听机制就可以理解为一种观察者模式。
-
