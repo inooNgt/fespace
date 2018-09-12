@@ -8,9 +8,11 @@ import perspectiveRouter from "../routes/Three-dimensional-perspective/router";
 import partitionRouter from "../routes/routing-partition/router";
 import knowledgeRouter from "../routes/knowledge-point/router";
 import prettierRouter from "../routes/eslint-prettier/router";
+import proxyRouter from "../routes/http-proxy/router";
 
 const routes = [
     ...indexRouter,
+    ...proxyRouter,
     ...promiseRouter,
     ...perspectiveRouter,
     ...partitionRouter,

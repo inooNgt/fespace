@@ -3,6 +3,10 @@ import { Link } from "react-router-dom";
 
 const pages = [
     {
+        path: "/posts/http-proxy",
+        name: "http代理原理"
+    },
+    {
         path: "/posts/eslint-prettier",
         name: "Eslint 和 Prettier 配置自动格式化代码"
     },
