@@ -9,10 +9,12 @@ import partitionRouter from "../routes/routing-partition/router";
 import knowledgeRouter from "../routes/knowledge-point/router";
 import prettierRouter from "../routes/eslint-prettier/router";
 import proxyRouter from "../routes/http-proxy/router";
+import minaRouter from "../routes/mina-app/router";
 
 const routes = [
     ...indexRouter,
     ...proxyRouter,
+    ...minaRouter,
     ...promiseRouter,
     ...perspectiveRouter,
     ...partitionRouter,
