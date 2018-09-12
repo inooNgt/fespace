@@ -32,11 +32,16 @@ const B = styles => (
 );
 
 class App extends React.PureComponent {
-    state = { toggled: true };
-    toggle = e => this.setState(state => ({ toggled: !state.toggled }));
+    constructor(props) {
+        super(props);
+        this.state = { toggled: true };
+    }
+    toggle(e) {
+        this.setState(state => ({ toggled: !state.toggled }));
+    }
     render() {
         return (
-            <div onClick={this.toggle} className="animated">
+            <div onClick={this.toggle.bind(this)} className="animated">
                 <Transition
                     native
                     from={{ opacity: 0 }}

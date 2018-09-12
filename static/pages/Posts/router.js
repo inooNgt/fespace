@@ -1,8 +1,10 @@
-import asyncComponent from '../../components/AsyncComponent'
+import asyncComponent from "../../components/AsyncComponent";
 
-module.exports = [
-    { 
-        path: '/posts',
-        component: asyncComponent(() => import('./components/Index'))
-    },
-]
+let route = [
+    {
+        path: "/posts",
+        component: asyncComponent(() => import("./components/Index"))
+    }
+];
+
+export default route;

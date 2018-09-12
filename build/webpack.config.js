@@ -9,14 +9,13 @@ const HappyPack = require("happypack");
 const os = require("os");
 const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
 
-const host = "http://localhost:9000";
 const isDev = process.env.NODE_ENV === "development";
 
 console.log("isDev:", isDev);
 
 const config = {
     entry: {
-        main: ["babel-polyfill", path.resolve(__dirname, "../static/main.js")]
+        main: ["@babel/polyfill", path.resolve(__dirname, "../static/main.js")]
     },
     output: {
         publicPath: "/dist/", //虚拟目录，自动指向path编译目录('./public/dist')
@@ -54,11 +53,7 @@ const config = {
             threadPool: happyThreadPool,
             loaders: [
                 {
-                    loader: "babel-loader",
-                    options: {
-                        presets: ["es2015", "react", "stage-0"],
-                        plugins: []
-                    }
+                    loader: "babel-loader"
                 }
             ]
         }),

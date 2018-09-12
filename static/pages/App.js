@@ -9,7 +9,10 @@ import "../scss/main.scss";
  * react router
  */
 
-const routes = [...require("./Index/router"), ...require("./Posts/router")];
+import indexRouter from "./Index/router";
+import postsRouter from "./Posts/router";
+
+const routes = [...indexRouter, ...postsRouter];
 
 export default class App extends Component {
     constructor(props) {

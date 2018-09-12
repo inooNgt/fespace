@@ -1,6 +1,6 @@
 ### blog
 
 ```shell
-   npm i
-   npm run dev	//or npm run dev-mac
+   yarn i
+   yarn run dev	//or npm run dev-mac
 ```

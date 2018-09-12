@@ -1,8 +1,9 @@
 import asyncComponent from "../../../../components/AsyncComponent";
 
-module.exports = [
+let route = [
     {
         path: "/posts/mina-app",
         component: asyncComponent(() => import("./components/Index"))
     }
 ];
+export default route;
