@@ -8,8 +8,12 @@ pre {
     overflow: auto;
     background-color: #f6f8fa;
     border-radius: 3px;
-    font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+
     line-height: 20px;
+}
+pre,
+code {
+    font-family: inherit;
 }
 
 .hljs-keyword,
