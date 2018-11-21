@@ -10,6 +10,7 @@ import knowledgeRouter from "../routes/knowledge-point/router";
 import prettierRouter from "../routes/eslint-prettier/router";
 import proxyRouter from "../routes/http-proxy/router";
 import minaRouter from "../routes/mina-app/router";
+import BrowserCache from "../routes/browser-cache/router";
 
 const routes = [
     ...indexRouter,
@@ -19,7 +20,8 @@ const routes = [
     ...perspectiveRouter,
     ...partitionRouter,
     ...knowledgeRouter,
-    ...prettierRouter
+    ...prettierRouter,
+    ...BrowserCache
 ];
 
 console.log("routes", routes);

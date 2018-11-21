@@ -4,8 +4,8 @@ Eslint 可以提供代码检查，而 Prettier 能够统一团队代码风格，
 
 #### 安装依赖
 
-*   eslint-config-prettier 可以取消 eslint 和 prettier 冲突的配置项，采用 prettier 风格
-*   eslint-plugin-prettier 可以将 prettier 的格式化规则作为 eslint 的检查规则
+-   eslint-config-prettier 可以取消 eslint 和 prettier 冲突的配置项，采用 prettier 风格
+-   eslint-plugin-prettier 可以将 prettier 的格式化规则作为 eslint 的检查规则
 
 ```
 yarn add prettier babel-eslint eslint eslint-config-prettier eslint-plugin-flowtype eslint-plugin-prettier eslint-plugin-import  --dev
@@ -64,8 +64,8 @@ touch .prettierrc.json
 
 #### 使用 Husky + Lint-Staged 在代码提交前自定检查并修正代码
 
-*   由于 husky 在 .git/hooks 中写入了 pre-commit 钩子，该钩子在 git commit 执行时被触发
-*   lint-staged 利用配置的文件过滤路径，对暂存区文件一个个进行匹配，匹配成功时，运行 eslint –fix 并自动将修改添加到暂存区
+-   由于 husky 在 .git/hooks 中写入了 pre-commit 钩子，该钩子在 git commit 执行时被触发
+-   lint-staged 利用配置的文件过滤路径，对暂存区文件一个个进行匹配，匹配成功时，运行 eslint –fix 并自动将修改添加到暂存区
 
 ```
 yarn add  precommit husky --dev

@@ -35,6 +35,9 @@ body {
     border-radius: 4px;
     word-break: break-all;
     padding: 2rem;
+    img {
+        max-width: 100%;
+    }
 }
 
 .contnet-inner {
