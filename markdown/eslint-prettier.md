@@ -4,23 +4,23 @@ Eslint 可以提供代码检查，而 Prettier 能够统一团队代码风格，
 
 #### 安装依赖
 
+```
+npm install prettier babel-eslint eslint eslint-config-prettier eslint-plugin-flowtype eslint-plugin-prettier eslint-plugin-import  --save-dev
+```
+
 -   eslint-config-prettier 可以取消 eslint 和 prettier 冲突的配置项，采用 prettier 风格
 -   eslint-plugin-prettier 可以将 prettier 的格式化规则作为 eslint 的检查规则
-
-```
-yarn add prettier babel-eslint eslint eslint-config-prettier eslint-plugin-flowtype eslint-plugin-prettier eslint-plugin-import  --dev
-```
 
 #### 相关配置文件
 
 新建 Eslint 和 Prettier 的配置件：
 
 ```
-touch .eslintrc.json
-touch .prettierrc.json
+touch .eslintrc
+touch .prettierrc
 ```
 
-在.eslintrc.json 写入一下内容:
+在.eslintrc 写入一下内容:
 
 ```
 {
@@ -30,7 +30,7 @@ touch .prettierrc.json
         "prettier/flowtype" // if you are using flow
     ],
     "rules": {
-        "indent": ["error", 4],
+        "indent": ["error", 2],
         "prettier/prettier": "error"
     },
     "plugins": [
@@ -41,13 +41,24 @@ touch .prettierrc.json
 }
 ```
 
-在.prettierrc.json 写入一下内容:
+eslint 规则是完全可配置的，其级别为：
+
+-   "off" 或 0 - 关闭规则
+-   "warn" 或 1 - 开启规则，使用警告级别的错误：warn (不会导致程序退出)
+-   "error" 或 2 - 开启规则，使用错误级别的错误：error (当被触发的时候，程序会退出)
+
+更多配置项见 https://cn.eslint.org/docs/user-guide/configuring
+
+在.prettierrc 写入以下内容:
 
 ```
 {
-    "tabWidth": 4
+    "tabWidth": 2,
+    "singleQuote": true
 }
 ```
+
+更多配置项见 https://prettier.io/docs/en/configuration.html
 
 #### 开发工具的配置
 

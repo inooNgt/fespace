@@ -3,16 +3,16 @@ import React, { Component } from "react";
 const article = `<p>Eslint 和 Prettier 配置自动格式化代码</p>
 <p>Eslint 可以提供代码检查，而 Prettier 能够统一团队代码风格，两者结合在一起会事半功倍。</p>
 <h4 id="-">安装依赖</h4>
-<ul>
+<pre><code>npm <span className="hljs-keyword">install</span> prettier babel-eslint eslint eslint-config-prettier eslint-<span class="hljs-keyword">plugin</span>-flowtype eslint-<span class="hljs-keyword">plugin</span>-prettier eslint-<span class="hljs-keyword">plugin</span>-<span class="hljs-keyword">import</span>  <span class="hljs-comment">--save-dev</span>
+</code></pre><ul>
 <li>eslint-config-prettier 可以取消 eslint 和 prettier 冲突的配置项，采用 prettier 风格</li>
 <li>eslint-plugin-prettier 可以将 prettier 的格式化规则作为 eslint 的检查规则</li>
 </ul>
-<pre><code><span className="hljs-symbol">yarn</span> <span class="hljs-keyword">add </span>prettier <span class="hljs-keyword">babel-eslint </span>eslint eslint-config-prettier eslint-plugin-flowtype eslint-plugin-prettier eslint-plugin-<span class="hljs-meta">import</span>  --dev
-</code></pre><h4 id="-">相关配置文件</h4>
+<h4 id="-">相关配置文件</h4>
 <p>新建 Eslint 和 Prettier 的配置件：</p>
-<pre><code>touch <span class="hljs-selector-class">.eslintrc</span><span class="hljs-selector-class">.json</span>
-touch <span class="hljs-selector-class">.prettierrc</span><span class="hljs-selector-class">.json</span>
-</code></pre><p>在.eslintrc.json 写入一下内容:</p>
+<pre><code><span class="hljs-selector-tag">touch</span> <span class="hljs-selector-class">.eslintrc</span>
+<span class="hljs-selector-tag">touch</span> <span class="hljs-selector-class">.prettierrc</span>
+</code></pre><p>在.eslintrc 写入一下内容:</p>
 <pre><code>\{
     <span class="hljs-attr">"parser"</span>: <span class="hljs-string">"babel-eslint"</span>,
     <span class="hljs-attr">"extends"</span>: [
@@ -20,7 +20,7 @@ touch <span class="hljs-selector-class">.prettierrc</span><span class="hljs-sele
         <span class="hljs-string">"prettier/flowtype"</span> // if you are using flow
     ],
     <span class="hljs-attr">"rules"</span>: \{
-        <span class="hljs-attr">"indent"</span>: [<span class="hljs-string">"error"</span>, <span class="hljs-number">4</span>],
+        <span class="hljs-attr">"indent"</span>: [<span class="hljs-string">"error"</span>, <span class="hljs-number">2</span>],
         <span class="hljs-attr">"prettier/prettier"</span>: <span class="hljs-string">"error"</span>
     \},
     <span class="hljs-attr">"plugins"</span>: [
@@ -29,11 +29,20 @@ touch <span class="hljs-selector-class">.prettierrc</span><span class="hljs-sele
         <span class="hljs-string">"prettier"</span>
     ]
 \}
-</code></pre><p>在.prettierrc.json 写入一下内容:</p>
+</code></pre><p>eslint 规则是完全可配置的，其级别为：</p>
+<ul>
+<li>&quot;off&quot; 或 0 - 关闭规则</li>
+<li>&quot;warn&quot; 或 1 - 开启规则，使用警告级别的错误：warn (不会导致程序退出)</li>
+<li>&quot;error&quot; 或 2 - 开启规则，使用错误级别的错误：error (当被触发的时候，程序会退出)</li>
+</ul>
+<p>更多配置项见 <a href="https://cn.eslint.org/docs/user-guide/configuring">https://cn.eslint.org/docs/user-guide/configuring</a></p>
+<p>在.prettierrc 写入以下内容:</p>
 <pre><code>\{
-    <span class="hljs-attr">"tabWidth"</span>: <span class="hljs-number">4</span>
+    <span class="hljs-attr">"tabWidth"</span>: <span class="hljs-number">2</span>,
+    <span class="hljs-attr">"singleQuote"</span>: <span class="hljs-literal">true</span>
 \}
-</code></pre><h4 id="-">开发工具的配置</h4>
+</code></pre><p>更多配置项见 <a href="https://prettier.io/docs/en/configuration.html">https://prettier.io/docs/en/configuration.html</a></p>
+<h4 id="-">开发工具的配置</h4>
 <p>例如，将以下配置加入配置文件：</p>
 <pre><code>    \{
         <span class="hljs-attr">"editor.formatOnSave"</span>: <span class="hljs-literal">true</span>,
