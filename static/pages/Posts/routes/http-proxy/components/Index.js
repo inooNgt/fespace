@@ -3,7 +3,7 @@ import React, { Component } from "react";
 const article = `<h1 id="http-">Http 代理原理</h1>
 <h3 id="-http-">什么是 Http 代理？</h3>
 <p>Http 代理工作于服务器端和客户端之间，可以在 Http 请求发送至服务器前对 Http 协议进行逐行处理，再转发到后台服务器，反之亦可。</p>
-<div align="center"><img width="100%" height="auto" src="http://p42jcfxfo.bkt.clouddn.com/images/thinkin/web_proxy.png"/></div>
+<div align="center"><img width="100%" height="auto" src="http://cdn.inoongt.tech/images/thinkin/web_proxy.png"/></div>
 
 <h3 id="http-">Http 代理的功能</h3>
 <p>Http 代理是一个中间程序，既可以担当客户端角色，也可以担当服务端角色。具体可以实现的功能有：</p>

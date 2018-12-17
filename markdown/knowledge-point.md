@@ -64,15 +64,15 @@ JS 种的基本数据类型与指向对象的地址存放在栈内存中，此�
 
 浏览器中的 Event loop：
 
-*   所有同步任务都在主线程上执行，形成一个执行栈。
-*   主任务之外，还存在任务队列。
-    *   任务队列分为 macro-task(宏任务)和 micro-task(微任务)。
-    *   macro-task(宏任务): setTimeout, setInterval, setImmediate, I/O 等
-    *   micro-task(微任务): process.nextTick, Promise, MutationObserver 等
+-   所有同步任务都在主线程上执行，形成一个执行栈。
+-   主任务之外，还存在任务队列。
+    -   任务队列分为 macro-task(宏任务)和 micro-task(微任务)。
+    -   macro-task(宏任务): setTimeout, setInterval, setImmediate, I/O 等
+    -   micro-task(微任务): process.nextTick, Promise, MutationObserver 等
 
 整个最基本的 Event Loop 如图所示：
 
-<div align="center"><img width="600"src="http://p42jcfxfo.bkt.clouddn.com/images/thinkin/eventloop.png"/></div>
+<div align="center"><img width="600"src="http://cdn.inoongt.tech/images/thinkin/eventloop.png"/></div>
 
 具体过程：
 
@@ -94,7 +94,7 @@ JS 种的基本数据类型与指向对象的地址存放在栈内存中，此�
 /*缺点：如果需要属性值是函数或者是undefined，就会被过滤掉 */
 const clone=(obj)=>{
     let _obj=JSON.parse(JSON.stringify(obj))
-}  
+}
 ```
 
 ```
@@ -162,10 +162,10 @@ appdendScript("http://a.com&callback=somefun");
 
 \b,^,$那样用于指定一个位置，这个位置应该满足一定的条件（即断言），因此它们也被称为零宽断言。
 
-*   (?=exp) 匹配 exp 前面的位置，比如\b\w+(?=ing\b)，匹配以 ing 结尾的单词的前面部分(除了 ing 以外的部分)
-*   (?<=exp) 匹配 exp 后面的位置，比如(?<=\bre)\w+\b 会匹配以 re 开头的单词的后半部分(除了 re 以外的部分)
-*   (?!exp) 匹配后面跟的不是 exp 的位置
-*   (?<!exp) 匹配前面不是 exp 的位置
+-   (?=exp) 匹配 exp 前面的位置，比如\b\w+(?=ing\b)，匹配以 ing 结尾的单词的前面部分(除了 ing 以外的部分)
+-   (?<=exp) 匹配 exp 后面的位置，比如(?<=\bre)\w+\b 会匹配以 re 开头的单词的后半部分(除了 re 以外的部分)
+-   (?!exp) 匹配后面跟的不是 exp 的位置
+-   (?<!exp) 匹配前面不是 exp 的位置
 
 #### 贪婪与懒惰
 
@@ -193,17 +193,17 @@ str.replace(/(?<=<pre><code>)[\s\S]*?(?=<\/code><\/pre>)/gi, 'asdf');  // 替换
 
 #### Vue
 
-*   父子组件用 Props 通信
-*   非父子组件用 Event Bus 通信
-*   如果项目够复杂,可能需要 Vuex 等全局状态管理库通信
-*   $dispatch(已经废除)和$broadcast(已经废除)
+-   父子组件用 Props 通信
+-   非父子组件用 Event Bus 通信
+-   如果项目够复杂,可能需要 Vuex 等全局状态管理库通信
+-   $dispatch(已经废除)和$broadcast(已经废除)
 
 #### React
 
-*   父子组件,父->子直接用 Props,子->父用 callback 回调
-*   非父子组件,用发布订阅模式的 Event 模块
-*   项目复杂的话用 Redux、Mobx 等全局状态管理管库
-*   用新的 Context Api
+-   父子组件,父->子直接用 Props,子->父用 callback 回调
+-   非父子组件,用发布订阅模式的 Event 模块
+-   项目复杂的话用 Redux、Mobx 等全局状态管理管库
+-   用新的 Context Api
 
 <span id="g7"></span>
 
@@ -228,10 +228,10 @@ readFileThunk(path)(callback);
 
 ### 8、this 指向
 
-*   纯粹的函数调用,this 就代表全局对象 Global
-*   作为对象方法的调用,this 就指向上级对象
-*   作为构造函数调用,this 就指向新对象
-*   apply/call 调用,this 指向第一个参数提供的对象
+-   纯粹的函数调用,this 就代表全局对象 Global
+-   作为对象方法的调用,this 就指向上级对象
+-   作为构造函数调用,this 就指向新对象
+-   apply/call 调用,this 指向第一个参数提供的对象
 
 <span id="g9"></span>
 
@@ -271,11 +271,11 @@ Session:
 
 算法思想：
 
-*   在数据集之中，选择一个元素作为"基准"（pivot）。
+-   在数据集之中，选择一个元素作为"基准"（pivot）。
 
-*   所有小于"基准"的元素，都移到"基准"的左边；所有大于"基准"的元素，都移到"基准"的右边。
+-   所有小于"基准"的元素，都移到"基准"的左边；所有大于"基准"的元素，都移到"基准"的右边。
 
-*   对"基准"左边和右边的两个子集，不断重复第一步和第二步，直到所有子集只剩下一个元素为止。
+-   对"基准"左边和右边的两个子集，不断重复第一步和第二步，直到所有子集只剩下一个元素为止。
 
 实现：
 
@@ -310,32 +310,32 @@ quickSort([3,5,0,2,4,8,1,9,7,6,2])
 
 js 的运行有三种环境：
 
-*   Global Code, JavaScript 代码开始运行的默认环境
-*   Function Code, 代码进入一个 JavaScript 函数
-*   Eval Code, 使用 eval()执行代码
+-   Global Code, JavaScript 代码开始运行的默认环境
+-   Function Code, 代码进入一个 JavaScript 函数
+-   Eval Code, 使用 eval()执行代码
 
 为了表示不同的运行环境，JavaScript 中有一个执行上下文（Execution context，EC）的概念。也就是说，当 JavaScript 代码执行的时候，会进入不同的执行上下文，这些执行上下文就构成了一个执行上下文栈（Execution context stack，ECS）。
 
 执行上下文有三个重要的属性:
 
-*   变量对象（Variable object，VO）,进入一个执行上下文时被激活（Activation object，AO）
-*   作用域链（Scope chain）
-*   this
+-   变量对象（Variable object，VO）,进入一个执行上下文时被激活（Activation object，AO）
+-   作用域链（Scope chain）
+-   this
 
 解释器执行代码的伪逻辑:
 
 1.  查找调用函数的代码
 2.  执行代码之前，先进入创建上下文阶段
-    *   分析形参
-    *   扫描上下文的函数声明
-        *   为发现的每一个函数，在变量对象上创建一个属性——确切的说是函数的名字——其有一个指向函数在内存中的引用
-        *   如果函数的名字已经存在，引用指针将被重写
-    *   扫描上下文的变量声明
-        *   为发现的每个变量声明，在变量对象上创建一个属性——就是变量的名字，并且将变量的值初始化为 undefined
-        *   如果变量的名字已经在变量对象里存在，将不会进行任何操作并继续扫描。
-    *   求出上下文内部“this”的值。
+    -   分析形参
+    -   扫描上下文的函数声明
+        -   为发现的每一个函数，在变量对象上创建一个属性——确切的说是函数的名字——其有一个指向函数在内存中的引用
+        -   如果函数的名字已经存在，引用指针将被重写
+    -   扫描上下文的变量声明
+        -   为发现的每个变量声明，在变量对象上创建一个属性——就是变量的名字，并且将变量的值初始化为 undefined
+        -   如果变量的名字已经在变量对象里存在，将不会进行任何操作并继续扫描。
+    -   求出上下文内部“this”的值。
 3.  执行代码阶段
-    *   在当前上下文上运行/解释函数代码，并随着代码一行行执行指派变量的值。
+    -   在当前上下文上运行/解释函数代码，并随着代码一行行执行指派变量的值。
 
 VO 对应第二阶段，AO 对应第三阶段。
 
@@ -532,8 +532,8 @@ p1.then(res=>{
 
 ### 14、事件捕获 vs 事件冒泡
 
-*   事件冒泡：事件从内层元素开始触发，向外层传播，直到 document。
-*   事件捕获：事件从外层元素（document）开始触发，向内层传播，直到 目标元素（target）。
+-   事件冒泡：事件从内层元素开始触发，向外层传播，直到 document。
+-   事件捕获：事件从外层元素（document）开始触发，向内层传播，直到 目标元素（target）。
 
 事件冒泡是由微软提出的，而事件捕获是由网景公司提出的，后来 w3c 制定了统一的方案：先捕获再冒泡。
 
@@ -553,9 +553,9 @@ p1.then(res=>{
 
 在后端将数据拼接到 HTML 字符串上发送给客户端，浏览器从服务器接收 HTML 并渲染。服务端渲染的优势:
 
-*   SEO
-    *   爬虫可以抓取页面的关键字等信息
-*   首屏直出 \* 减少首屏渲染时间
+-   SEO
+    -   爬虫可以抓取页面的关键字等信息
+-   首屏直出 \* 减少首屏渲染时间
     <span id="g16"></span>
 
 ### 16、浮点数知识
@@ -563,9 +563,9 @@ p1.then(res=>{
 根据国际标准 IEEE 754，任意一个二进制浮点数 V 可以表示成下面的形式：
 V=(-1)<sup>s</sup>*M*2<sup>E</sup>
 
-*   (-1)^s 表示符号位
-*   表示有效数字，大于等于 1，小于 2
-*   2^E 表示指数位
+-   (-1)^s 表示符号位
+-   表示有效数字，大于等于 1，小于 2
+-   2^E 表示指数位
 
 对于 32 位的浮点数，最高的 1 位是符号位 s，接着的 8 位是指数 E，剩下的 23 位为有效数字 M。
 
@@ -593,9 +593,9 @@ if (true) {
 
 ES6 规定，块级作用域之中，函数声明语句的行为类似于 let，在块级作用域之外不可引用。但是在 ES6 环境的浏览器（或者 nodejs 环境）可以有自己的行为：
 
-*   允许在块级作用域内声明函数。
-*   函数声明类似于 var，即会提升到全局作用域或函数作用域的头部。
-*   同时，函数声明还会提升到所在的块级作用域的头部。
+-   允许在块级作用域内声明函数。
+-   函数声明类似于 var，即会提升到全局作用域或函数作用域的头部。
+-   同时，函数声明还会提升到所在的块级作用域的头部。
 
 ```
 // 浏览器的 ES6 环境
@@ -653,13 +653,13 @@ document.body.appendChild(fragment);
 
 限制范围包括：
 
-*   Cookie
-    *   Cookie 是服务器写入浏览器的一小段信息，只有同源的网页才能共享。
-*   iframe
+-   Cookie
+    -   Cookie 是服务器写入浏览器的一小段信息，只有同源的网页才能共享。
+-   iframe
 
-    *   如果两个网页不同源，就无法拿到对方的 DOM。
+    -   如果两个网页不同源，就无法拿到对方的 DOM。
 
-*   AJAX
+-   AJAX
 
         *   同源政策规定，AJAX 请求只能发给同源的网址，否则就报错。可以使用 JSONP、WebSocket、CORS 等技术解决问题。
 

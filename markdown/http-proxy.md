@@ -4,7 +4,7 @@
 
 Http 代理工作于服务器端和客户端之间，可以在 Http 请求发送至服务器前对 Http 协议进行逐行处理，再转发到后台服务器，反之亦可。
 
-<div align="center"><img width="100%" height="auto" src="http://p42jcfxfo.bkt.clouddn.com/images/thinkin/web_proxy.png"/></div>
+<div align="center"><img width="100%" height="auto" src="http://cdn.inoongt.tech/images/thinkin/web_proxy.png"/></div>
 
 ### Http 代理的功能
 

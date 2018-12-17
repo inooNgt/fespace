@@ -26,7 +26,7 @@ NW.js 让您在编写应用时可以使用 Node.js 及其 modules 与 web 开发
 <p>小程序自身分为两个主要部分独立运行：view 模块和 service 模块。</p>
 <p>view 模块负责 UI 显示，它由开发者编写的 wxml 和 wxss 转换后代码以及微信提供相关辅助模块组成。 一个 view 模块对应一个 webview 组件。</p>
 <p>service 模块负责应用的后台逻辑，它由小程序的 js 代码以及微信提供的相关辅助模块组成。 一个应用只有一个 service 进程，它在程序生命周期内后台运行。</p>
-<div align="center"><img width="400" height="400" src="http://p42jcfxfo.bkt.clouddn.com/images/thinkin/app1.jpg"/></div>
+<div align="center"><img width="400" height="400" src="http://cdn.inoongt.tech/images/thinkin/app1.jpg"/></div>
 
 <p>一个典型的交互流程：</p>
 <ol>
