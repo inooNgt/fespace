@@ -16,7 +16,7 @@ const pages = [
     },
     {
         path: "/posts/knowledge-point",
-        name: "Javascript Notes"
+        name: "零散的笔记"
     },
     {
         path: "/posts/mina-app",
@@ -28,7 +28,7 @@ const pages = [
     },
     {
         path: "/posts/routing-partition",
-        name: "React路由分拆"
+        name: "React路由异步加载"
     },
     {
         path: "/posts/Three-dimensional-perspective",
