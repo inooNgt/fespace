@@ -21,39 +21,94 @@ const article = `<h1 id="http-">Http 代理原理</h1>
 <p>反向代理（Reverse Proxy）方式是指以代理服务器来接受 internet 上的连接请求， 然后将请求转发给内部网络上的服务器，并将从服务器上得到的结果返回给 internet 上请求连接的客户端， 此时代理服务器对外就表现为一个服务器，可以用来隐藏服务器的一些信息，比如 IP 及端口。</p>
 <p>其实，反向代理也就是通常所说的 WEB 服务器加速， 它是一种通过在繁忙的 WEB 服务器和 Internet 之间增加一个高速的 WEB 缓冲服务器（即：WEB 反向代理服务器） 来降低实际的 WEB 服务器的负载。</p>
 <h3 id="-">编程实践</h3>
-<p>以下</p>
+<p>serve.js:</p>
 <pre><code className="lang-javascript"><span class="hljs-keyword">var</span> http = <span class="hljs-built_in">require</span>(<span class="hljs-string">"http"</span>);
 <span class="hljs-keyword">var</span> net = <span class="hljs-built_in">require</span>(<span class="hljs-string">"net"</span>);
 <span class="hljs-keyword">var</span> <span class="hljs-built_in">url</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">"url"</span>);
 
+<span class="hljs-comment">// http://:127.0.0.1:3333/ 是本地的服务器</span>
+<span class="hljs-keyword">var</span> config = \{
+    <span class="hljs-attribute">hostname</span>: <span class="hljs-string">"127.0.0.1"</span>,
+    <span class="hljs-attribute">port</span>: <span class="hljs-string">"3333"</span>
+\};
+
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">request</span>(<span class="hljs-params">req, res</span>) </span>\{
     <span class="hljs-keyword">var</span> u = <span class="hljs-built_in">url</span>.parse(req.url);
     <span class="hljs-keyword">var</span> options = \{
-        <span class="hljs-attribute">hostname</span>: u.hostname,
-        <span class="hljs-attribute">port</span>: u.port || <span class="hljs-number">80</span>,
+        <span class="hljs-attribute">hostname</span>: u.hostname || config.hostname,
+        <span class="hljs-attribute">port</span>: u.port || config.port,
         <span class="hljs-attribute">path</span>: u.path,
         <span class="hljs-attribute">method</span>: req.method,
         <span class="hljs-attribute">headers</span>: req.headers
     \};
 
-    <span class="hljs-comment">//新建到服务端的请求</span>
+    <span class="hljs-comment">// 将请求转发至服务端</span>
     <span class="hljs-keyword">var</span> svrReq = http
         .request(options, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">svrRes</span>) </span>\{
+            <span class="hljs-comment">// 修改代理响应头部</span>
             res.writeHead(svrRes.statusCode, svrRes.headers);
+            <span class="hljs-comment">// 把服务端的响应推送代理的响应中</span>
             svrRes.pipe(res);
         \})
         .on(<span class="hljs-string">"error"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>) </span>\{
             res.end();
         \});
 
-    <span class="hljs-comment">//把服务端响应返回给浏览器</span>
+    <span class="hljs-comment">// 将代理收到的请求推送到服务端请求</span>
     req.pipe(svrReq);
 \}
 
 http.createServer()
     .on(<span class="hljs-string">"request"</span>, request)
-    .listen(<span class="hljs-number">9090</span>, <span class="hljs-string">"0.0.0.0"</span>);
+    .listen(<span class="hljs-number">9091</span>, <span class="hljs-string">"0.0.0.0"</span>);
 </code></pre>
+<p>启动代理服务器：</p>
+<pre><code>    <span class="hljs-keyword">node</span> <span class="hljs-title">serve</span>.js
+</code></pre><p>再浏览器中打开输入请求：</p>
+<pre><code><span class="hljs-selector-tag">fetch</span>(<span class="hljs-string">'/api/posts'</span>,\{
+    <span class="hljs-attribute">method</span>:<span class="hljs-string">'get'</span>,
+    <span class="hljs-attribute">headers</span>:\{<span class="hljs-string">'Content-Type'</span>: <span class="hljs-string">'application/json'</span>\},
+    \})
+</code></pre><p>可以看到请求成功，并且成功获取到服务端返回的数据：</p>
+<div align="center"><img width="100%" height="auto" src="http://alicdn.inoongt.tech/images/posts_suc.png"/></div>
+
+<div align="center"><img width="100%" height="auto" src="http://alicdn.inoongt.tech/images/posts_data.png"/></div>
+
+<h3 id="http-webpack-">HTTP 代理在 webpack 中的应用</h3>
+<p>在前端启动 webpack 本地服务(<a href="http://localhost:9091)，通过">http://localhost:9091)，通过</a> api 向后端服务器发送请求(<a href="http://localhost:3333)，通常会发生跨域问题。比如：">http://localhost:3333)，通常会发生跨域问题。比如：</a></p>
+<div align="center"><img width="100%" height="auto" src="http://alicdn.inoongt.tech/images/proxy_cross.png"/></div>
+
+<p>这时可以将请求指向 webpack 本地服务,再由 webpack 服务将其至服务器<a href="http://localhost:3333。原本的请求http://localhost:3333/api/user/login变成了http://localhost:9091/api/user/login，这样就绕开了跨域的问题。">http://localhost:3333。原本的请求http://localhost:3333/api/user/login变成了http://localhost:9091/api/user/login，这样就绕开了跨域的问题。</a></p>
+<div align="center"><img width="100%" height="auto" src="http://alicdn.inoongt.tech/images/proxy_cross_success.png"/></div>
+
+<p>webpack-serve 配置如下：</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">"path"</span>);
+
+<span class="hljs-keyword">const</span> convert = <span class="hljs-built_in">require</span>(<span class="hljs-string">"koa-connect"</span>);
+<span class="hljs-keyword">const</span> history = <span class="hljs-built_in">require</span>(<span class="hljs-string">"connect-history-api-fallback"</span>);
+<span class="hljs-keyword">const</span> proxy = <span class="hljs-built_in">require</span>(<span class="hljs-string">"http-proxy-middleware"</span>);
+
+<span class="hljs-built_in">module</span>.exports = \{
+    <span class="hljs-attr">entry</span>: \{
+        <span class="hljs-attr">index</span>: [path.resolve(__dirname, <span class="hljs-string">"app.js"</span>)]
+    \},
+    <span class="hljs-attr">mode</span>: <span class="hljs-string">"development"</span>,
+    <span class="hljs-attr">output</span>: \{
+        <span class="hljs-attr">filename</span>: <span class="hljs-string">"output.js"</span>
+    \}
+\};
+
+<span class="hljs-built_in">module</span>.exports.serve = \{
+    <span class="hljs-attr">content</span>: [__dirname],
+    <span class="hljs-attr">add</span>: <span class="hljs-function">(<span class="hljs-params">app, middleware, options</span>) =&gt;</span> \{
+        app.use(convert(proxy(<span class="hljs-string">"/api"</span>, \{ <span class="hljs-attr">target</span>: <span class="hljs-string">"http://localhost:3333"</span> \})));
+        app.use(convert(history()));
+    \}
+\};
+
+<span class="hljs-comment">// Proxy's docs: https://github.com/chimurai/http-proxy-middleware</span>
+</code></pre>
+<p>配置后本地所有/api 的请求,都会被代理到<a href="http://localhost:3333/api。">http://localhost:3333/api。</a></p>
 `;
 
 class Index extends Component {

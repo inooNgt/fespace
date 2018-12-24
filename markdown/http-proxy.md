@@ -30,38 +30,109 @@ Http 代理是一个中间程序，既可以担当客户端角色，也可以担
 
 ### 编程实践
 
-以下
+serve.js:
 
 ```javascript
 var http = require("http");
 var net = require("net");
 var url = require("url");
 
+// http://:127.0.0.1:3333/ 是本地的服务器
+var config = {
+    hostname: "127.0.0.1",
+    port: "3333"
+};
+
 function request(req, res) {
     var u = url.parse(req.url);
     var options = {
-        hostname: u.hostname,
-        port: u.port || 80,
+        hostname: u.hostname || config.hostname,
+        port: u.port || config.port,
         path: u.path,
         method: req.method,
         headers: req.headers
     };
 
-    //新建到服务端的请求
+    // 将请求转发至服务端
     var svrReq = http
         .request(options, function(svrRes) {
+            // 修改代理响应头部
             res.writeHead(svrRes.statusCode, svrRes.headers);
+            // 把服务端的响应推送代理的响应中
             svrRes.pipe(res);
         })
         .on("error", function(e) {
             res.end();
         });
 
-    //把服务端响应返回给浏览器
+    // 将代理收到的请求推送到服务端请求
     req.pipe(svrReq);
 }
 
 http.createServer()
     .on("request", request)
-    .listen(9090, "0.0.0.0");
+    .listen(9091, "0.0.0.0");
 ```
+
+启动代理服务器：
+
+```
+    node serve.js
+```
+
+再浏览器中打开输入请求：
+
+```
+fetch('/api/posts',{
+    method:'get',
+    headers:{'Content-Type': 'application/json'},
+    })
+```
+
+可以看到请求成功，并且成功获取到服务端返回的数据：
+
+<div align="center"><img width="100%" height="auto" src="http://alicdn.inoongt.tech/images/posts_suc.png"/></div>
+
+<div align="center"><img width="100%" height="auto" src="http://alicdn.inoongt.tech/images/posts_data.png"/></div>
+
+### HTTP 代理在 webpack 中的应用
+
+在前端启动 webpack 本地服务(http://localhost:9091)，通过 api 向后端服务器发送请求(http://localhost:3333)，通常会发生跨域问题。比如：
+
+<div align="center"><img width="100%" height="auto" src="http://alicdn.inoongt.tech/images/proxy_cross.png"/></div>
+
+这时可以将请求指向 webpack 本地服务,再由 webpack 服务将其至服务器http://localhost:3333。原本的请求http://localhost:3333/api/user/login变成了http://localhost:9091/api/user/login，这样就绕开了跨域的问题。
+
+<div align="center"><img width="100%" height="auto" src="http://alicdn.inoongt.tech/images/proxy_cross_success.png"/></div>
+
+webpack-serve 配置如下：
+
+```javascript
+const path = require("path");
+
+const convert = require("koa-connect");
+const history = require("connect-history-api-fallback");
+const proxy = require("http-proxy-middleware");
+
+module.exports = {
+    entry: {
+        index: [path.resolve(__dirname, "app.js")]
+    },
+    mode: "development",
+    output: {
+        filename: "output.js"
+    }
+};
+
+module.exports.serve = {
+    content: [__dirname],
+    add: (app, middleware, options) => {
+        app.use(convert(proxy("/api", { target: "http://localhost:3333" })));
+        app.use(convert(history()));
+    }
+};
+
+// Proxy's docs: https://github.com/chimurai/http-proxy-middleware
+```
+
+配置后本地所有/api 的请求,都会被代理到http://localhost:3333/api。
