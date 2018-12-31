@@ -4,6 +4,10 @@ import { Link } from "react-router-dom";
 const pages = [
     {
         path: "/posts/browser-cache",
+        name: "DNS 域名解析"
+    },
+    {
+        path: "/posts/dns",
         name: "Webkit 缓存加载机制"
     },
     {

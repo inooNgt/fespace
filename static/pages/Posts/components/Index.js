@@ -11,6 +11,7 @@ import prettierRouter from "../routes/eslint-prettier/router";
 import proxyRouter from "../routes/http-proxy/router";
 import minaRouter from "../routes/mina-app/router";
 import BrowserCache from "../routes/browser-cache/router";
+import Dns from "../routes/dns/router";
 
 const routes = [
     ...indexRouter,
@@ -21,10 +22,9 @@ const routes = [
     ...partitionRouter,
     ...knowledgeRouter,
     ...prettierRouter,
-    ...BrowserCache
+    ...BrowserCache,
+    ...Dns
 ];
-
-console.log("routes", routes);
 
 class Index extends Component {
     constructor(props) {
