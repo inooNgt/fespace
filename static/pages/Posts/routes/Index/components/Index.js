@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 
 const pages = [
     {
-        path: "/posts/browser-cache",
+        path: "/posts/dns",
         name: "DNS 域名解析"
     },
     {
-        path: "/posts/dns",
+        path: "/posts/browser-cache",
         name: "Webkit 缓存加载机制"
     },
     {
