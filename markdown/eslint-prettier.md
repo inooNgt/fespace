@@ -1,4 +1,4 @@
-Eslint 和 Prettier 配置自动格式化代码
+# Eslint 和 Prettier 配置自动格式化代码
 
 Eslint 可以提供代码检查，而 Prettier 能够统一团队代码风格，两者结合在一起会事半功倍。
 

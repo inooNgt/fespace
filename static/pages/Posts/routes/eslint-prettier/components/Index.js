@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-const article = `<p>Eslint 和 Prettier 配置自动格式化代码</p>
+const article = `<h1 id="eslint-prettier-">Eslint 和 Prettier 配置自动格式化代码</h1>
 <p>Eslint 可以提供代码检查，而 Prettier 能够统一团队代码风格，两者结合在一起会事半功倍。</p>
 <h4 id="-">安装依赖</h4>
 <pre><code>npm <span className="hljs-keyword">install</span> prettier babel-eslint eslint eslint-config-prettier eslint-<span class="hljs-keyword">plugin</span>-flowtype eslint-<span class="hljs-keyword">plugin</span>-prettier eslint-<span class="hljs-keyword">plugin</span>-<span class="hljs-keyword">import</span>  <span class="hljs-comment">--save-dev</span>
