@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-const article = `<h1 id="javascript-notes">Javascript Notes</h1>
+const article = `<h1 id="my-scattered-notes">My Scattered  Notes</h1>
 <p>Guides:</p>
 <ol>
 <li><a href="javascript:;" onclick="document.getElementById('g1').scrollIntoView();">undefined and null</a></li>
@@ -9,7 +9,7 @@ const article = `<h1 id="javascript-notes">Javascript Notes</h1>
 <li><a href="javascript:;" onclick="document.getElementById('g4').scrollIntoView();"> JSONP 跨域原理及 CORS</a></li>
 <li><a href="javascript:;" onclick="document.getElementById('g5').scrollIntoView();"> 正则表达式之后向引用</a></li>
 <li><a href="javascript:;" onclick="document.getElementById('g6').scrollIntoView();"> React/Vue 不同组件之间的通信方式</a></li>
-<li><a href="javascript:;" onclick="document.getElementById('g7').scrollIntoView();"> 正则表达式之后向引用</a></li>
+<li><a href="javascript:;" onclick="document.getElementById('g7').scrollIntoView();"> Thunk 函数</a></li>
 <li><a href="javascript:;" onclick="document.getElementById('g8').scrollIntoView();"> this 指向</a></li>
 <li><a href="javascript:;" onclick="document.getElementById('g9').scrollIntoView();"> Cookie</a></li>
 <li><a href="javascript:;" onclick="document.getElementById('g10').scrollIntoView();"> 快速排序</a></li>
@@ -26,6 +26,13 @@ const article = `<h1 id="javascript-notes">Javascript Notes</h1>
 <li><a href="javascript:;" onclick="document.getElementById('g21').scrollIntoView();"> https 过程</a></li>
 <li><a href="javascript:;" onclick="document.getElementById('g22').scrollIntoView();"> 订阅/发布模式（subscribe&amp;publish）</a></li>
 <li><a href="javascript:;" onclick="document.getElementById('g23').scrollIntoView();"> vue 双向数据绑定实现原理</a></li>
+<li><a href="javascript:;" onclick="document.getElementById('g24').scrollIntoView();"> 函数模拟 A instanceof B</a></li>
+<li><a href="javascript:;" onclick="document.getElementById('g25').scrollIntoView();"> typeof 原理</a></li>
+<li><a href="javascript:;" onclick="document.getElementById('g26').scrollIntoView();"> Iterator</a></li>
+<li><a href="javascript:;" onclick="document.getElementById('g27').scrollIntoView();"> ToPrimitive</a></li>
+<li><a href="javascript:;" onclick="document.getElementById('g28').scrollIntoView();"> BFC布局</a></li>
+<li><a href="javascript:;" onclick="document.getElementById('g29').scrollIntoView();"> 大整数相加</a></li>
+<li><a href="javascript:;" onclick="document.getElementById('g30').scrollIntoView();"> Object.assign 模拟实现</a></li>
 </ol>
 <p><span id="g1"></span></p>
 <h3 id="1-undefined-and-null">1、undefined and null</h3>
@@ -83,17 +90,21 @@ const article = `<h1 id="javascript-notes">Javascript Notes</h1>
 <span class="hljs-keyword">const</span> clone=<span class="hljs-function">(<span class="hljs-params">obj</span>)=&gt;</span>\{
     <span class="hljs-keyword">let</span> _obj=<span class="hljs-built_in">JSON</span>.parse(<span class="hljs-built_in">JSON</span>.stringify(obj))
 \}
-</code></pre><pre><code><span class="hljs-keyword">const</span> clone=<span class="hljs-function">(<span class="hljs-params">obj</span>)=&gt;</span>\{
-  <span class="hljs-keyword">if</span>(!obj&amp;&amp; <span class="hljs-keyword">typeof</span> obj!== <span class="hljs-string">'object'</span>)\{
-    <span class="hljs-keyword">return</span>;
-  \}
-  <span class="hljs-keyword">let</span> result=obj.constructor===<span class="hljs-built_in">Object</span>?\{\}:[];
-  <span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> key <span class="hljs-keyword">in</span> obj)\{
-    result[key] =(obj[key]&amp;&amp;<span class="hljs-keyword">typeof</span> obj[key]===<span class="hljs-string">'object'</span>)?clone(obj[key]):obj[key];
-  \}
-  <span class="hljs-keyword">return</span> result;
-\}
-</code></pre><p><span id="g4"></span></p>
+</code></pre><pre><code class="lang-javascript"><span class="hljs-keyword">const</span> clone = <span class="hljs-function"><span class="hljs-params">obj</span> =&gt;</span> \{
+    <span class="hljs-keyword">if</span> (!obj &amp;&amp; <span class="hljs-keyword">typeof</span> obj !== <span class="hljs-string">"object"</span>) \{
+        <span class="hljs-keyword">return</span>;
+    \}
+    <span class="hljs-keyword">let</span> result = obj.constructor === <span class="hljs-built_in">Object</span> ? \{\} : [];
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> key <span class="hljs-keyword">in</span> obj) \{
+        result[key] =
+            obj[key] &amp;&amp; <span class="hljs-keyword">typeof</span> obj[key] === <span class="hljs-string">"object"</span>
+                ? clone(obj[key])
+                : obj[key];
+    \}
+    <span class="hljs-keyword">return</span> result;
+\};
+</code></pre>
+<p><span id="g4"></span></p>
 <h3 id="4-jsonp-cors">4、 JSONP 跨域原理及 CORS</h3>
 <h4 id="jsonp">JSONP</h4>
 <p>在同源策略下，在某个服务器下的页面是无法获取到该服务器以外的数据的，但 img、iframe、script 等标签是个例外，这些标签可以通过 src 属性请求到其他服务器上的数据。利用 script 标签的开放策略，我们可以实现跨域请求数据，当然，也需要服务端的配合。当我们正常地请求一个 JSON 数据的时候，服务端返回的是一串 JSON 类型的数据，而我们使用 JSONP 模式来请求数据的时候，服务端返回的是一段可执行的 JavaScript 代码。例如：</p>
@@ -225,14 +236,9 @@ readFileThunk(path)(callback);
             <span class="hljs-keyword">left</span>.push(v)
         \}
     \})
-    <span class="hljs-keyword">if</span>(<span class="hljs-keyword">left</span>.length&gt;<span class="hljs-number">1</span>) <span class="hljs-keyword">left</span> = <span class="hljs-built_in">quickSort</span>(<span class="hljs-keyword">left</span>)
-    <span class="hljs-keyword">if</span>(<span class="hljs-keyword">right</span>.length&gt;<span class="hljs-number">1</span>) <span class="hljs-keyword">right</span> = <span class="hljs-built_in">quickSort</span>(<span class="hljs-keyword">right</span>)
-
-
-
-
-    <span class="hljs-keyword">return</span> [...<span class="hljs-keyword">left</span>,mid,...<span class="hljs-keyword">right</span>]
-
+  <span class="hljs-keyword">if</span>(<span class="hljs-keyword">left</span>.length&gt;<span class="hljs-number">1</span>) <span class="hljs-keyword">left</span> = <span class="hljs-built_in">quickSort</span>(<span class="hljs-keyword">left</span>)
+  <span class="hljs-keyword">if</span>(<span class="hljs-keyword">right</span>.length&gt;<span class="hljs-number">1</span>) <span class="hljs-keyword">right</span> = <span class="hljs-built_in">quickSort</span>(<span class="hljs-keyword">right</span>)
+  <span class="hljs-keyword">return</span> [...<span class="hljs-keyword">left</span>,mid,...<span class="hljs-keyword">right</span>]
 \};
 
 <span class="hljs-built_in">quickSort</span>([<span class="hljs-number">3</span>,<span class="hljs-number">5</span>,<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">8</span>,<span class="hljs-number">1</span>,<span class="hljs-number">9</span>,<span class="hljs-number">7</span>,<span class="hljs-number">6</span>,<span class="hljs-number">2</span>])
@@ -478,20 +484,34 @@ p1.then(res=&gt;\{
 <li>爬虫可以抓取页面的关键字等信息</li>
 </ul>
 </li>
-<li>首屏直出 * 减少首屏渲染时间
-<span id="g16"></span></li>
+<li><p>首屏直出 </p>
+<ul>
+<li>减少首屏渲染时间</li>
+</ul>
+<p><span id="g16"></span></p>
+</li>
 </ul>
 <h3 id="16-">16、浮点数知识</h3>
-<p>根据国际标准 IEEE 754，任意一个二进制浮点数 V 可以表示成下面的形式：
+<p>JavaScript 内部，所有数字都是以64位浮点数形式储存，即使整数也是如此。
+根据国际标准 IEEE 754，任意一个二进制浮点数 V 可以表示成下面的形式：
 V=(-1)<sup>s</sup><em>M</em>2<sup>E</sup></p>
 <ul>
 <li>(-1)^s 表示符号位</li>
-<li>表示有效数字，大于等于 1，小于 2</li>
 <li>2^E 表示指数位</li>
+<li>表示有效数字，大于等于 1，小于 2。形式为1.xx...xx。</li>
 </ul>
-<p>对于 32 位的浮点数，最高的 1 位是符号位 s，接着的 8 位是指数 E，剩下的 23 位为有效数字 M。</p>
-<p>Javascript 浮点数运算会先把十进制数转化为二进制数（乘二取整），然而有可能得到无限循环二进制数，然后再进行运算，然后再将结果转化为十进制数返回。
-<span id="g17"></span></p>
+<h4 id="-">精度</h4>
+<p>对于 64 位的浮点数，最高的 1 位是符号位 s，接着的 11 位是指数 E，剩下的 52 位为有效数字 M。IEEE 754 规定，如果指数部分的值在0到2047之间（不含两个端点），那么有效数字的第一位默认总是1，不保存在64位浮点数之中。也就是说，有效数字这时总是1.xx...xx的形式，其中xx..xx的部分保存在64位浮点数之中，最长可能为52位。因此，JavaScript 提供的有效数字最长为53个二进制位。</p>
+<p>Javascript 浮点数运算会先把十进制数转化为二进制数（整数部分除2取余，逆序排列；小数部分乘2取整，顺序排列），然而有可能得到无限循环二进制数这个时候需要进行舍弃，造成舍入误差；然后再进行运算；最后再将结果转化为十进制数返回。</p>
+<p>解决方案：</p>
+<ul>
+<li>运算数全部存储为整数（无类型），然后格式化显示</li>
+<li>建议是使用库，像sinfuljs或mathjs。</li>
+</ul>
+<h4 id="-">数值范围</h4>
+<p>根据标准，64位浮点数的指数部分的长度是11个二进制位，意味着指数部分的最大值是2047（2的11次方减1）。也就是说，64位浮点数的指数部分的值最大为2047，分出一半表示负数，则 JavaScript 能够表示的数值范围为21024到2-1023（开区间），超出这个范围的数无法表示。</p>
+<p><a href="https://wangdoc.com/javascript/types/number.html">更多内容</a></p>
+<p><span id="g17"></span></p>
 <h3 id="17-const-let-">17、const 、let、块级作用域</h3>
 <h4 id="-">暂时性死区</h4>
 <p>ES6 明确规定，如果区块中存在 let 和 const 命令，这个区块对这些命令声明的变量，从一开始就形成了封闭作用域。凡是在声明之前就使用这些变量，就会报错。</p>
@@ -601,8 +621,221 @@ document.body.appendChild(fragment)<span class="hljs-comment">;</span>
 <span class="hljs-keyword">let</span> dep =<span class="hljs-keyword">new</span> Dep([sub1,sub2])
 <span class="hljs-comment">//发布者发布消息，主题对象执行notify方法，进而触发订阅者的update方法</span>
 pub.publish(dep);
-</code></pre><h3 id="vue-">vue 双向数据绑定实现原理</h3>
+</code></pre><p><span id="g23"></span></p>
+<h3 id="vue-">vue 双向数据绑定实现原理</h3>
 <p><a href="https://juejin.im/entry/59116fa6a0bb9f0058aaaa4c">vue 双向数据绑定实现原理</a></p>
+<p><span id="g24"></span></p>
+<h3 id="-a-instanceof-b">函数模拟 A instanceof B</h3>
+<p>js 原生的 instanceof 可以检测某个对象是不是另一个对象的实例。
+用函数模拟 instanceof 的原理是：查看对象 B 的 prototype 指向的对象是否在对象 A 的[[prototype]]链上。如果在，则返回 true,如果不在则返回 false。不过有一个特殊的情况，当对象 B 的 prototype 为 null 将会报错(类似于空指针异常)。</p>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">_instanceof</span>(<span class="hljs-params">A, B</span>) </span>\{
+    <span class="hljs-keyword">let</span> bprototype = B.prototype;
+    <span class="hljs-keyword">let</span> aproto = A.__proto__;
+
+    <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) \{
+        <span class="hljs-comment">//Object.prototype.__proto__ === null</span>
+        <span class="hljs-keyword">if</span> (aproto === <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        <span class="hljs-keyword">if</span> (aproto === bprototype) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+        aproto = aproto.__proto__;
+    \}
+\}
+</code></pre>
+<p><span id="g25"></span></p>
+<h3 id="typeof-">typeof 原理</h3>
+<p>同的对象在底层都表示为二进制， 在 JavaScript 中二进制前三位都为 0 的话会被判断为 object 类型， null 的二进制表示是全 0， 自然前三位也是 0， 所以执行 typeof 时会返回“object”。</p>
+<p>在 javascript 的最初版本中，使用的 32 位系统，为了性能考虑使用低位存储了变量的类型信息：</p>
+<p>000：对象
+1：整数
+010：浮点数
+100：字符串
+110：布尔
+有 2 个值比较特殊：</p>
+<p>undefined：用 - （−2^30）表示。
+null：对应机器码的 NULL 指针，一般是全零。</p>
+<p><span id="g26"></span></p>
+<h3 id="iterator">Iterator</h3>
+<p>Iterator 是一种接口，为各种不同的数据结构（Array,Object,Map,Set）提供统一的访问机制。</p>
+<p>Iterator 的遍历过程:</p>
+<ol>
+<li>创建一个指针对象，指向当前数据结构的起始位置。也就是说，遍历器对象本质上，就是一个指针对象。</li>
+<li>第一次调用指针对象的 next 方法，可以将指针指向数据结构的第一个成员。</li>
+<li>第二次调用指针对象的 next 方法，指针就指向数据结构的第二个成员。</li>
+<li>不断调用指针对象的 next 方法，直到它指向数据结构的结束位置。</li>
+</ol>
+<p>每一次调用 next 方法，都会返回数据结构的当前成员的信息。具体来说，就是返回一个包含 value 和 done 两个属性的对象。其中，value 属性是当前成员的值，done 属性是一个布尔值，表示遍历是否结束。</p>
+<p>数组有内置的iterator，可以通过Symbol.iterator获取：</p>
+<pre><code class="lang-javascript"> let myArray=[1,2,3]
+ it=myArray[<span class="hljs-string">Symbol.iterator</span>](<span class="hljs-link"></span>)
+ it.next()
+ it.next()
+ it.next()  
+ it.next() //\{done:true\}
+</code></pre>
+<p>而对象没有内置的iterator，可以自己定义：</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">let</span> myObject=\{<span class="hljs-attr">a</span>:<span class="hljs-number">1</span>,<span class="hljs-attr">b</span>:<span class="hljs-number">2</span>\}
+<span class="hljs-built_in">Object</span>.defineProperty(myObject,<span class="hljs-built_in">Symbol</span>.iterator,\{
+  <span class="hljs-attr">enumerable</span>:<span class="hljs-literal">false</span>,
+  <span class="hljs-attr">writable</span>:<span class="hljs-literal">false</span>,
+  <span class="hljs-attr">configurable</span>:<span class="hljs-literal">true</span>,
+  <span class="hljs-attr">value</span>:<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>\{
+    <span class="hljs-keyword">let</span> o=<span class="hljs-keyword">this</span>
+    <span class="hljs-keyword">let</span> index=<span class="hljs-number">0</span>
+    <span class="hljs-keyword">let</span> keys=<span class="hljs-built_in">Object</span>.keys(o)
+    <span class="hljs-keyword">return</span> \{
+      <span class="hljs-attr">next</span>:<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>\{
+            <span class="hljs-keyword">return</span>\{
+          <span class="hljs-attr">value</span>:o[keys[index++]],
+          <span class="hljs-attr">done</span>:index&gt;keys.length
+        \}
+      \}
+    \}
+  \}
+\})
+
+<span class="hljs-keyword">let</span> it=myObject[<span class="hljs-built_in">Symbol</span>.iterator]()
+it.next()
+</code></pre>
+<p><span id="g27"></span></p>
+<h3 id="toprimitive">ToPrimitive</h3>
+<p>JavaScript 引擎内部的抽象操作 ToPrimitive() 有着这样的签名:</p>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-title">ToPrimitive</span><span class="hljs-params">(input，PreferredType?)</span></span>
+</code></pre>
+<p>可选参数 PreferredType 可以是 Number 或者 String。 它只代表了一个转换的偏好，转换结果不一定必须是这个参数所指的类型（汗），但转换结果一定是一个原始值。 如果 PreferredType 被标志为 Number，则会进行下面的操作来转换 input (§9.1):</p>
+<ul>
+<li><p>如果 input 是个原始值，则直接返回它。</p>
+</li>
+<li><p>否则，如果 input 是一个对象。则调用 obj.valueOf() 方法。 如果返回值是一个原始值，则返回这个原始值。</p>
+</li>
+<li><p>否则，调用 obj.toString() 方法。 如果返回值是一个原始值，则返回这个原始值。</p>
+</li>
+<li><p>否则，抛出 TypeError 异常。</p>
+</li>
+</ul>
+<p>如果 PreferredType 被标志为 String，则转换操作的第二步和第三步的顺序会调换。 如果没有 PreferredType 这个参数，则 PreferredType 的值会按照这样的规则来自动设置：</p>
+<p>Date 类型的对象会被设置为 String，</p>
+<p>其它类型的值会被设置为 Number。</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> obj = \{
+    <span class="hljs-attr">valueOf</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>\{
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"valueOf"</span>);
+        <span class="hljs-keyword">return</span> \{\}; <span class="hljs-comment">// not a primitive</span>
+    \},
+    <span class="hljs-attr">toString</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>\{
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"toString"</span>);
+        <span class="hljs-keyword">return</span> \{\}; <span class="hljs-comment">// not a primitive</span>
+    \}
+\}
+<span class="hljs-built_in">Number</span>(obj)
+</code></pre>
+<p><a href="https://justjavac.com/javascript/2012/12/20/object-plus-object.html">更多内容</a></p>
+<p><span id="g28"></span></p>
+<h3 id="bfc">BFC</h3>
+<p>在解释BFC之前，先说一下文档流。我们常说的文档流其实分为定位流、浮动流和普通流三种。而普通流其实就是指BFC中的FC。FC是formatting context的首字母缩写，直译过来是格式化上下文，它是页面中的一块渲染区域，有一套渲染规则，决定了其子元素如何布局，以及和其他元素之间的关系和作用。常见的FC有BFC、IFC，还有GFC和FFC。BFC是block formatting context，也就是块级格式化上下文，是用于布局块级盒子的一块渲染区域.</p>
+<p>满足下列条件之一就可触发BFC:</p>
+<ol>
+<li><p>根元素，即HTML元素</p>
+</li>
+<li><p>float的值不为none</p>
+</li>
+<li><p>overflow的值不为visible</p>
+</li>
+<li><p>display的值为inline-block、table-cell、table-caption</p>
+</li>
+<li><p>position的值为absolute或fixed</p>
+</li>
+</ol>
+<p><span id="g29"></span></p>
+<h3 id="-">大整数相加</h3>
+<p>主要思想:逐位相加并进位
+下面这个字符串相加函数，接收两个字符串参数，并返回它们相加之后的结果，也是字符串形式。
+代码如下:</p>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">sumStrings</span><span class="hljs-params">(a,b)</span> \{  </span>
+    <span class="hljs-comment">//通过补零让a和b对齐  </span>
+    <span class="hljs-comment">//若a比b短，则对a补零  </span>
+    <span class="hljs-keyword">while</span>(a.<span class="hljs-built_in">length</span> &lt; b.<span class="hljs-built_in">length</span>)\{  
+        a = <span class="hljs-string">"0"</span> + a;  
+    \}  
+    <span class="hljs-comment">//若b比a短，则对b补零  </span>
+    <span class="hljs-keyword">while</span>(b.<span class="hljs-built_in">length</span> &lt; a.<span class="hljs-built_in">length</span>)\{  
+        b = <span class="hljs-string">"0"</span> + b;  
+    \}  
+    <span class="hljs-comment">//是否有进位  </span>
+    var addOne = <span class="hljs-number">0</span>;  
+    <span class="hljs-comment">//结果数组  </span>
+    var result = [];  
+    <span class="hljs-comment">//从个位开始相加  </span>
+    <span class="hljs-keyword">for</span>(var i=a.<span class="hljs-built_in">length</span><span class="hljs-number">-1</span>;i&gt;=<span class="hljs-number">0</span>;i--)\{  
+        var c1 = a.charAt(i) - <span class="hljs-number">0</span>;  
+        var c2 = b.charAt(i) - <span class="hljs-number">0</span>;  
+        var <span class="hljs-built_in">sum</span> = c1 + c2 + addOne;  
+        <span class="hljs-comment">//若数字相加大于9，则进位  </span>
+        <span class="hljs-keyword">if</span>(<span class="hljs-built_in">sum</span> &gt; <span class="hljs-number">9</span>)\{  
+            result.unshift(<span class="hljs-built_in">sum</span> - <span class="hljs-number">10</span>);  
+            addOne = <span class="hljs-number">1</span>;  
+        \}  
+        <span class="hljs-keyword">else</span>\{  
+            result.unshift(<span class="hljs-built_in">sum</span>);  
+            addOne = <span class="hljs-number">0</span>;  
+        \}  
+    \}  
+    <span class="hljs-comment">//应付下面的情况：  </span>
+    <span class="hljs-comment">//"99" + "11" =&gt; "110"  </span>
+    <span class="hljs-comment">//它最后仍然要进位  </span>
+    <span class="hljs-keyword">if</span>(addOne)\{  
+        result.unshift(addOne);  
+    \}  
+    <span class="hljs-comment">//应付如下的情况  </span>
+    <span class="hljs-comment">//"01" + "01" =&gt; "2"  </span>
+    <span class="hljs-comment">//而不是"02"，所以移除第一位的"0"  </span>
+    <span class="hljs-keyword">if</span>(!result[<span class="hljs-number">0</span>])\{  
+        result.splice(<span class="hljs-number">0</span>,<span class="hljs-number">1</span>);  
+    \}  
+    <span class="hljs-keyword">return</span> result.join(<span class="hljs-string">""</span>);  
+\}  
+</code></pre>
+<p><span id='g30'></span></p>
+<h3 id="object-assign-">Object.assign 模拟实现</h3>
+<p>The Object.assign() method is used to copy the values of all enumerable own properties from one or more source objects to a target object. It will return the target object.
+Properties in the target object will be overwritten by properties in the sources if they have the same key.  Later sources&#39; properties will similarly overwrite earlier ones.  </p>
+<p>Object.assign 模拟实现的思路如下：</p>
+<ol>
+<li>判断原生 Object 是否支持该函数，如果不存在的话创建一个函数 assign，并使用 Object.defineProperty 将该函数绑定到 Object 上。</li>
+<li>判断参数是否正确（目标对象不能为空，我们可以直接设置\{\}传递进去,但必须设置值）</li>
+<li>使用 Object() 转成对象，并保存为 result，最后返回这个对象 result</li>
+<li>使用 for..in 循环遍历出所有可枚举的自有属性。并复制给新的目标对象(hasOwnProperty返回非原型链上的属性)</li>
+</ol>
+<pre><code class="lang-javascript"><span class="hljs-keyword">if</span>(!<span class="hljs-built_in">Object</span>.assign)\{
+  <span class="hljs-built_in">Object</span>.definedProperty(<span class="hljs-built_in">Object</span>,<span class="hljs-string">'assign'</span>,\{
+    <span class="hljs-attr">configurable</span>:<span class="hljs-literal">true</span>,
+    <span class="hljs-attr">enumerable</span>:<span class="hljs-literal">false</span>,
+    <span class="hljs-attr">writable</span>:<span class="hljs-literal">false</span>,
+    <span class="hljs-attr">value</span>:<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">targetObj</span>)</span>\{
+      <span class="hljs-keyword">if</span> (targetObj == <span class="hljs-literal">null</span>) \{
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">'Cannot convert undefined or null to object'</span>);
+      \}
+      <span class="hljs-comment">/**
+      * Object.assign('',\{a:1\}) 返回 String \{"", a: 1, length: 0\}
+      */</span>
+      <span class="hljs-keyword">var</span> result=<span class="hljs-built_in">Object</span>(targetObj);
+
+      <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i=<span class="hljs-number">1</span>;i&lt;<span class="hljs-built_in">arguments</span>.length;i++)\{
+        <span class="hljs-keyword">var</span> nextSource =<span class="hljs-built_in">arguments</span>[i]
+        <span class="hljs-keyword">if</span>(nextSource  &amp;&amp; <span class="hljs-keyword">typeof</span> nextSource  === <span class="hljs-string">'object'</span> &amp;&amp;nextSource .constructor !==<span class="hljs-built_in">Function</span>)\{
+          <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> key <span class="hljs-keyword">in</span> nextSource )\{
+            <span class="hljs-keyword">if</span>(<span class="hljs-built_in">Object</span>.prototype.hasOwnProperty.call(nextSource, key))\{
+              result[key]=nextSource [key]
+            \}
+          \}
+        \}
+      \}
+      <span class="hljs-keyword">return</span> result;
+    \}
+  \});
+\}
+
+
+
+
+</code></pre>
 `;
 
 class Index extends Component {
