@@ -12,6 +12,7 @@ import proxyRouter from "../routes/http-proxy/router";
 import minaRouter from "../routes/mina-app/router";
 import BrowserCache from "../routes/browser-cache/router";
 import Dns from "../routes/dns/router";
+import TCP from "../routes/tcp/router";
 
 const routes = [
     ...indexRouter,
@@ -23,7 +24,8 @@ const routes = [
     ...knowledgeRouter,
     ...prettierRouter,
     ...BrowserCache,
-    ...Dns
+    ...Dns,
+    ...TCP
 ];
 
 class Index extends Component {

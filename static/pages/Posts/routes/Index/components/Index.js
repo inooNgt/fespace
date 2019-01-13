@@ -7,6 +7,10 @@ const pages = [
         name: "DNS 域名解析"
     },
     {
+        path: "/posts/tcp",
+        name: "TCP连接的建立和释放"
+    },
+    {
         path: "/posts/browser-cache",
         name: "Webkit 缓存加载机制"
     },

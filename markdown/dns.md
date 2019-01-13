@@ -17,7 +17,7 @@ DNS（Domain Name System，域名系统）是一种把域名称解析为对应�
 #### 根域名服务器
 
 “根名称服务器”（root name server）是由互联网管理机构配置建立的，是最高层次的名称服务器，负责对互联网上所有“顶级名称服务器”进行管理，有全部的顶级名称服务器的 IP 地址和域名映射。
-全球共有 13 套，这 13 台主根名称服务器主机名分别为字母 A~M，即完整 DNS 名称为 a.rootserver.net~m.rootserver.net。
+全球共有 13 套，这 13 台主根名称服务器主机名分别为字母 A-M，即完整 DNS 名称为 a.rootserver.net~m.rootserver.net。
 
 #### 顶级域名服务器
 

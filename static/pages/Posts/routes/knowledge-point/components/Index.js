@@ -33,6 +33,9 @@ const article = `<h1 id="my-scattered-notes">My Scattered  Notes</h1>
 <li><a href="javascript:;" onclick="document.getElementById('g28').scrollIntoView();"> BFC布局</a></li>
 <li><a href="javascript:;" onclick="document.getElementById('g29').scrollIntoView();"> 大整数相加</a></li>
 <li><a href="javascript:;" onclick="document.getElementById('g30').scrollIntoView();"> Object.assign 模拟实现</a></li>
+<li><a href="javascript:;" onclick="document.getElementById('g31').scrollIntoView();"> Http幂等性</a></li>
+<li><a href="javascript:;" onclick="document.getElementById('g32').scrollIntoView();"> 判断一个对象是否是数组</a></li>
+<li><a href="javascript:;" onclick="document.getElementById('g33').scrollIntoView();"> TCP三次握手、四次挥手</a></li>
 </ol>
 <p><span id="g1"></span></p>
 <h3 id="1-undefined-and-null">1、undefined and null</h3>
@@ -107,7 +110,7 @@ const article = `<h1 id="my-scattered-notes">My Scattered  Notes</h1>
 <p><span id="g4"></span></p>
 <h3 id="4-jsonp-cors">4、 JSONP 跨域原理及 CORS</h3>
 <h4 id="jsonp">JSONP</h4>
-<p>在同源策略下，在某个服务器下的页面是无法获取到该服务器以外的数据的，但 img、iframe、script 等标签是个例外，这些标签可以通过 src 属性请求到其他服务器上的数据。利用 script 标签的开放策略，我们可以实现跨域请求数据，当然，也需要服务端的配合。当我们正常地请求一个 JSON 数据的时候，服务端返回的是一串 JSON 类型的数据，而我们使用 JSONP 模式来请求数据的时候，服务端返回的是一段可执行的 JavaScript 代码。例如：</p>
+<p>在同源策略下，在某个服务器下的页面是无法获取到该服务器以外的数据的，但 img、iframe、script 等标签是个例外，这些标签可以通过 src 属性请求到其他服务器上的数据。利用 script 标签的开放策略，我们可以实现跨域请求数据，当然，也需要服务端的配合。当我们正常地请求一个 JSON 数据的时候，服务端返回的是一串 JSON 类型的数据，而我们使用 JSONP 模式来请求数据的时候，服务端返回的是一段可执行的 JavaScript 代码,而这段代码可以包含数据。例如：</p>
 <p>客户端请求,并指定回调函数的名字：</p>
 <pre><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">appendScript</span>(<span class="hljs-params">src</span>)</span>\{
     <span class="hljs-keyword">let</span> script=<span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">"script"</span>);
@@ -585,8 +588,8 @@ document.body.appendChild(fragment)<span class="hljs-comment">;</span>
 <p>每当遇到 I/O 的时候，主线程就让 Event Loop 线程去通知相应的 I/O 程序，然后接着往后运行，所以不存在红色的等待时间。等到 I/O 程序完成操作，Event Loop 线程再把结果返回主线程。主线程就调用事先设定的回调函数，完成整个任务。</p>
 <p>js 引擎遇到一个异步事件后并不会一直等待其返回结果，而是会将这个事件挂起，继续执行执行栈中的其他任务。当一个异步事件返回结果后，js 会将这个事件加入与当前执行栈不同的另一个队列，我们称之为事件队列。被放入事件队列不会立刻执行其回调，而是等待当前执行栈中的所有任务都执行完毕， 主线程处于闲置状态时，主线程会去查找事件队列是否有任务。如果有，那么主线程会从中取出排在第一位的事件，并把这个事件对应的回调放入执行栈中，然后执行其中的同步代码...，如此反复，这样就形成了一个无限的循环。这就是这个过程被称为“事件循环（Event Loop）”的原因。</p>
 <p>当前执行栈执行完毕时会立刻先处理所有微任务队列（Promise）中的事件，然后再去宏任务队列（setTimeout）中取出一个事件。同一次事件循环中，微任务永远在宏任务之前执行。
-<a href="https://zhuanlan.zhihu.com/p/33058983">https://zhuanlan.zhihu.com/p/33058983</a></p>
-<p><span id="g21"></span></p>
+<a href="https://zhuanlan.zhihu.com/p/33058983">https://zhuanlan.zhihu.com/p/33058983</a>
+<span id="g21"></span></p>
 <h3 id="https-">https 过程</h3>
 <p>客户端和服务器握手过程大致如下:
 第一步，客户端给出协议版本号、一个客户端生成的随机数（Client random），以及客户端支持的加密方法。</p>
@@ -594,8 +597,8 @@ document.body.appendChild(fragment)<span class="hljs-comment">;</span>
 <p>第三步，客户端确认数字证书有效，然后生成一个新的随机数（Premaster secret），并使用数字证书中的公钥，加密这个随机数，发给服务器。</p>
 <p>第四步，服务器使用自己的私钥，获取客户端发来的随机数（即 Premaster secret）。</p>
 <p>第五步，客户端和服务器根据约定的加密方法，使用前面的三个随机数，生成&quot;对话密钥&quot;（session key），用来加密接下来的整个对话过程。</p>
-<p>参考<a href="http://www.ruanyifeng.com/blog/2014/09/illustration-ssl.html">图解 SSL/TLS 协议</a></p>
-<p><span id="g22"></span></p>
+<p>参考<a href="http://www.ruanyifeng.com/blog/2014/09/illustration-ssl.html">图解 SSL/TLS 协议</a>
+<span id="g22"></span></p>
 <h3 id="-subscribepublish-">订阅/发布模式（subscribe&amp;publish）</h3>
 <p>订阅发布模式（又称观察者模式）定义了一种一对多的关系，让多个观察者同时监听某一个主题对象，这个主题对象的状态发生改变时就会通知所有观察者对象。模式流程：发布者发出通知 =&gt; 主题对象收到通知并推送给订阅者 =&gt; 订阅者执行相应操作</p>
 <pre><code><span class="hljs-comment">//发布者</span>
@@ -628,15 +631,15 @@ pub.publish(dep);
 <h3 id="-a-instanceof-b">函数模拟 A instanceof B</h3>
 <p>js 原生的 instanceof 可以检测某个对象是不是另一个对象的实例。
 用函数模拟 instanceof 的原理是：查看对象 B 的 prototype 指向的对象是否在对象 A 的[[prototype]]链上。如果在，则返回 true,如果不在则返回 false。不过有一个特殊的情况，当对象 B 的 prototype 为 null 将会报错(类似于空指针异常)。</p>
-<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">_instanceof</span>(<span class="hljs-params">A, B</span>) </span>\{
-    <span class="hljs-keyword">let</span> bprototype = B.prototype;
-    <span class="hljs-keyword">let</span> aproto = A.__proto__;
+<pre><code class="lang-javascript">function <span class="hljs-variable">_instanceof</span>(A, B) \{
+    let <span class="hljs-variable">_prototype</span> = B.prototype;
+    let <span class="hljs-variable">_proto</span> = A.<span class="hljs-variable">__proto__</span>;
 
     <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) \{
         <span class="hljs-comment">//Object.prototype.__proto__ === null</span>
-        <span class="hljs-keyword">if</span> (aproto === <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
-        <span class="hljs-keyword">if</span> (aproto === bprototype) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
-        aproto = aproto.__proto__;
+        <span class="hljs-keyword">if</span> (<span class="hljs-variable">_proto</span> === null) return <span class="hljs-literal">false</span>;
+        <span class="hljs-keyword">if</span> (<span class="hljs-variable">_proto</span> === <span class="hljs-variable">_prototype</span>) return <span class="hljs-literal">true</span>;
+        <span class="hljs-variable">_proto</span> = <span class="hljs-variable">_proto</span>.<span class="hljs-variable">__proto__</span>;
     \}
 \}
 </code></pre>
@@ -743,6 +746,16 @@ it.next()
 <li><p>position的值为absolute或fixed</p>
 </li>
 </ol>
+<p>BFC布局规则：</p>
+<ol>
+<li>内部的box会在垂直方向一个接一个地放置</li>
+<li>box垂直方向的距离由margin决定，属于同一个BFC的两个相邻box的margin会发生重叠</li>
+<li>每个元素margin box左边，与包含块border box的左边相接触（对于从左向右的格式化，否则相反），即使存在浮动也是如此</li>
+<li>BFC的区域不会与float box重叠</li>
+<li>BFC是页面上的一个隔离的独立容器，容器里面的子元素不会影响到外面的元素</li>
+<li>计算BFC高度时，浮动元素也参与计算</li>
+</ol>
+<p><a href="https://www.jianshu.com/p/580b28878630">更多内容</a></p>
 <p><span id="g29"></span></p>
 <h3 id="-">大整数相加</h3>
 <p>主要思想:逐位相加并进位
@@ -819,7 +832,7 @@ Properties in the target object will be overwritten by properties in the sources
 
       <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i=<span class="hljs-number">1</span>;i&lt;<span class="hljs-built_in">arguments</span>.length;i++)\{
         <span class="hljs-keyword">var</span> nextSource =<span class="hljs-built_in">arguments</span>[i]
-        <span class="hljs-keyword">if</span>(nextSource  &amp;&amp; <span class="hljs-keyword">typeof</span> nextSource  === <span class="hljs-string">'object'</span> &amp;&amp;nextSource .constructor !==<span class="hljs-built_in">Function</span>)\{
+        <span class="hljs-keyword">if</span>(nextSource  &amp;&amp; <span class="hljs-keyword">typeof</span> nextSource  === <span class="hljs-string">'object'</span>)\{
           <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> key <span class="hljs-keyword">in</span> nextSource )\{
             <span class="hljs-keyword">if</span>(<span class="hljs-built_in">Object</span>.prototype.hasOwnProperty.call(nextSource, key))\{
               result[key]=nextSource [key]
@@ -831,11 +844,56 @@ Properties in the target object will be overwritten by properties in the sources
     \}
   \});
 \}
-
-
-
-
 </code></pre>
+<p><span id='g30'></span></p>
+<h3 id="http-">Http 幂等性</h3>
+<h4 id="-">概述</h4>
+<p>幂等性原本是数学上的概念，即使公式：f(x)=f(f(x)) 能够成立的数学性质。用在编程领域，则意为对同一个系统，使用同样的条件，一次请求和重复的多次请求对系统资源的影响是一致的。
+幂等性是分布式系统设计中十分重要的概念，具有这一性质的接口在设计时总是秉持这样的一种理念：调用接口发生异常并且重复尝试时，总是会造成系统所无法承受的损失，所以必须阻止这种现象的发生。</p>
+<h4 id="get-post-">GET 和 POST的幂等性</h4>
+<p>HTTP GET方法，用于获取资源，不管调用多少次接口，结果都不会改变，所以是幂等的；HTTP POST方法是一个非幂等方法，因为调用多次，都将产生新的资源。所以，GET和POST最大的区别主要是GET请求是幂等性的，POST请求不是。
+正因为它们有这样的区别，所以不应该且不能用get请求做数据的增删改这些有副作用的操作。因为get请求是幂等的，在网络不好的隧道中会尝试重试。如果用get请求增数据，会有重复操作的风险，而这种重复操作可能会导致副作用（浏览器和操作系统并不知道你会用get请求去做增操作）。</p>
+<p><span id='g31'></span></p>
+<h3 id="-">判断一个对象是否是数组</h3>
+<h4 id="1-instanceof">1.instanceof</h4>
+<p>A instanceof B 可以查看 B 的 prototype 指向的对象是否在对象 A 的[[prototype]]链上。</p>
+<p>缺点：如果A的<strong>proto</strong>被改变，则失效。</p>
+<pre><code>a=new Object()
+<span class="hljs-selector-tag">a</span>.__proto__=Array<span class="hljs-selector-class">.prototype</span>
+<span class="hljs-selector-tag">a</span> instancefo Array <span class="hljs-comment">// true</span>
+Object<span class="hljs-selector-class">.prototype</span><span class="hljs-selector-class">.toString</span><span class="hljs-selector-class">.apply</span>(a) <span class="hljs-comment">//"[object Object]"</span>
+</code></pre><h4 id="2-constructor">2.constructor</h4>
+<p>每一个实例化的数组拥有一个constructor属性，这个属性指向生成这个数组的方法Array。</p>
+<pre><code><span class="hljs-keyword">const</span> a = [];
+console.log(a.<span class="hljs-keyword">constructor</span> == <span class="hljs-keyword">Array</span>);<span class="hljs-comment">//true</span>
+</code></pre><p>缺点：constructor是可以改写的</p>
+<pre><code><span class="hljs-keyword">const</span> a=[]
+a.<span class="hljs-keyword">constructor</span> =<span class="hljs-keyword">Object</span>
+console.log(a.<span class="hljs-keyword">constructor</span> === <span class="hljs-keyword">Object</span>) <span class="hljs-comment">//true</span>
+</code></pre><h4 id="3-object-prototype-tostring">3.Object.prototype.toString</h4>
+<p>Object.prototype.toString会返回对象类型的信息。</p>
+<pre><code>const <span class="hljs-attr">a</span> = [<span class="hljs-number">1</span>];
+const <span class="hljs-attr">b</span> = \{<span class="hljs-number">0</span>:<span class="hljs-number">0</span>\};
+const <span class="hljs-attr">c</span> = 'hello';
+a.<span class="hljs-built_in">toString</span>();//<span class="hljs-string">"1"</span>,这里调用的是Array.prototype.<span class="hljs-built_in">toString</span>方法
+b.<span class="hljs-built_in">toString</span>();//<span class="hljs-string">"[object Object]"</span>
+c.<span class="hljs-built_in">toString</span>();//<span class="hljs-string">"hello"</span>
+Object.prototype.<span class="hljs-built_in">toString</span>.call(a);//<span class="hljs-string">"[object Array]"</span>
+Object.prototype.<span class="hljs-built_in">toString</span>.call(b);//<span class="hljs-string">"[object Object]"</span>
+Object.prototype.<span class="hljs-built_in">toString</span>.call(c);//<span class="hljs-string">"[object String]"</span>
+</code></pre><p>缺点：Object.prototype.toString也是可以被修改的</p>
+<pre><code>Object.getOwnPropertyDescriptor(Object<span class="hljs-selector-class">.prototype</span>,<span class="hljs-string">'toString'</span>)<span class="hljs-selector-class">.writable</span> <span class="hljs-comment">// true</span>
+</code></pre><h4 id="4-array-isarray">4.Array.isArray</h4>
+<pre><code><span class="hljs-keyword">const</span> a=[];
+<span class="hljs-keyword">Array</span>.isArray(a); <span class="hljs-comment">// true</span>
+</code></pre><p>缺点：Array.isArray是ES5标准中增加的方法，部分浏览器不支持。
+可以使用以下代码兼容：</p>
+<pre><code><span class="hljs-keyword">if</span> (!<span class="hljs-built_in">Array</span>.isArray) \{
+  <span class="hljs-built_in">Array</span>.isArray = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">arg</span>) </span>\{
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">Object</span>.prototype.toString.call(arg) === <span class="hljs-string">'[object Array]'</span>;
+  \};
+\}
+</code></pre><p><span id='g32'></span></p>
 `;
 
 class Index extends Component {

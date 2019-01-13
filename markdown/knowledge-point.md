@@ -32,8 +32,14 @@ Guides:
 28. <a href="javascript:;" onclick="document.getElementById('g28').scrollIntoView();"> BFC布局</a>
 29. <a href="javascript:;" onclick="document.getElementById('g29').scrollIntoView();"> 大整数相加</a>
 30. <a href="javascript:;" onclick="document.getElementById('g30').scrollIntoView();"> Object.assign 模拟实现</a>
+31. <a href="javascript:;" onclick="document.getElementById('g31').scrollIntoView();"> Http幂等性</a>
+32. <a href="javascript:;" onclick="document.getElementById('g32').scrollIntoView();"> 判断一个对象是否是数组</a>
+33. <a href="javascript:;" onclick="document.getElementById('g33').scrollIntoView();"> TCP三次握手、四次挥手</a>
 
 <span id="g1"></span>
+
+
+
 
 ### 1、undefined and null
 
@@ -58,6 +64,9 @@ Object.getPrototypeOf(Object.prototype)
 4.  函数没有返回值时，默认返回 undefined。
 
 <span id="g2"></span>
+
+
+
 
 ### 2、浏览器 Event loop 事件循环
 
@@ -95,6 +104,9 @@ JS 种的基本数据类型与指向对象的地址存放在栈内存中，此�
 
 <span id="g3"></span>
 
+
+
+
 ### 3、对象深拷贝
 
 ```
@@ -122,11 +134,14 @@ const clone = obj => {
 
 <span id="g4"></span>
 
+
+
+
 ### 4、 JSONP 跨域原理及 CORS
 
 #### JSONP
 
-在同源策略下，在某个服务器下的页面是无法获取到该服务器以外的数据的，但 img、iframe、script 等标签是个例外，这些标签可以通过 src 属性请求到其他服务器上的数据。利用 script 标签的开放策略，我们可以实现跨域请求数据，当然，也需要服务端的配合。当我们正常地请求一个 JSON 数据的时候，服务端返回的是一串 JSON 类型的数据，而我们使用 JSONP 模式来请求数据的时候，服务端返回的是一段可执行的 JavaScript 代码。例如：
+在同源策略下，在某个服务器下的页面是无法获取到该服务器以外的数据的，但 img、iframe、script 等标签是个例外，这些标签可以通过 src 属性请求到其他服务器上的数据。利用 script 标签的开放策略，我们可以实现跨域请求数据，当然，也需要服务端的配合。当我们正常地请求一个 JSON 数据的时候，服务端返回的是一串 JSON 类型的数据，而我们使用 JSONP 模式来请求数据的时候，服务端返回的是一段可执行的 JavaScript 代码,而这段代码可以包含数据。例如：
 
 客户端请求,并指定回调函数的名字：
 
@@ -155,6 +170,9 @@ appdendScript("http://a.com&callback=somefun");
 跨域资源共享标准新增了一组 HTTP 首部字段，允许服务器声明哪些源站有权限访问哪些资源。另外，规范要求，对那些可能对服务器数据产生副作用的 HTTP 请求方法（特别是 GET 以外的 HTTP 请求，或者搭配某些 MIME 类型的 POST 请求），浏览器必须首先使用 OPTIONS 方法发起一个预检请求（preflight request），从而获知服务端是否允许该跨域请求。服务器确认允许之后，才发起实际的 HTTP 请求。在预检请求的返回中，服务器端也可以通知客户端，是否需要携带身份凭证（包括 Cookies 和 HTTP 认证相关数据）。
 
 <span id="g5"></span>
+
+
+
 
 ### 5、 正则表达式之后向引用
 
@@ -199,6 +217,9 @@ str.replace(/(?<=<pre><code>)[\s\S]*?(?=<\/code><\/pre>)/gi, 'asdf');  // 替换
 
 <span id="g6"></span>
 
+
+
+
 ### 6、 React/Vue 不同组件之间的通信方式
 
 #### Vue
@@ -216,6 +237,9 @@ str.replace(/(?<=<pre><code>)[\s\S]*?(?=<\/code><\/pre>)/gi, 'asdf');  // 替换
 -   用新的 Context Api
 
 <span id="g7"></span>
+
+
+
 
 ### 7、 Thunk 函数
 
@@ -236,6 +260,9 @@ readFileThunk(path)(callback);
 
 <span id="g8"></span>
 
+
+
+
 ### 8、this 指向
 
 -   纯粹的函数调用,this 就代表全局对象 Global
@@ -244,6 +271,9 @@ readFileThunk(path)(callback);
 -   apply/call 调用,this 指向第一个参数提供的对象
 
 <span id="g9"></span>
+
+
+
 
 ### 9、Cookie
 
@@ -276,6 +306,9 @@ Session:
 创建于服务器端，保存于服务器，维护于服务器端,每创建一个新的 Session,服务器端都会分配一个唯一的 ID，并且把这个 ID 保存到客户端的 Cookie 中，保存形式是以 JSESSIONID 来保存的。
 
 <span id="g10"></span>
+
+
+
 
 ### 10、快速排序
 
@@ -310,6 +343,9 @@ quickSort([3,5,0,2,4,8,1,9,7,6,2])
 ```
 
 <span id="g11"></span>
+
+
+
 
 ### 11、执行上下文(Execution Context)
 
@@ -352,6 +388,9 @@ VO 对应第二阶段，AO 对应第三阶段。
 注意：自由变量的查找依据的是函数定义时的作用域，而不是执行时的作用预,例如闭包。
 
 <span id="g12"></span>
+
+
+
 
 ### 12、 Promise 的实现
 
@@ -529,11 +568,17 @@ p1.then(res=>{
 
 <span id="g13"></span>
 
+
+
+
 ### 13、 闭包
 
 闭包是即使被外部函数返回，依然可以访问到外部（封闭）函数作用域的函数。
 
 <span id="g14"></span>
+
+
+
 
 ### 14、事件捕获 vs 事件冒泡
 
@@ -554,6 +599,9 @@ p1.then(res=>{
 
 <span id="g15"></span>
 
+
+
+
 ### 15、服务端渲染
 
 在后端将数据拼接到 HTML 字符串上发送给客户端，浏览器从服务器接收 HTML 并渲染。服务端渲染的优势:
@@ -564,6 +612,9 @@ p1.then(res=>{
     -   减少首屏渲染时间
 
  <span id="g16"></span>
+
+
+
 
 ### 16、浮点数知识
 JavaScript 内部，所有数字都是以64位浮点数形式储存，即使整数也是如此。
@@ -592,6 +643,9 @@ Javascript 浮点数运算会先把十进制数转化为二进制数（整数部
 [更多内容](https://wangdoc.com/javascript/types/number.html)
 
 <span id="g17"></span>
+
+
+
 
 ### 17、const 、let、块级作用域
 
@@ -650,6 +704,9 @@ foo = {}; // TypeError: "foo" is read-only
 
 <span id="g18"></span>
 
+
+
+
 ### 18、 DocumentFragment
 
 The DocumentFragment interface represents a minimal document object that has no parent. It is used as a lightweight version of Document that stores a segment of a document structure comprised of nodes just like a standard document. The key difference is that because the document fragment isn't part of the active document tree structure, changes made to the fragment don't affect the document, cause reflow, or incur any performance impact that can occur when changes are made.
@@ -665,6 +722,9 @@ document.body.appendChild(fragment);
 ```
 
 <span id="g19"></span>
+
+
+
 
 ### 19、同源策咯
 
@@ -684,7 +744,10 @@ document.body.appendChild(fragment);
 
         *   同源政策规定，AJAX 请求只能发给同源的网址，否则就报错。可以使用 JSONP、WebSocket、CORS 等技术解决问题。
 
-    <span id="g20"></span>
+  <span id="g20"></span>
+
+
+
 
 ### 20、事件循环
 
@@ -698,8 +761,10 @@ js 引擎遇到一个异步事件后并不会一直等待其返回结果，而�
 
 当前执行栈执行完毕时会立刻先处理所有微任务队列（Promise）中的事件，然后再去宏任务队列（setTimeout）中取出一个事件。同一次事件循环中，微任务永远在宏任务之前执行。
 https://zhuanlan.zhihu.com/p/33058983
-
 <span id="g21"></span>
+
+
+
 
 ### https 过程
 
@@ -715,8 +780,10 @@ https://zhuanlan.zhihu.com/p/33058983
 第五步，客户端和服务器根据约定的加密方法，使用前面的三个随机数，生成"对话密钥"（session key），用来加密接下来的整个对话过程。
 
 参考[图解 SSL/TLS 协议](http://www.ruanyifeng.com/blog/2014/09/illustration-ssl.html)
-
 <span id="g22"></span>
+
+
+
 
 ### 订阅/发布模式（subscribe&publish）
 
@@ -747,8 +814,10 @@ let dep =new Dep([sub1,sub2])
 //发布者发布消息，主题对象执行notify方法，进而触发订阅者的update方法
 pub.publish(dep);
 ```
-
 <span id="g23"></span>
+
+
+
 
 ### vue 双向数据绑定实现原理
 
@@ -763,19 +832,22 @@ js 原生的 instanceof 可以检测某个对象是不是另一个对象的实�
 
 ```javascript
 function _instanceof(A, B) {
-    let bprototype = B.prototype;
-    let aproto = A.__proto__;
+    let _prototype = B.prototype;
+    let _proto = A.__proto__;
 
     while (true) {
         //Object.prototype.__proto__ === null
-        if (aproto === null) return false;
-        if (aproto === bprototype) return true;
-        aproto = aproto.__proto__;
+        if (_proto === null) return false;
+        if (_proto === _prototype) return true;
+        _proto = _proto.__proto__;
     }
 }
 ```
 
 <span id="g25"></span>
+
+
+
 
 ### typeof 原理
 
@@ -795,6 +867,9 @@ null：对应机器码的 NULL 指针，一般是全零。
 
 
 <span id="g26"></span>
+
+
+
 ### Iterator
 
 Iterator 是一种接口，为各种不同的数据结构（Array,Object,Map,Set）提供统一的访问机制。
@@ -845,6 +920,9 @@ it.next()
 ```
 
 <span id="g27"></span>
+
+
+
 ### ToPrimitive
 JavaScript 引擎内部的抽象操作 ToPrimitive() 有着这样的签名:
 ``` javascript
@@ -885,6 +963,10 @@ Number(obj)
 
 
 <span id="g28"></span>
+
+
+
+
 ### BFC
 在解释BFC之前，先说一下文档流。我们常说的文档流其实分为定位流、浮动流和普通流三种。而普通流其实就是指BFC中的FC。FC是formatting context的首字母缩写，直译过来是格式化上下文，它是页面中的一块渲染区域，有一套渲染规则，决定了其子元素如何布局，以及和其他元素之间的关系和作用。常见的FC有BFC、IFC，还有GFC和FFC。BFC是block formatting context，也就是块级格式化上下文，是用于布局块级盒子的一块渲染区域.
 
@@ -902,7 +984,20 @@ Number(obj)
 
 5. position的值为absolute或fixed
 
+
+BFC布局规则：
+1. 内部的box会在垂直方向一个接一个地放置
+2. box垂直方向的距离由margin决定，属于同一个BFC的两个相邻box的margin会发生重叠
+3. 每个元素margin box左边，与包含块border box的左边相接触（对于从左向右的格式化，否则相反），即使存在浮动也是如此
+4. BFC的区域不会与float box重叠
+5. BFC是页面上的一个隔离的独立容器，容器里面的子元素不会影响到外面的元素
+6. 计算BFC高度时，浮动元素也参与计算
+
+[更多内容](https://www.jianshu.com/p/580b28878630)
+
 <span id="g29"></span>
+
+
 ### 大整数相加
 
 主要思想:逐位相加并进位
@@ -982,7 +1077,7 @@ if(!Object.assign){
 
       for(var i=1;i<arguments.length;i++){
         var nextSource =arguments[i]
-        if(nextSource  && typeof nextSource  === 'object' &&nextSource .constructor !==Function){
+        if(nextSource  && typeof nextSource  === 'object'){
           for(var key in nextSource ){
             if(Object.prototype.hasOwnProperty.call(nextSource, key)){
               result[key]=nextSource [key]
@@ -994,8 +1089,93 @@ if(!Object.assign){
     }
   });
 }
+```
+
+<span id='g30'></span>
 
 
 
+### Http 幂等性
+
+#### 概述
+
+幂等性原本是数学上的概念，即使公式：f(x)=f(f(x)) 能够成立的数学性质。用在编程领域，则意为对同一个系统，使用同样的条件，一次请求和重复的多次请求对系统资源的影响是一致的。
+幂等性是分布式系统设计中十分重要的概念，具有这一性质的接口在设计时总是秉持这样的一种理念：调用接口发生异常并且重复尝试时，总是会造成系统所无法承受的损失，所以必须阻止这种现象的发生。
+
+#### GET 和 POST的幂等性
+HTTP GET方法，用于获取资源，不管调用多少次接口，结果都不会改变，所以是幂等的；HTTP POST方法是一个非幂等方法，因为调用多次，都将产生新的资源。所以，GET和POST最大的区别主要是GET请求是幂等性的，POST请求不是。
+正因为它们有这样的区别，所以不应该且不能用get请求做数据的增删改这些有副作用的操作。因为get请求是幂等的，在网络不好的隧道中会尝试重试。如果用get请求增数据，会有重复操作的风险，而这种重复操作可能会导致副作用（浏览器和操作系统并不知道你会用get请求去做增操作）。
+
+<span id='g31'></span>
+
+
+
+
+### 判断一个对象是否是数组
+
+#### 1.instanceof
+
+A instanceof B 可以查看 B 的 prototype 指向的对象是否在对象 A 的[[prototype]]链上。
+
+缺点：如果A的__proto__被改变，则失效。
+```
+a=new Object()
+a.__proto__=Array.prototype
+a instancefo Array // true
+Object.prototype.toString.apply(a) //"[object Object]"
+```
+
+#### 2.constructor
+每一个实例化的数组拥有一个constructor属性，这个属性指向生成这个数组的方法Array。
+```
+const a = [];
+console.log(a.constructor == Array);//true
+```
+
+缺点：constructor是可以改写的
+```
+const a=[]
+a.constructor =Object
+console.log(a.constructor === Object) //true
+```
+#### 3.Object.prototype.toString  
+Object.prototype.toString会返回对象类型的信息。
+```
+const a = [1];
+const b = {0:0};
+const c = 'hello';
+a.toString();//"1",这里调用的是Array.prototype.toString方法
+b.toString();//"[object Object]"
+c.toString();//"hello"
+Object.prototype.toString.call(a);//"[object Array]"
+Object.prototype.toString.call(b);//"[object Object]"
+Object.prototype.toString.call(c);//"[object String]"
+```
+
+缺点：Object.prototype.toString也是可以被修改的
+```
+Object.getOwnPropertyDescriptor(Object.prototype,'toString').writable // true
+```
+
+#### 4.Array.isArray
 
 ```
+const a=[];
+Array.isArray(a); // true
+```
+
+缺点：Array.isArray是ES5标准中增加的方法，部分浏览器不支持。
+可以使用以下代码兼容：
+```
+if (!Array.isArray) {
+  Array.isArray = function(arg) {
+    return Object.prototype.toString.call(arg) === '[object Array]';
+  };
+}
+```
+
+<span id='g32'></span>
+
+
+
+
