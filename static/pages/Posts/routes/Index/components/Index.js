@@ -3,8 +3,20 @@ import { Link } from "react-router-dom";
 
 const pages = [
     {
+        path: "/posts/Performance",
+        name: "Web 性能优化"
+    },
+    {
         path: "/posts/dns",
         name: "DNS 域名解析"
+    },
+    {
+        path: "/posts/dns-prefetch",
+        name: "DNS 预解析"
+    },
+    {
+        path: "/posts/linux",
+        name: "Some Operations on Linux"
     },
     {
         path: "/posts/tcp",

@@ -12,7 +12,10 @@ import proxyRouter from "../routes/http-proxy/router";
 import minaRouter from "../routes/mina-app/router";
 import BrowserCache from "../routes/browser-cache/router";
 import Dns from "../routes/dns/router";
+import DnsPrefetch from "../routes/dns-prefetch/router";
 import TCP from "../routes/tcp/router";
+import Linux from "../routes/linux/router";
+import Performance from "../routes/performance/router";
 
 const routes = [
     ...indexRouter,
@@ -25,7 +28,10 @@ const routes = [
     ...prettierRouter,
     ...BrowserCache,
     ...Dns,
-    ...TCP
+    ...DnsPrefetch,
+    ...TCP,
+    ...Performance,
+    ...Linux
 ];
 
 class Index extends Component {

@@ -35,7 +35,7 @@ const article = `<h1 id="my-scattered-notes">My Scattered  Notes</h1>
 <li><a href="javascript:;" onclick="document.getElementById('g30').scrollIntoView();"> Object.assign 模拟实现</a></li>
 <li><a href="javascript:;" onclick="document.getElementById('g31').scrollIntoView();"> Http幂等性</a></li>
 <li><a href="javascript:;" onclick="document.getElementById('g32').scrollIntoView();"> 判断一个对象是否是数组</a></li>
-<li><a href="javascript:;" onclick="document.getElementById('g33').scrollIntoView();"> TCP三次握手、四次挥手</a></li>
+<li><a href="javascript:;" onclick="document.getElementById('g33').scrollIntoView();"> 跨域</a></li>
 </ol>
 <p><span id="g1"></span></p>
 <h3 id="1-undefined-and-null">1、undefined and null</h3>
@@ -845,7 +845,7 @@ Properties in the target object will be overwritten by properties in the sources
   \});
 \}
 </code></pre>
-<p><span id='g30'></span></p>
+<p><span id='g31'></span></p>
 <h3 id="http-">Http 幂等性</h3>
 <h4 id="-">概述</h4>
 <p>幂等性原本是数学上的概念，即使公式：f(x)=f(f(x)) 能够成立的数学性质。用在编程领域，则意为对同一个系统，使用同样的条件，一次请求和重复的多次请求对系统资源的影响是一致的。
@@ -853,7 +853,7 @@ Properties in the target object will be overwritten by properties in the sources
 <h4 id="get-post-">GET 和 POST的幂等性</h4>
 <p>HTTP GET方法，用于获取资源，不管调用多少次接口，结果都不会改变，所以是幂等的；HTTP POST方法是一个非幂等方法，因为调用多次，都将产生新的资源。所以，GET和POST最大的区别主要是GET请求是幂等性的，POST请求不是。
 正因为它们有这样的区别，所以不应该且不能用get请求做数据的增删改这些有副作用的操作。因为get请求是幂等的，在网络不好的隧道中会尝试重试。如果用get请求增数据，会有重复操作的风险，而这种重复操作可能会导致副作用（浏览器和操作系统并不知道你会用get请求去做增操作）。</p>
-<p><span id='g31'></span></p>
+<p><span id='g32'></span></p>
 <h3 id="-">判断一个对象是否是数组</h3>
 <h4 id="1-instanceof">1.instanceof</h4>
 <p>A instanceof B 可以查看 B 的 prototype 指向的对象是否在对象 A 的[[prototype]]链上。</p>
@@ -893,7 +893,16 @@ Object.prototype.<span class="hljs-built_in">toString</span>.call(c);//<span cla
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">Object</span>.prototype.toString.call(arg) === <span class="hljs-string">'[object Array]'</span>;
   \};
 \}
-</code></pre><p><span id='g32'></span></p>
+</code></pre><p><span id='g33'></span></p>
+<h3 id="-">跨域</h3>
+<p>解决方法：</p>
+<ol>
+<li>JSONP</li>
+<li>CORS</li>
+<li>代理</li>
+<li>修改document.domain来跨子域</li>
+<li>window.postMessage实现iframe 跨域通信</li>
+</ol>
 `;
 
 class Index extends Component {

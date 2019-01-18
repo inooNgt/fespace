@@ -34,7 +34,7 @@ Guides:
 30. <a href="javascript:;" onclick="document.getElementById('g30').scrollIntoView();"> Object.assign 模拟实现</a>
 31. <a href="javascript:;" onclick="document.getElementById('g31').scrollIntoView();"> Http幂等性</a>
 32. <a href="javascript:;" onclick="document.getElementById('g32').scrollIntoView();"> 判断一个对象是否是数组</a>
-33. <a href="javascript:;" onclick="document.getElementById('g33').scrollIntoView();"> TCP三次握手、四次挥手</a>
+33. <a href="javascript:;" onclick="document.getElementById('g33').scrollIntoView();"> 跨域</a>
 
 <span id="g1"></span>
 
@@ -1091,7 +1091,7 @@ if(!Object.assign){
 }
 ```
 
-<span id='g30'></span>
+<span id='g31'></span>
 
 
 
@@ -1106,7 +1106,7 @@ if(!Object.assign){
 HTTP GET方法，用于获取资源，不管调用多少次接口，结果都不会改变，所以是幂等的；HTTP POST方法是一个非幂等方法，因为调用多次，都将产生新的资源。所以，GET和POST最大的区别主要是GET请求是幂等性的，POST请求不是。
 正因为它们有这样的区别，所以不应该且不能用get请求做数据的增删改这些有副作用的操作。因为get请求是幂等的，在网络不好的隧道中会尝试重试。如果用get请求增数据，会有重复操作的风险，而这种重复操作可能会导致副作用（浏览器和操作系统并不知道你会用get请求去做增操作）。
 
-<span id='g31'></span>
+<span id='g32'></span>
 
 
 
@@ -1174,8 +1174,18 @@ if (!Array.isArray) {
 }
 ```
 
-<span id='g32'></span>
 
 
 
 
+<span id='g33'></span>
+
+
+### 跨域
+
+解决方法：
+1. JSONP
+2. CORS
+3. 代理
+4. 修改document.domain来跨子域
+5. window.postMessage实现iframe 跨域通信
