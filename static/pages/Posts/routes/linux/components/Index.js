@@ -66,6 +66,9 @@ scp local_file <span class="hljs-string">remote_ip:</span>remote_file
 </ol>
 <pre><code class="lang-shell"><span class="hljs-attribute">  sudo ufw status somenumbered</span>
 </code></pre>
+<p>附： 在 window 查看远程端口是否开放</p>
+<pre><code class="lang-shell"><span class="hljs-attribute">telnet HOST PORT</span>
+</code></pre>
 <p>###三、按装 tar.gz 源码包</p>
 <pre><code class="lang-shell">wget http<span class="hljs-variable">s:</span>//www.xxx.<span class="hljs-keyword">com</span>/download/somepackge.tar.gz
 tar -zxvf somepackge.tar.gz
@@ -116,7 +119,10 @@ tar -zxvf somepackge.tar.gz
 <p>中间的|是管道命令 是指 ps 命令与 grep 同时执行</p>
 <h3 id="-">杀死进程</h3>
 <pre><code><span class="hljs-built_in">kill</span> pid
-</code></pre>`;
+</code></pre><h4 id="-">查看网络状态</h4>
+<pre><code class="lang-shell"><span class="hljs-attribute">sudo netstat -ntlup</span>
+</code></pre>
+`;
 
 class Index extends Component {
     constructor(props) {

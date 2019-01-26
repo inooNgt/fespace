@@ -44,7 +44,7 @@ const pages = [
     },
     {
         path: "/posts/promise",
-        name: "Promise顺序与并行执行异步任务"
+        name: "Promise"
     },
     {
         path: "/posts/routing-partition",

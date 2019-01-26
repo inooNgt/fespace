@@ -36,6 +36,8 @@ const article = `<h1 id="my-scattered-notes">My Scattered  Notes</h1>
 <li><a href="javascript:;" onclick="document.getElementById('g31').scrollIntoView();"> Http幂等性</a></li>
 <li><a href="javascript:;" onclick="document.getElementById('g32').scrollIntoView();"> 判断一个对象是否是数组</a></li>
 <li><a href="javascript:;" onclick="document.getElementById('g33').scrollIntoView();"> 跨域</a></li>
+<li><a href="javascript:;" onclick="document.getElementById('g34').scrollIntoView();"> Debounce and Throllte</a></li>
+<li><a href="javascript:;" onclick="document.getElementById('g35').scrollIntoView();"> Session and SessionStorage</a></li>
 </ol>
 <p><span id="g1"></span></p>
 <h3 id="1-undefined-and-null">1、undefined and null</h3>
@@ -703,11 +705,11 @@ it.next()
 <p>JavaScript 引擎内部的抽象操作 ToPrimitive() 有着这样的签名:</p>
 <pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-title">ToPrimitive</span><span class="hljs-params">(input，PreferredType?)</span></span>
 </code></pre>
-<p>可选参数 PreferredType 可以是 Number 或者 String。 它只代表了一个转换的偏好，转换结果不一定必须是这个参数所指的类型（汗），但转换结果一定是一个原始值。 如果 PreferredType 被标志为 Number，则会进行下面的操作来转换 input (§9.1):</p>
+<p>可选参数 PreferredType 可以是 Number 或者 String。 它只代表了一个转换的偏好，转换结果不一定必须是这个参数所指的类型，但转换结果一定是一个原始值。 如果 PreferredType 被标志为 Number，则会进行下面的操作来转换 input:</p>
 <ul>
 <li><p>如果 input 是个原始值，则直接返回它。</p>
 </li>
-<li><p>否则，如果 input 是一个对象。则调用 obj.valueOf() 方法。 如果返回值是一个原始值，则返回这个原始值。</p>
+<li><p>否则，如果 input 是一个对象。如果有obj。valueOf方法，则调用 obj.valueOf() 方法。 如果obj.valueOf()返回值是一个原始值，则返回这个原始值。</p>
 </li>
 <li><p>否则，调用 obj.toString() 方法。 如果返回值是一个原始值，则返回这个原始值。</p>
 </li>
@@ -903,6 +905,86 @@ Object.prototype.<span class="hljs-built_in">toString</span>.call(c);//<span cla
 <li>修改document.domain来跨子域</li>
 <li>window.postMessage实现iframe 跨域通信</li>
 </ol>
+<p><span id='g34'></span></p>
+<h3 id="debounce-and-throllte">Debounce and Throllte</h3>
+<p>Debounce 和 Throllte都是用来防止函数被高频调用的函数，但二者又有所不同：</p>
+<ul>
+<li>Debounce被称为防抖函数，debounce(fn,wait)会等待wait时间间隔后执行fn,若wait期间debounce被调用，则重新计时(fn不会被执行)</li>
+<li>Throttle被成为节流函数，throttle(fn,wait)在wait时间间隔内至多执行一次fn</li>
+</ul>
+<h4 id="-">简单的实现</h4>
+<p>Debounce：</p>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">debounce</span>(<span class="hljs-params">fn,wait</span>)</span>\{
+
+  <span class="hljs-keyword">var</span> timer;
+
+  <span class="hljs-keyword">var</span> result=<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>\{
+    <span class="hljs-keyword">var</span> args=<span class="hljs-built_in">Array</span>.prototype.slice.call(<span class="hljs-built_in">arguments</span>);
+    <span class="hljs-keyword">var</span> context=<span class="hljs-keyword">this</span>
+
+    clearTimeout(timer)
+
+    timer=setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>\{
+      fn.apply(<span class="hljs-keyword">this</span>,args)
+    \},wait)
+  \}
+
+  <span class="hljs-keyword">return</span> result
+\}
+</code></pre>
+<p>Throttle:</p>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">throttle</span>(<span class="hljs-params">fn,wait</span>)</span>\{
+
+  <span class="hljs-keyword">var</span> timer;
+  <span class="hljs-keyword">var</span> lastTime=<span class="hljs-number">0</span>;
+  <span class="hljs-keyword">var</span> result=<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>\{
+    <span class="hljs-keyword">var</span> currTime=<span class="hljs-built_in">Date</span>.now();
+    <span class="hljs-keyword">var</span> args=<span class="hljs-built_in">Array</span>.prototype.slice.call(<span class="hljs-built_in">arguments</span>);
+    <span class="hljs-keyword">var</span> context=<span class="hljs-keyword">this</span>
+
+    <span class="hljs-keyword">if</span>(currTime-lastTime&gt;=wait)\{
+      lastTime=currTime
+      <span class="hljs-keyword">return</span>  fn.apply(<span class="hljs-keyword">this</span>,args)
+    \}<span class="hljs-keyword">else</span>\{
+      clearTimeout(timer)
+
+       <span class="hljs-comment">// 保证在当前时间区间结束后，再执行一次 fn</span>
+      timer=setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>\{
+        <span class="hljs-comment">// lastTime=Date.now() //? or currTime</span>
+        fn.apply(<span class="hljs-keyword">this</span>,args)
+      \},wait)
+    \}
+  \}
+
+  <span class="hljs-keyword">return</span> result
+\}
+
+</code></pre>
+<p><span id='g35'></span></p>
+<h3 id="session-and-sessionstorage">Session and SessionStorage</h3>
+<p>sSession是服务器端使用的一种记录客户端状态的机制。客户端浏览器访问服务器的时候，服务器把客户端信息以某种形式记录在服务器上，这就是Session。客户端浏览器再次访问时只需要从该Session中查找该客户的状态就可以了。session的存储方式也有多样，最为传统的就是服务端(内存或者数据库)保存session的内容，客户端浏览器cookie保存sessionid，服务端通过客户端每次http请求带上的cookie中的sessionid去找到对应此用户的session内容。</p>
+<h4 id="session-">Session与客户端</h4>
+<p>虽然Session保存在服务器，对客户端是透明的，它的正常运行仍然需要客户端浏览器的支持。这是因为Session需要使用Cookie作为识别标志。HTTP协议是无状态的，Session不能依据HTTP连接来判断是否为同一客户，因此服务器向客户端浏览器发送一个名为JSESSIONID 的Cookie，它的值为该Session的id。Session依据该Cookie来识别是否为同一用户。</p>
+<p>该Cookie为服务器自动生成的，它的maxAge属性一般为-1，表示仅当前浏览器内有效，并且各浏览器窗口间不共享，关闭浏览器就会失效。因此同一机器的两个浏览器窗口访问服务器时，会生成两个不同的Session。但是由浏览器窗口内的链接、脚本等打开的新窗口除外。这类子窗口会共享父窗口的Cookie，因此会共享一个Session。</p>
+<h4 id="session-">Session的有效期</h4>
+<p>Session生成后，只要用户继续访问，服务器就会更新Session的最后访问时间，并维护该Session 。用户每访问服务器一次，无论是否读写Session，服务器都认为该用户的Session&quot;活跃（active）&quot;了一次。</p>
+<p>由于会有越来越多的用户访问服务器，因此Session也会越来越多。为防止内存溢出，服务器会把长时间内没有活跃的Session从内存删除。这个时间就是Session的超时时间 。如果超过了超时时间没访问过服务器，Session就自动失效了。</p>
+<h4 id="sessionstorage">SessionStorage</h4>
+<p>SessionStorage HTML5 Web 存储中的一种， 用于临时保存同一窗口(或标签页)的数据，在关闭窗口或标签页之后将会删除这些数据。
+HTML5 Web 存储的数据不会被保存在服务器上，只用于客户端上，可以存储大量的数据，而不影响网站的性能。</p>
+<p>SessionStorage 特点</p>
+<ul>
+<li>同源策略限制。若想在不同页面之间对同一个sessionStorage进行操作，这些页面必须同源。</li>
+<li>本地存储。seesionStorage的数据不会跟随HTTP请求一起发送到服务器，只会在本地生效，并在关闭标签页后清除数据。</li>
+<li>存储方式。seesionStorage的存储方式采用key、value的方式。</li>
+<li>存储上限限制：不同的浏览器存储的上限也不一样，但大多数浏览器把上限限制在5MB以下。</li>
+</ul>
+<h4 id="-localstorage-">与localStorage的区别</h4>
+<p>localStorage的同源策略限制、本地存储、存储方式、存储上限限制和SessionStorage相同，区别在于：</p>
+<ul>
+<li>SessionStorage 临时保存同一窗口(或标签页)的数据，在关闭窗口或标签页之后将会删除这些数据；LocalStorage可以永久保存数据。</li>
+<li>SessionStorage 只适用于同一个标签页，其他标签页内无法直接共享（除非在同源标签之间访问其他窗口）；LocalStorage相比而言可以在多个标签页中共享数据。</li>
+</ul>
 `;
 
 class Index extends Component {

@@ -82,6 +82,12 @@ sudo ufw allow from 55.56.57.58
   sudo ufw status somenumbered
 ```
 
+附： 在 window 查看远程端口是否开放
+
+```shell
+telnet HOST PORT
+```
+
 ###三、按装 tar.gz 源码包
 
 ```shell
@@ -147,4 +153,10 @@ ps -ef |grep nginx
 
 ```
 kill pid
+```
+
+#### 查看网络状态
+
+```shell
+sudo netstat -ntlup
 ```
