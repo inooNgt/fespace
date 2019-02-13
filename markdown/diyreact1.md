@@ -4,9 +4,9 @@
 
 一种更深刻理解 React 的方法是动手实现它，如果忽略一些细节，只关注 React 的主要结构和特性，实现一个 React 还是比较简单的。
 
-实现一个简单的 React，这就是我们接下来要做的事情，可以把即将要实现的库称为 SimpleReact。
+实现一个简单的 React，这就是我们接下来要做的事情，可以把即将要实现的库称为 MyReact。
 
-先来看一下目标，我们要用 SimpleReact 写的代码：
+先来看一下目标，我们要用 MyReact 写的代码：
 
 ```javascript
 const posts = [
@@ -16,11 +16,11 @@ const posts = [
     { name: "Post4" }
 ];
 
-class App extends SimpleReact.Component {
+class App extends MyReact.Component {
     render() {
         return (
             <div>
-                <h1>SimpleReact Posts</h1>
+                <h1>MyReact Posts</h1>
                 <ul>
                     {this.props.posts.map(story => {
                         return <Story name={story.name} />;
@@ -31,7 +31,7 @@ class App extends SimpleReact.Component {
     }
 }
 
-class Story extends SimpleReact.Component {
+class Story extends MyReact.Component {
     constructor(props) {
         super(props);
         this.state = { likesCount: Math.ceil(Math.random() * 100) };
@@ -56,10 +56,10 @@ class Story extends SimpleReact.Component {
     }
 }
 
-SimpleReact.render(<App posts={posts} />, document.getElementById("root"));
+MyReact.render(<App posts={posts} />, document.getElementById("root"));
 ```
 
-SimpleReact 要实现的功能有：
+MyReact 要实现的功能有：
 
 1. 用 JSX 创建 DOM 元素
 2. 渲染 DOM 元素
