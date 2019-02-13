@@ -11,7 +11,7 @@ Guides:
 7.  <a href="javascript:;" onclick="document.getElementById('g7').scrollIntoView();"> Thunk 函数</a>
 8.  <a href="javascript:;" onclick="document.getElementById('g8').scrollIntoView();"> this 指向</a>
 9.  <a href="javascript:;" onclick="document.getElementById('g9').scrollIntoView();"> Cookie</a>
-10. <a href="javascript:;" onclick="document.getElementById('g10').scrollIntoView();"> 快速排序</a>
+10. <a href="javascript:;" onclick="document.getElementById('g10').scrollIntoView();"> 排序算法</a>
 11. <a href="javascript:;" onclick="document.getElementById('g11').scrollIntoView();"> 执行上下文(Execution Context)</a>
 12. <a href="javascript:;" onclick="document.getElementById('g12').scrollIntoView();"> Promise 的实现</a>
 13. <a href="javascript:;" onclick="document.getElementById('g13').scrollIntoView();"> 闭包</a>
@@ -37,6 +37,7 @@ Guides:
 33. <a href="javascript:;" onclick="document.getElementById('g33').scrollIntoView();"> 跨域</a>
 34. <a href="javascript:;" onclick="document.getElementById('g34').scrollIntoView();"> Debounce and Throllte</a>
 35. <a href="javascript:;" onclick="document.getElementById('g35').scrollIntoView();"> Session and SessionStorage</a>
+36. <a href="javascript:;" onclick="document.getElementById('g36').scrollIntoView();"> Bind的实现</a>
 
 <span id="g1"></span>
 
@@ -312,7 +313,9 @@ Session:
 
 
 
-### 10、快速排序
+### 10、排序算法
+
+#### 快速排序
 
 算法思想：
 
@@ -343,6 +346,68 @@ quickSort = (arr)=> {
 
 quickSort([3,5,0,2,4,8,1,9,7,6,2])
 ```
+
+#### 冒泡排序
+
+算法思想：
+对相邻的元素进行两两比较，顺序相反则进行交换，这样，每一趟会将最小或最大的元素“浮”到顶端，最终达到完全有序。就好像一串气泡一样，最终从小到大或从大到小依次排下来。
+
+对于一个长度为n的数组，需要进行n-1轮冒泡操作，才能完全确保排序完成，时间复杂度为O(n^2)。
+
+代码实现：
+```javascript
+function BubbleSort(arr){
+
+  if(Object.prototype.toString.call(arr) !=='[object Array]'){
+  	throw TypeError('argument type error!')
+	}
+    for(var i=0;i<arr.length;i++){
+        for(var j=0;j<arr.length-i-1;j++){
+          if(arr[j]>arr[j+1]){
+            [arr[j],arr[j+1]]=[arr[j+1],arr[j]]
+          }
+        }
+    }
+  return arr 
+}
+
+```
+
+#### 归并排序
+
+“归并”的意思是将两个或两个以上的有序表组合成一个新的有序表。假如初始序列含有n个记录，则可看成是n个有序的子序列，每个子序列的长度为1，然后两两归并，得到[n/2]（向上取整）个长度为2或1的有序子序列；再两两归并，……，如此重复，直到得到一个长度为n的有序序列为止，这种排序方法称为2-路归并排序。
+
+步骤解析：
+1. 把长度为n的输入序列分成两个长度为n/2的子序列；
+2. 对这两个子序列继续分为m/2的子序列，一直分下去，直为1个元素；
+3. 将两个排序好的子序列合并成一个最终的排序序列。
+
+```javascript
+function merge(left, right) {
+  var tmp = [];
+
+  while (left.length && right.length) {
+    if (left[0] < right[0])
+      tmp.push(left.shift());
+    else
+      tmp.push(right.shift());
+  }
+
+  return tmp.concat(left, right);
+}
+
+function mergeSort(a) {
+  if (a.length === 1) 
+    return a;
+
+  var mid = ~~(a.length / 2)
+    , left = a.slice(0, mid)
+    , right = a.slice(mid);
+
+  return merge(mergeSort(left), mergeSort(right));
+}
+```
+
 
 <span id="g11"></span>
 
@@ -1191,6 +1256,46 @@ if (!Array.isArray) {
 3. 代理
 4. 修改document.domain来跨子域
 5. window.postMessage实现iframe 跨域通信
+在HTML5中，Window.postMessage() 方法可以安全地实现跨源通信。通常，对于两个不同页面的脚本，只有当执行它们的页面位于具有相同的协议（通常为https），端口号（443为https的默认值），以及主机  (两个页面的模数 Document.domain设置为相同的值) 时，这两个脚本才能相互通信。window.postMessage() 方法提供了一种受控机制来规避此限制，只要正确的使用，这种方法就很安全。
+
+Window.postMessage有三个参数，message、targetOrigin和可选的[transfer])，其中message代表将要发送到其他窗口的数据，targetOrigin表示接收数据消息的目标窗口，transfer代表消息的所有权。另外还有一个window.addEventListener(“message”, receiveMessage, false)，用以监听消息数据的反馈，其中的message就存在data、origin和source三个属性，origin属性表示消息数据发送方的身份，只有和原来指定发送方的协议、域名或端口一致，才能建立通信。具体请参考 postMessage的详细介绍。
+
+实例：
+
+index.html（http://localhost:1234）
+```html
+<script type="text/javascript">
+  // 页面加载完后才能获取dom节点（iframe）
+  window.onload = function(){
+    // 向目标源发送数据
+    document.getElementsByTagName('iframe')[0].contentWindow.postMessage({"age":10}, '*');
+    // window.frames[0].contentWindow.postMessage({"age":10}, '*');
+  };
+
+  // 监听有没有数据发送过来
+  window.addEventListener('message', function(e) {
+      console.log('parent received:',e);
+  });
+</script>
+<iframe src="http://localhost:1235" name='frame'></iframe>
+```
+child.html（http://localhost:1235）
+```html
+<script type="text/javascript">
+  // 监听有没有数据发送过来
+  window.addEventListener('message', function(e){
+      // 判断数据发送方是否是可靠的地址
+      if(e.origin !== 'http://localhost:1234')
+        return;
+    // 打印数据格式
+    console.log('child received',e);
+    // 回发数据
+    e.source.postMessage('hello world', e.origin);
+  }, false);
+</script>
+```
+
+
 
 <span id='g34'></span>
 
@@ -1232,7 +1337,7 @@ function throttle(fn,wait){
   var timer;
   var lastTime=0;
   var result=function(){
-	var currTime=Date.now();
+    var currTime=Date.now();
     var args=Array.prototype.slice.call(arguments);
     var context=this
 	
@@ -1271,8 +1376,6 @@ Session生成后，只要用户继续访问，服务器就会更新Session的最
 
 由于会有越来越多的用户访问服务器，因此Session也会越来越多。为防止内存溢出，服务器会把长时间内没有活跃的Session从内存删除。这个时间就是Session的超时时间 。如果超过了超时时间没访问过服务器，Session就自动失效了。
 
-
-
 #### SessionStorage
 SessionStorage HTML5 Web 存储中的一种， 用于临时保存同一窗口(或标签页)的数据，在关闭窗口或标签页之后将会删除这些数据。
 HTML5 Web 存储的数据不会被保存在服务器上，只用于客户端上，可以存储大量的数据，而不影响网站的性能。
@@ -1289,3 +1392,34 @@ localStorage的同源策略限制、本地存储、存储方式、存储上限�
 
 - SessionStorage 临时保存同一窗口(或标签页)的数据，在关闭窗口或标签页之后将会删除这些数据；LocalStorage可以永久保存数据。
 - SessionStorage 只适用于同一个标签页，其他标签页内无法直接共享（除非在同源标签之间访问其他窗口）；LocalStorage相比而言可以在多个标签页中共享数据。
+
+
+### Bind 的实现
+
+<span id='g36'></span>
+
+注意：
+1. 传入context为null、undefined等无效值，通过apply(context)将this绑定到全局变量
+2. 必须通过函数调用bind，否则产生TypeError
+3. 参数的处理，合并参数 args.concat(...arguments)
+4. 函数返回值的处理，'return fn.apply()'
+5. 通过new调用bind返回的函数时，需要返回被调用的函数的实例
+
+```javascript
+Function.prototype._bind=function(context){
+	if(typeof this !=='function'){
+		throw TypeError("argument error")
+	}
+	var fn=this
+	var args=Array.prototype.slice.call(arguments).slice(1)
+
+  return function F(){
+
+    //通过new调用bind返回的函数，返回fn的实例
+    if(this instanceof F){
+      return new fn(...args,...arguments)
+    }	
+    return fn.apply(context,args.concat(...arguments))
+  }
+}
+```
