@@ -15,14 +15,14 @@ Guides:
 11. <a href="javascript:;" onclick="document.getElementById('g11').scrollIntoView();"> 执行上下文(Execution Context)</a>
 12. <a href="javascript:;" onclick="document.getElementById('g12').scrollIntoView();"> Promise 的实现</a>
 13. <a href="javascript:;" onclick="document.getElementById('g13').scrollIntoView();"> 闭包</a>
-14. <a href="javascript:;" onclick="document.getElementById('g14').scrollIntoView();"> 事件捕获 vs 事件冒泡</a>
+14. <a href="javascript:;" onclick="document.getElementById('g14').scrollIntoView();"> DOM事件</a>
 15. <a href="javascript:;" onclick="document.getElementById('g15').scrollIntoView();"> 服务端渲染</a>
 16. <a href="javascript:;" onclick="document.getElementById('g16').scrollIntoView();"> 浮点数知识</a>
 17. <a href="javascript:;" onclick="document.getElementById('g17').scrollIntoView();"> const 、let、块级作用域</a>
 18. <a href="javascript:;" onclick="document.getElementById('g18').scrollIntoView();"> DocumentFragment</a>
 19. <a href="javascript:;" onclick="document.getElementById('g19').scrollIntoView();"> 同源策咯</a>
 20. <a href="javascript:;" onclick="document.getElementById('g20').scrollIntoView();"> 事件循环</a>
-21. <a href="javascript:;" onclick="document.getElementById('g21').scrollIntoView();"> https 过程</a>
+21. <a href="javascript:;" onclick="document.getElementById('g21').scrollIntoView();"> https/http2</a>
 22. <a href="javascript:;" onclick="document.getElementById('g22').scrollIntoView();"> 订阅/发布模式（subscribe&publish）</a>
 23. <a href="javascript:;" onclick="document.getElementById('g23').scrollIntoView();"> vue 双向数据绑定实现原理</a>
 24. <a href="javascript:;" onclick="document.getElementById('g24').scrollIntoView();"> 函数模拟 A instanceof B</a>
@@ -38,6 +38,10 @@ Guides:
 34. <a href="javascript:;" onclick="document.getElementById('g34').scrollIntoView();"> Debounce and Throllte</a>
 35. <a href="javascript:;" onclick="document.getElementById('g35').scrollIntoView();"> Session and SessionStorage</a>
 36. <a href="javascript:;" onclick="document.getElementById('g36').scrollIntoView();"> Bind的实现</a>
+37. <a href="javascript:;" onclick="document.getElementById('g37').scrollIntoView();"> 内存管理</a>
+38. <a href="javascript:;" onclick="document.getElementById('g38').scrollIntoView();"> 水平垂直居中方案</a>
+39. <a href="javascript:;" onclick="document.getElementById('g39').scrollIntoView();"> CSS三列布局</a>
+40. <a href="javascript:;" onclick="document.getElementById('g40').scrollIntoView();"> HTTP缓存</a>
 
 <span id="g1"></span>
 
@@ -227,7 +231,7 @@ str.replace(/(?<=<pre><code>)[\s\S]*?(?=<\/code><\/pre>)/gi, 'asdf');  // 替换
 
 #### Vue
 
--   父子组件用 Props 通信
+-   父子组件用 Props 通信,父->子直接用 Props,子->父用$emit触发事件
 -   非父子组件用 Event Bus 通信
 -   如果项目够复杂,可能需要 Vuex 等全局状态管理库通信
 -   $dispatch(已经废除)和$broadcast(已经废除)
@@ -237,7 +241,7 @@ str.replace(/(?<=<pre><code>)[\s\S]*?(?=<\/code><\/pre>)/gi, 'asdf');  // 替换
 -   父子组件,父->子直接用 Props,子->父用 callback 回调
 -   非父子组件,用发布订阅模式的 Event 模块
 -   项目复杂的话用 Redux、Mobx 等全局状态管理管库
--   用新的 Context Api
+-   使用 Context API(getChildContext/contextTyps)
 
 <span id="g7"></span>
 
@@ -647,14 +651,16 @@ p1.then(res=>{
 
 
 
-### 14、事件捕获 vs 事件冒泡
+### 14、DOM事件
+
+#### 事件冒泡 vs 事件捕获
 
 -   事件冒泡：事件从内层元素开始触发，向外层传播，直到 document。
 -   事件捕获：事件从外层元素（document）开始触发，向内层传播，直到 目标元素（target）。
 
 事件冒泡是由微软提出的，而事件捕获是由网景公司提出的，后来 w3c 制定了统一的方案：先捕获再冒泡。
 
-对于当事件捕获和事件冒泡一起存在的情况，事件触发过程如下：
+对于当事件捕获和事件冒泡一起存在的情况，事件传播过程如下：
 
 1.  document 往 target 节点，捕获前进，遇到注册的捕获事件立即触发执行
 
@@ -662,7 +668,49 @@ p1.then(res=>{
 
 3.  target 节点 往 document 方向，冒泡前进，遇到注册的冒泡事件立即触发
 
-事件捕获与事件冒泡的用用--事件代理
+事件捕获与事件冒泡的应用--事件委托,即利用事件冒泡原理，让节点的父级代为执行事件。
+
+#### DOM0级、2级事件
+
+DOM0级:
+```javascript 
+btn.onclick = function(event){
+   console.log(event);  //  事件对象
+}
+```
+DOM0级可以认为onclick是btn的一个属性。
+
+事件对象常用的方法：event.preventDefault() 和 event.stopPropagation()。
+
+- preventDefault() 阻止事件的默认行为
+
+- stopPropagation() 阻止事件传播（捕获阶段已发生，实际上是阻止事件外层冒泡）
+
+W3C后来将DOM1升级为DOM2，DOM2级规范开始尝试以一种符合逻辑的方式来标准化DOM事件。
+DOM2级则将属性升级为队列。
+
+DOM2级事件定义了两个方法，用于处理指定和删除事件处理程序的操作，addEventListener()和removeEventListener()，所有的DOM节点中都包含这两个方法：
+
+```javascript 
+target.addEventListener(type, listener[, options]);
+target.addEventListener(type, listener[, useCapture]);
+
+target.removeEventListener(type, listener[, options]);
+target.removeEventListener(type, listener[, useCapture]);
+```
+
+- type事件名
+- listener事件处理程序函数
+- useCapture，指定事件是否在捕获或冒泡阶段执行，默认false。
+- options.passive  A Boolean which, if true, indicates that the function specified by listener will never call preventDefault(). 
+
+DOM2级:
+```javascript 
+btn.addEventListener('click',function(event){
+   console.log(event);
+},false)
+```
+
 
 <span id="g15"></span>
 
@@ -833,9 +881,11 @@ https://zhuanlan.zhihu.com/p/33058983
 
 
 
-### https 过程
+### https/http2
 
-客户端和服务器握手过程大致如下:
+#### SSL
+
+SSL协议的握手过程:
 第一步，客户端给出协议版本号、一个客户端生成的随机数（Client random），以及客户端支持的加密方法。
 
 第二步，服务器确认双方使用的加密方法，并给出数字证书、以及一个服务器生成的随机数（Server random）。
@@ -847,6 +897,22 @@ https://zhuanlan.zhihu.com/p/33058983
 第五步，客户端和服务器根据约定的加密方法，使用前面的三个随机数，生成"对话密钥"（session key），用来加密接下来的整个对话过程。
 
 参考[图解 SSL/TLS 协议](http://www.ruanyifeng.com/blog/2014/09/illustration-ssl.html)
+
+#### HTTP2 新特性
+1. 二进制分帧层
+  帧是数据传输的最小单位，以二进制传输代替原本的明文传输，原本的报文消息被划分为更小的数据帧
+
+2. 多路复用
+  在一个 TCP 连接上，我们可以向对方不断发送帧，每帧的 stream identifier 的标明这一帧属于哪个流，然后在对方接收时，根据 stream identifier 拼接每个流的所有帧组成一整块数据。
+  把 HTTP/1.1 每个请求都当作一个流，那么多个请求变成多个流，请求响应数据分成多个帧，不同流中的帧交错地发送给对方，这就是 HTTP/2 中的多路复用。
+
+3. 服务端推送  
+
+浏览器发送一个请求，服务器主动向浏览器推送与这个请求相关的资源，这样浏览器就不用发起后续请求。
+
+4. Header 压缩 (HPACK)
+
+   使用 HPACK 算法来压缩首部内容
 <span id="g22"></span>
 
 
@@ -1035,7 +1101,9 @@ Number(obj)
 
 
 ### BFC
-在解释BFC之前，先说一下文档流。我们常说的文档流其实分为定位流、浮动流和普通流三种。而普通流其实就是指BFC中的FC。FC是formatting context的首字母缩写，直译过来是格式化上下文，它是页面中的一块渲染区域，有一套渲染规则，决定了其子元素如何布局，以及和其他元素之间的关系和作用。常见的FC有BFC、IFC，还有GFC和FFC。BFC是block formatting context，也就是块级格式化上下文，是用于布局块级盒子的一块渲染区域.
+在解释BFC之前，先说一下文档流。我们常说的文档流其实分为定位流、浮动流和普通流三种。而普通流其实就是指BFC中的FC。FC是formatting context的首字母缩写，
+直译过来是格式化上下文，它是页面中的一块渲染区域，有一套渲染规则，决定了其子元素如何布局，以及和其他元素之间的关系和作用。常见的FC有BFC、IFC，还有GFC和FFC。
+BFC是block formatting context，也就是块级格式化上下文，是用于布局块级盒子的一块渲染区域.
 
  
 
@@ -1053,14 +1121,14 @@ Number(obj)
 
 
 BFC布局规则：
-1. 内部的box会在垂直方向一个接一个地放置
+1. 内部的盒子(box)会在垂直方向一个接一个地放置
 2. box垂直方向的距离由margin决定，属于同一个BFC的两个相邻box的margin会发生重叠
 3. 每个元素margin box左边，与包含块border box的左边相接触（对于从左向右的格式化，否则相反），即使存在浮动也是如此
 4. BFC的区域不会与float box重叠
 5. BFC是页面上的一个隔离的独立容器，容器里面的子元素不会影响到外面的元素
 6. 计算BFC高度时，浮动元素也参与计算
 
-[更多内容](https://www.jianshu.com/p/580b28878630)
+[更多内容](https://www.w3cplus.com/css/understanding-bfc-and-margin-collapse.html)
 
 <span id="g29"></span>
 
@@ -1423,3 +1491,274 @@ Function.prototype._bind=function(context){
   }
 }
 ```
+<span id='g37'></span>
+
+
+### 内存管理
+
+#### 内存生命周期
+
+1. 分配你所需要的内存
+2. 使用分配到的内存（读、写）
+3. 不需要时将其释放\归还
+
+
+#### 垃圾回收
+
+##### 引用计数垃圾收集
+
+这是最初级的垃圾收集算法。此算法把“对象是否不再需要”简化定义为“对象有没有其他对象引用到它”。如果没有引用指向该对象（零引用），对象将被垃圾回收机制回收。
+
+这个算法的缺点是不能解决循环引用的问题，于是有了标记-清除算法。
+
+##### 标记-清除算法
+
+这个算法假定设置一个叫做根（root）的对象（在Javascript里，根是全局对象）。垃圾回收器将定期从根开始，找所有从根开始引用的对象，然后找这些对象引用的对象……从根开始，垃圾回收器将找到所有可以获得的对象和收集所有不能获得的对象。
+
+这个算法的缺点: 那些无法从根对象查询到的对象都将被清除。
+
+### 回收规则
+
+标记-清除算法是现代浏览器所采用的算法，根据标记-清除算法可以总结出代码回收的规则：
+
+1.全局变量不会被回收。
+
+2.局部变量会被回收，也就是函数一旦运行完以后，函数内部的东西都会被销毁。
+
+3.只要被另外一个作用域所引用就不会被回收
+
+<span id='g37'></span>
+
+### 水平垂直居中方案
+
+html结构：
+```html
+<div class='wrap'>
+  <div class='box'></div>
+</div>
+```
+
+#### 定宽高
+
+1. absolute+负margin
+2. absolute+transform
+3. absolute+calc
+4. absolute+margin auto
+
+css代码：
+```css
+.wrap{
+  width:300px;
+  height:300px;
+  position:relative;
+}
+.box{
+  width:100px;
+  height:100px;
+  position:absolute;
+  }
+/* absolute+负margin  */
+.box{
+  top:50%;
+  left:50%;
+  margin-left:-50px;
+  margin-top:-50px;
+}
+/* absolute+transform  */
+.box{
+  top:50%;
+  left:50%;
+  translate:transform(-50%,-50%);
+}
+/* absolute+calc  */
+.box{
+  left:calc(50%-50px);
+  top:calc(50%-50px);
+}
+/* absolute+margin auto */
+.box{
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
+  margin:auto;
+}
+```
+
+
+#### 不定宽高
+1. absolute + transform（与定宽高相同）
+
+2. flex 
+
+3. css-table
+
+4. lineheight
+
+```css
+/*flex*/
+.wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+/*css-table*/
+.wrap{
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+}
+.box {
+    display: inline-block;
+}
+/*lineheight*/
+.wp {
+    line-height: 300px;
+    text-align: center;
+    font-size: 0px;
+}
+.box {
+    font-size: 16px;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: initial;
+    text-align: left; /* 修正文字 */
+}
+
+```
+
+其他兼容性较差的方案：writing-mode、grid
+
+<span id='g39'></span>
+
+### CSS三列布局
+
+
+实现一个左右宽度固定，中间自适应的三列布局。
+
+#### 1.absolute
+
+```css
+  .container{
+    position: relative;
+  }
+  .left,.right{
+    background: blue;
+    width:200px;
+    position: absolute;
+    top:0;
+  }
+  .left{
+    left:0;
+  }
+  .right{
+    right:0;
+  }
+  .center{
+    background: green;
+    margin:0 200px;
+  }
+```
+
+```html 
+  <div class="container">
+    <div class='left'>左右定宽</div>
+    <div class='main'>中间自适应</div>
+    <div class='right'>左右定宽</div>
+  </div>
+```
+
+
+
+#### 2.flex
+
+```css
+.container{
+  display: flex;
+}
+.left,.right{
+  background: blue;
+  width:200px;
+  flex: 0 0 auto;
+}
+.center{
+  background: green;
+  flex:1 1 auto;
+}
+```
+
+```html 
+  <div class="container">
+    <div class='left'>左右定宽</div>
+    <div class='main'>中间自适应</div>
+    <div class='right'>左右定宽</div>
+  </div>
+```
+
+#### 3.BFC+ float
+
+优先渲染左右两列，中间列使用overflow: hidden触发BFC防止文字环绕。
+```css
+  .left,.right{
+    width:200px;
+    background: blue;
+  }
+
+  .left{
+    float:left;
+  }    	
+  .right{
+    float:right;
+  }
+  .center{
+    background: green;
+    overflow: hidden;
+    margin:auto;
+  }
+```
+#### 5.双飞翼布局
+
+```css
+	.container{
+      position: relative;
+      overflow: hidden;
+    }
+    .left,.right{
+      background: blue;
+      width:200px;
+    }
+    .left{
+      float:left;
+      margin-left:-100%;
+    }
+    .right{
+      float:left;
+      margin-left:-200px;
+    }
+    .center{
+      float:left;
+      width:100%;
+    }
+  .content{
+    margin:0 200px;
+    background: green;
+  }
+```
+
+```html
+  <div class="container">
+    <div class='center'>
+     <div class="content">中间自适应</div>
+ 	</div>
+    <div class='left'>左右定宽</div>
+    <div class='right'>左右定宽</div>
+  </div>
+```
+
+<span id='g40'></span>
+
+#### HTTP缓存
+
+
+
+https://imweb.io/topic/5795dcb6fb312541492eda8c
