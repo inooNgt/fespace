@@ -5,7 +5,7 @@ Guides:
 1.  <a href="javascript:;" onclick="document.getElementById('g1').scrollIntoView();">undefined and null</a>
 2.  <a href="javascript:;" onclick="document.getElementById('g2').scrollIntoView();">浏览器 Event loop 事件循环</a>
 3.  <a href="javascript:;" onclick="document.getElementById('g3').scrollIntoView();">对象深拷贝</a>
-4.  <a href="javascript:;" onclick="document.getElementById('g4').scrollIntoView();"> JSONP 跨域原理及 CORS</a>
+4.  <a href="javascript:;" onclick="document.getElementById('g4').scrollIntoView();"> DNS 劫持及HTTP劫持</a>
 5.  <a href="javascript:;" onclick="document.getElementById('g5').scrollIntoView();"> 正则表达式之后向引用</a>
 6.  <a href="javascript:;" onclick="document.getElementById('g6').scrollIntoView();"> React/Vue 不同组件之间的通信方式</a>
 7.  <a href="javascript:;" onclick="document.getElementById('g7').scrollIntoView();"> Thunk 函数</a>
@@ -42,6 +42,7 @@ Guides:
 38. <a href="javascript:;" onclick="document.getElementById('g38').scrollIntoView();"> 水平垂直居中方案</a>
 39. <a href="javascript:;" onclick="document.getElementById('g39').scrollIntoView();"> CSS三列布局</a>
 40. <a href="javascript:;" onclick="document.getElementById('g40').scrollIntoView();"> HTTP缓存</a>
+41. <a href="javascript:;" onclick="document.getElementById('g41').scrollIntoView();"> JSBridge</a>
 
 <span id="g1"></span>
 
@@ -144,40 +145,70 @@ const clone = obj => {
 
 
 
-### 4、 JSONP 跨域原理及 CORS
+### 4、 DNS 劫持 HTTP劫持
 
-#### JSONP
+#### DNS 劫持
 
-在同源策略下，在某个服务器下的页面是无法获取到该服务器以外的数据的，但 img、iframe、script 等标签是个例外，这些标签可以通过 src 属性请求到其他服务器上的数据。利用 script 标签的开放策略，我们可以实现跨域请求数据，当然，也需要服务端的配合。当我们正常地请求一个 JSON 数据的时候，服务端返回的是一串 JSON 类型的数据，而我们使用 JSONP 模式来请求数据的时候，服务端返回的是一段可执行的 JavaScript 代码,而这段代码可以包含数据。例如：
+DNS劫持又称域名劫持，是通过劫持技术修改域名注册信息，修改DNS解析，劫持修改域名解析结果。使访问域名的用户不能够准确达到目标站点，而进入指定站点。
 
-客户端请求,并指定回调函数的名字：
+例如：
 
-```
-function appendScript(src){
-    let script=document.createElement("script");
-    script.src=src;
-    document.appendChild(script)
-}
+1. 用户计算机感染病毒，该病毒在操作系统中HOSTS文件中添加了虚假的DNS解析记录，因为系统本地的DNS解析记录高于DNS服务器，操作系统在访问域名的时候都会先行检测本地DNS解析记录，然后在访问DNS服务器。
 
-function somefun(data){
-    console.log("data:",data)
-}
+2. 用户试图访问的网站被攻击这击破，并在网站中植入路由DNS劫持代码，当用户访问网站，浏览器就是自动执行路由DNS劫持代码，用户路由器如果存在漏洞就会中招，导致用户上网流量被假DNS服务器劫持，出现广告，各种奇怪现象。
 
-appdendScript("http://a.com&callback=somefun");
-```
+3. 当用户打开浏览器主页的时候，却出现ISP提供的定向页面，广告页面等内容页面
 
-服务端返回 Javascript 代码：
+4. 用户在浏览器中输入了错误的域名，导致DNS查询不存在的记录。以前遇到这种情况，浏览器通常会返回一个错误提示。而最近，这种情况下用户会看到ISP设置的域名纠错系统提示。，广告页面等内容页面。
 
-```
-"somefun({key:somevalue});"
-```
+5. 用户想通过该网址访问A网站结果却指向了B网站。
 
-#### CORS
+如何防范DNS劫持：
 
-跨域资源共享标准新增了一组 HTTP 首部字段，允许服务器声明哪些源站有权限访问哪些资源。另外，规范要求，对那些可能对服务器数据产生副作用的 HTTP 请求方法（特别是 GET 以外的 HTTP 请求，或者搭配某些 MIME 类型的 POST 请求），浏览器必须首先使用 OPTIONS 方法发起一个预检请求（preflight request），从而获知服务端是否允许该跨域请求。服务器确认允许之后，才发起实际的 HTTP 请求。在预检请求的返回中，服务器端也可以通知客户端，是否需要携带身份凭证（包括 Cookies 和 HTTP 认证相关数据）。
+第一：使用安全稳定可靠的DNS服务器，并且及时升级，更新补丁，加固服务器。
+
+第二：保护好域名注册的账号信息。增加域名账号密码的复杂性。
+
+第三：注意本地计算机系统的安全性，使用杀毒软件安全防范。
+
+#### HTTP劫持
+
+HTTP劫持：你DNS解析的域名的IP地址不变。在和网站交互过程中的劫持了你的请求。在网站发给你信息前就给你返回了请求。
+
+HTTP劫持很好判断，当年正常访问一个无广告的页面时，页面上出现广告弹窗，很可能就是运营商劫持了HTTP。
+
+原理：
+
+1. 标识HTTP连接。在天上飞的很多连接中，有许多种协议，第一步做的就是在TCP连接中，找出应用层采用了HTTP协议的连接，进行标识
+2. 篡改HTTP响应体，可以通过网关来获取数据包进行内容的篡改
+3. 抢先回包，将篡改后的数据包抢先正常站点返回的数据包先到达用户侧，这样后面正常的数据包在到达之后会被直接丢弃
+
+
+如何防范HTTP劫持：
+
+1. 事前加密
+HTTPS
+
+很大一部分HTTP劫持，主要的原因就是在传输数据时都是明文的，使用了HTTPS后，会在HTTP协议之上加上TLS进行保护，使得传输的数据进行加密，但是使用HTTPS，一定要注意规范，必须要全站使用HTTPS，否则只要有一个地方没有使用HTTPS，明文传输就很有可能会被HTTP劫持了。
+
+2. 事中加密
+拆分HTTP请求数据包
+
+在HTTP劫持的步骤中，第一步是标记TCP连接，因此只要躲过了标识，那么后续的运营商篡改就不会存在了，有一种方式就是拆分HTTP请求
+
+拆分数据包就是把HTTP请求的数据包拆分成多个，运营商的旁路设备由于没有完整的TCP/IP协议栈，所以就不会被标志，而目标web服务器是有完整的TCP/IP协议栈，能接收到的数据包拼成完整的HTTP请求，不影响服务
+
+3. 事后屏蔽
+通过浏览器Api，根据若干规则去匹配DOM中的节点，对匹配到的节点作拦截和隐藏
+
+CSP（内容安全策略），DOM事件监听等。
+
+CSP是浏览器附加的一层安全层，用于对抗跨站脚本与数据注入，运营商植入内容性质与数据注入类似，因此，可以用CSP对抗运营商劫持。通过在HTTP响应头或meta标签设置好规则，支持拦截和上报劫持信息的功能。
+
+DOM事件监听主要是监听DOMNodeInserted、DOMContentLoaded、DOMAttrModified等事件，可以在前端DOM结构发生变化时触发回调，这时补充一些检测逻辑，即可判断是不是业务的正常UI逻辑，如果不是，即可认为是来自劫持
+
 
 <span id="g5"></span>
-
 
 
 
@@ -738,7 +769,7 @@ V=(-1)<sup>s</sup>*M*2<sup>E</sup>
 
 -   (-1)^s 表示符号位
 -   2^E 表示指数位
--   表示有效数字，大于等于 1，小于 2。形式为1.xx...xx。
+-   M表示有效数字，大于等于 1，小于 2。形式为1.xx...xx。
 
 #### 精度  
 
@@ -1319,11 +1350,47 @@ if (!Array.isArray) {
 ### 跨域
 
 解决方法：
+
 1. JSONP
+
+
+在同源策略下，在某个服务器下的页面是无法获取到该服务器以外的数据的，但 img、iframe、script 等标签是个例外，这些标签可以通过 src 属性请求到其他服务器上的数据。利用 script 标签的开放策略，我们可以实现跨域请求数据，当然，也需要服务端的配合。当我们正常地请求一个 JSON 数据的时候，服务端返回的是一串 JSON 类型的数据，而我们使用 JSONP 模式来请求数据的时候，服务端返回的是一段可执行的 JavaScript 代码,而这段代码可以包含数据。例如：
+
+客户端请求,并指定回调函数的名字：
+
+```
+function appendScript(src){
+    let script=document.createElement("script");
+    script.src=src;
+    document.appendChild(script)
+}
+
+function somefun(data){
+    console.log("data:",data)
+}
+
+appdendScript("http://a.com&callback=somefun");
+```
+
+服务端返回 Javascript 代码：
+
+```
+"somefun({key:somevalue});"
+```
+
+
+
+
 2. CORS
+
+跨域资源共享标准新增了一组 HTTP 首部字段，允许服务器声明哪些源站有权限访问哪些资源。另外，规范要求，对那些可能对服务器数据产生副作用的 HTTP 请求方法（特别是 GET 以外的 HTTP 请求，或者搭配某些 MIME 类型的 POST 请求），浏览器必须首先使用 OPTIONS 方法发起一个预检请求（preflight request），从而获知服务端是否允许该跨域请求。服务器确认允许之后，才发起实际的 HTTP 请求。在预检请求的返回中，服务器端也可以通知客户端，是否需要携带身份凭证（包括 Cookies 和 HTTP 认证相关数据）。
+
 3. 代理
+
 4. 修改document.domain来跨子域
+
 5. window.postMessage实现iframe 跨域通信
+
 在HTML5中，Window.postMessage() 方法可以安全地实现跨源通信。通常，对于两个不同页面的脚本，只有当执行它们的页面位于具有相同的协议（通常为https），端口号（443为https的默认值），以及主机  (两个页面的模数 Document.domain设置为相同的值) 时，这两个脚本才能相互通信。window.postMessage() 方法提供了一种受控机制来规避此限制，只要正确的使用，这种方法就很安全。
 
 Window.postMessage有三个参数，message、targetOrigin和可选的[transfer])，其中message代表将要发送到其他窗口的数据，targetOrigin表示接收数据消息的目标窗口，transfer代表消息的所有权。另外还有一个window.addEventListener(“message”, receiveMessage, false)，用以监听消息数据的反馈，其中的message就存在data、origin和source三个属性，origin属性表示消息数据发送方的身份，只有和原来指定发送方的协议、域名或端口一致，才能建立通信。具体请参考 postMessage的详细介绍。
@@ -1757,8 +1824,44 @@ css代码：
 
 <span id='g40'></span>
 
-#### HTTP缓存
+### HTTP缓存
 
+#### 强制缓存
 
+服务端通过设置 HTTP 头字段的 cache-control/expires 告知客户端在某段时间内资源是最新的，无需向服务端发出请求。服务器则返回状态码 Status Code: 200 (from memory cache)。
+
+#### 协商缓存
+
+  1.Last-Modified：内容的最后修改时间。
+
+    2.ETag：一串编码来标记内容，没有规定具体的格式和计算方式，只要能够起到标识内容的作用即可。
+
+    当浏览器第一次请求某一个URL时，服务端在返回内容的同时也会返回相应的“头信息”，该头信息中就包含了“Last-Modified”和“ETag”（这里特指请求静态文件，动态文件并不包含在内，下面会对动态文件做特别说明，不同操作系统，不同web服务器可能返回的头信息可能不同），当浏览器再次请求该URL的时候，浏览器会向服务器传送If-Modified-Since和If-None-Match报头，询问该时间之后文件是否有被修改过，如果修改过，则请求最新内容，如果没有被修改过，则使用浏览器缓存。
+
+    虽然两种协商方法均可让浏览器使用缓存内容，但是两者在仍有一定区别，Last-Modified针对的是时间，ETag针对的是内容。
+
+    ETag的优缺点：
+
+    优点：
+
+    ETag 解决了 Last-Modified 无法解决的一些问题。例如文件做周期性更改，内容不变，仅仅改变修改时间；某些文件修改非常频繁，比如在秒以下的时间内进行修改，Last-Modified无法判断；某些服务器不能精确的获取到最后修改时间。
+
+    缺点：
+
+    不同操作系统，web服务器对于ETag的计算方法也不同，当使用不同操作系统，不同类型的web服务器做负载均衡的时候，如果用ETag作为判断条件，在被负载均衡到不同服务器后，则很容易导致缓存失效。
+
+    “Last-Modified”和“ETag”两者存在其一，就可以进行缓存协商。
+
+参考：
+
+https://blog.csdn.net/a7442358/article/details/48845335 
 
 https://imweb.io/topic/5795dcb6fb312541492eda8c
+
+<span id='g41'></span>
+
+### JSBridge
+
+参考：
+
+https://juejin.im/post/5abca877f265da238155b6bc
