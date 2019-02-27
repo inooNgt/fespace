@@ -21,7 +21,7 @@ Guides:
 17. <a href="javascript:;" onclick="document.getElementById('g17').scrollIntoView();"> const 、let、块级作用域</a>
 18. <a href="javascript:;" onclick="document.getElementById('g18').scrollIntoView();"> DocumentFragment</a>
 19. <a href="javascript:;" onclick="document.getElementById('g19').scrollIntoView();"> 同源策咯</a>
-20. <a href="javascript:;" onclick="document.getElementById('g20').scrollIntoView();"> 事件循环</a>
+20. <a href="javascript:;" onclick="document.getElementById('g20').scrollIntoView();"> Express中间件</a>
 21. <a href="javascript:;" onclick="document.getElementById('g21').scrollIntoView();"> https/http2</a>
 22. <a href="javascript:;" onclick="document.getElementById('g22').scrollIntoView();"> 订阅/发布模式（subscribe&publish）</a>
 23. <a href="javascript:;" onclick="document.getElementById('g23').scrollIntoView();"> vue 双向数据绑定实现原理</a>
@@ -110,8 +110,25 @@ JS 种的基本数据类型与指向对象的地址存放在栈内存中，此�
 
 5.  重复 3 和 4。
 
-<span id="g3"></span>
 
+Node Event Loop:
+
+"Event Loop 是一个程序结构，用于等待和发送消息和事件。（a programming construct that waits for and dispatches events or messages in a program.）"
+
+简单说，就是在程序中设置两个线程：一个负责程序本身的运行，称为"主线程"；另一个负责主线程与其他进程（主要是各种 I/O 操作）的通信，被称为"Event Loop 线程"（可以译为"消息线程"）。
+
+每当遇到 I/O 的时候，主线程就让 Event Loop 线程去通知相应的 I/O 程序，然后接着往后运行，所以不存在红色的等待时间。等到 I/O 程序完成操作，Event Loop 线程再把结果返回主线程。主线程就调用事先设定的回调函数，完成整个任务。
+
+js 引擎遇到一个异步事件后并不会一直等待其返回结果，而是会将这个事件挂起，继续执行执行栈中的其他任务。当一个异步事件返回结果后，js 会将这个事件加入与当前执行栈不同的另一个队列，我们称之为事件队列。被放入事件队列不会立刻执行其回调，而是等待当前执行栈中的所有任务都执行完毕， 主线程处于闲置状态时，主线程会去查找事件队列是否有任务。如果有，那么主线程会从中取出排在第一位的事件，并把这个事件对应的回调放入执行栈中，然后执行其中的同步代码...，如此反复，这样就形成了一个无限的循环。这就是这个过程被称为“事件循环（Event Loop）”的原因。
+
+当前执行栈执行完毕时会立刻先处理所有微任务队列（Promise）中的事件，然后再去宏任务队列（setTimeout）中取出一个事件。同一次事件循环中，微任务永远在宏任务之前执行。
+https://zhuanlan.zhihu.com/p/33058983
+<span id="g21"></span>
+
+
+
+<span id="g3"></span>
+ 
 
 
 
@@ -895,22 +912,80 @@ document.body.appendChild(fragment);
 
 
 
-### 20、事件循环
+### 20、Express中间件
 
-"Event Loop 是一个程序结构，用于等待和发送消息和事件。（a programming construct that waits for and dispatches events or messages in a program.）"
+Express 是一个路由和中间件 Web 框架，其自身只具有最低程度的功能：Express 应用程序基本上是一系列中间件函数调用。
 
-简单说，就是在程序中设置两个线程：一个负责程序本身的运行，称为"主线程"；另一个负责主线程与其他进程（主要是各种 I/O 操作）的通信，被称为"Event Loop 线程"（可以译为"消息线程"）。
+中间件函数能够访问请求对象 (req)、响应对象 (res) 以及应用程序的请求/响应循环中的下一个中间件函数。下一个中间件函数通常由名为 next 的变量来表示。
 
-每当遇到 I/O 的时候，主线程就让 Event Loop 线程去通知相应的 I/O 程序，然后接着往后运行，所以不存在红色的等待时间。等到 I/O 程序完成操作，Event Loop 线程再把结果返回主线程。主线程就调用事先设定的回调函数，完成整个任务。
+中间件函数可以执行以下任务：
 
-js 引擎遇到一个异步事件后并不会一直等待其返回结果，而是会将这个事件挂起，继续执行执行栈中的其他任务。当一个异步事件返回结果后，js 会将这个事件加入与当前执行栈不同的另一个队列，我们称之为事件队列。被放入事件队列不会立刻执行其回调，而是等待当前执行栈中的所有任务都执行完毕， 主线程处于闲置状态时，主线程会去查找事件队列是否有任务。如果有，那么主线程会从中取出排在第一位的事件，并把这个事件对应的回调放入执行栈中，然后执行其中的同步代码...，如此反复，这样就形成了一个无限的循环。这就是这个过程被称为“事件循环（Event Loop）”的原因。
+- 执行任何代码。
+- 对请求和响应对象进行更改。
+- 结束请求/响应循环。
+- 调用堆栈中的下一个中间件函数。
+  
+如果当前中间件函数没有结束请求/响应循环，那么它必须调用 next()，以将控制权传递给下一个中间件函数。否则，请求将保持挂起状态。
 
-当前执行栈执行完毕时会立刻先处理所有微任务队列（Promise）中的事件，然后再去宏任务队列（setTimeout）中取出一个事件。同一次事件循环中，微任务永远在宏任务之前执行。
-https://zhuanlan.zhihu.com/p/33058983
-<span id="g21"></span>
+例如：
+
+```javascript
+var express = require('express')
+var app = express();
+app.use('/user', function (req, res, next) {
+  //TODO
+  next();
+});
+app.listen(8080)
+
+```
+#### app.use做了什么？
+
+express内部维护一个函数数组，这个函数数组表示在发出响应之前要执行的所有函数，也就是中间件数组。
+
+使用app.use(fn)后，传进来的fn就会被扔到这个数组里，执行完毕后调用next()方法执行函数数组里的下一个函数，如果没有调用next()的话，就不会调用下一个函数了，也就是说调用就会被终止。
 
 
 
+#### 实现简单的Express中间件
+
+```javascript
+var http = require('http');
+
+/**
+ * express实现中间件机制
+ *
+ * @return {app}
+ */
+function express() {
+
+    var funcs = []; // 待执行的函数数组
+
+    var app = function (req, res) {
+        var i = 0;
+
+        function next() {
+            var task = funcs[i++];  // 取出函数数组里的下一个函数
+            if (!task) {    // 如果函数不存在,return
+                return;
+            }
+            task(req, res, next);   // 否则,执行下一个函数
+        }
+
+        next();
+    }
+
+    /**
+     * use方法就是把函数添加到函数数组中
+     * @param task
+     */
+    app.use = function (task) {
+        funcs.push(task);
+    }
+
+    return app;    // 返回实例
+}
+```
 
 ### https/http2
 
@@ -986,6 +1061,7 @@ pub.publish(dep);
 ### vue 双向数据绑定实现原理
 
 [vue 双向数据绑定实现原理](https://juejin.im/entry/59116fa6a0bb9f0058aaaa4c)
+[vue 依赖收集原理](https://juejin.im/post/5b40c8495188251af3632dfa)
 
 <span id="g24"></span>
 
@@ -1783,7 +1859,7 @@ css代码：
     margin:auto;
   }
 ```
-#### 5.双飞翼布局
+#### 4.双飞翼布局
 
 ```css
 	.container{
@@ -1861,6 +1937,49 @@ https://imweb.io/topic/5795dcb6fb312541492eda8c
 <span id='g41'></span>
 
 ### JSBridge
+
+
+JSBridge 的核心是构建 Native 和非 Native 间双向通信的通道。
+
+JSBridge 的通信原理
+
+#### JavaScript 调用 Native
+
+
+1. 注入API
+
+注入 API 方式的主要原理是，通过 WebView 提供的接口，向 JavaScript 的 Context（window）中注入对象或者方法，让 JavaScript 调用时，直接执行相应的 Native 代码逻辑，达到 JavaScript 调用 Native 的目的。
+
+2. 拦截 URL SCHEME
+
+先解释一下 URL SCHEME：URL SCHEME是一种类似于url的链接，是为了方便app直接互相调用设计的，形式和普通的 url 近似，主要区别是 protocol 和 host 一般是自定义的，例如: qunarhy://hy/url?url=ymfe.tech，protocol 是 qunarhy，host 则是 hy。
+拦截 URL SCHEME 的主要流程是：Web 端通过某种方式（例如 iframe.src）发送 URL Scheme 请求，之后 Native 拦截到请求并根据 URL SCHEME（包括所带的参数）进行相关操作。
+
+ 
+ 
+#### Native 调用 JavaScript
+相比于 JavaScript 调用 Native， Native 调用 JavaScript 较为简单，毕竟不管是 iOS 的 UIWebView 还是 WKWebView，还是 Android 的 WebView 组件，都以子组件的形式存在于 View/Activity 中，直接调用相应的 API 即可。
+Native 调用 JavaScript，其实就是执行拼接 JavaScript 字符串，从外部调用 JavaScript 中的方法，因此 JavaScript 的方法必须在全局的 window 上。
+
+#### JSBridge雏形
+
+```javascript
+window.JSBridge = {
+    // 调用 Native
+    invoke: function(bridgeName, data) {
+        // 判断环境，获取不同的 nativeBridge
+        nativeBridge.postMessage({
+            bridgeName: bridgeName,
+            data: data || {}
+        });
+    },
+    receiveMessage: function(msg) {
+        var bridgeName = msg.bridgeName,
+            data = msg.data || {};
+        // 具体逻辑
+    }
+};
+```
 
 参考：
 
