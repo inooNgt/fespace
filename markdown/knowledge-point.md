@@ -43,6 +43,7 @@ Guides:
 39. <a href="javascript:;" onclick="document.getElementById('g39').scrollIntoView();"> CSS三列布局</a>
 40. <a href="javascript:;" onclick="document.getElementById('g40').scrollIntoView();"> HTTP缓存</a>
 41. <a href="javascript:;" onclick="document.getElementById('g41').scrollIntoView();"> JSBridge</a>
+42. <a href="javascript:;" onclick="document.getElementById('g42').scrollIntoView();"> 继承</a>
 
 <span id="g1"></span>
 
@@ -1984,3 +1985,175 @@ window.JSBridge = {
 参考：
 
 https://juejin.im/post/5abca877f265da238155b6bc
+
+<span id='g42'></span>
+
+### 继承
+
+Javascript的继承是通过原型链实现的。
+
+#### 1.原型链继承
+继承就是要让子类获得父类的属性和方法。原型链的思路是利用原型共享的特点，让父类的一个实例充当子类的原型。父类的实例必然包括了父类的属性与方法，那么子类的所有实例都可以通过原型链一层层找到父类的属性与方法了著作权归作者所有。
+
+```javascript
+function Parent(){
+   this.type='man'
+}
+Parent.prototype.say = function(){
+   console.log('say')
+}
+function Child(){
+   this.age = 20;
+}
+Child.prototype = new Parent();
+var p = new Parent();
+var c = new Child();
+console.log(c)
+
+```
+
+原型继承的问题：
+
+1、子类共享父类原型的属性（引用类型）和方法。
+
+2、在创建子类的实例时，不能向父类型的构造函数中传递参数。
+
+#### 2. 借用构造函数（call、apply）
+
+这种方法的思想是在子类型的构造函数内部通过call/apply调用超类型的构造函数。
+
+```javascript
+function SuperType(){
+  this.colors=['red','green']  
+}
+
+function SubType(){
+  SuperType.call(this)
+}
+
+var ins1=new SubType();
+
+ins1.colors.push('blue')
+var ins2=new SubType();
+
+ins2.colors.push('black')
+```
+SubType的每个实例会拥有自己的colors副本，互不影响。
+
+借用构造函数的问题：
+需要继承的属性和方法都在构造函数中定义，
+子类无法使用超类原型上的方法。
+
+#### 3.组合继承
+
+原型链继承和借用构造函数组合使用。
+
+```javascript
+function SuperType(name){
+  this.name=name
+  this.colors=['red','green']  
+}
+
+SuperType.prototype.sayName=function(){
+  console.log(this.name)
+}
+
+function SubType(name,age){
+  SuperType.call(this,name)
+
+  this.age=age
+}
+
+SubType.prototype=new SuperType()
+SubType.prototype.constructor=SubType
+
+var ins1=new SubType('a',18);
+
+ins1.colors.push('blue')
+var ins2=new SubType('b',19);
+
+ins2.colors.push('black')
+
+```
+组合继承避免了原型链继承和借用构造函数的缺点，是最常用的模式。
+
+#### 原型式继承
+
+借用原型基于以后的对象创建新对象。
+
+```javascript
+function object(o){
+  function F(){}
+  F.prototype=o;
+  return new F()
+}
+
+var person={
+  name:'sam',
+  colors:['red','green']
+}
+
+var o1=object(person)
+o1.colors.push('blue')
+var o2=object(person)
+o2.colors.push('black')
+```
+
+缺点：
+共享基础对象的引用类型属性。
+
+#### 寄生式继承
+
+创建一个用于封装继承过程的函数，该函数在内部以某种方式来增强对象，最后返回对象。
+
+```javascript 
+function createAnother(o){
+  var ins =object(o)
+  ins.sayHi=function(){
+    console.log('hi')
+  }
+  return ins
+}
+```
+
+寄生式继承使得新对象不但有基础对象的所有方法和属性，还可以有自己的属性和方法。
+但并没有解决原型式继承的问题.
+### 寄生式组合继承
+
+通过借用构造函数来继承熟悉,通过原型链的混成来继承方法.
+
+```javascript
+function inheritPrototype(subType,superType){
+  var prototype=object(subType,superType)
+  prototype.constructor=subType
+  subType.prototype=prototype
+}
+
+
+function SuperType(name){
+  this.name=name
+  this.colors=['red','green']  
+}
+
+SuperType.prototype.sayName=function(){
+  console.log(this.name)
+}
+
+function SubType(name,age){
+  SuperType.call(this,name)
+
+  this.age=age
+}
+
+
+inheritPrototype(SubType,SuperType)
+
+var ins1=new SubType('a',18);
+
+ins1.colors.push('blue')
+var ins2=new SubType('b',19);
+
+ins2.colors.push('black')
+```
+
+寄生式组合继承比组合式高效,只调用了一次超类构造函数,是一种最理想的继承方式.
