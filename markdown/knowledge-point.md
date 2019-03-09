@@ -50,6 +50,10 @@ Guides:
 46. <a href="javascript:;" onclick="document.getElementById('g46').scrollIntoView();"> javascript词法分析</a>
 47. <a href="javascript:;" onclick="document.getElementById('g47').scrollIntoView();"> 原型图</a>
 48. <a href="javascript:;" onclick="document.getElementById('g48').scrollIntoView();"> 数组去重</a>
+49. <a href="javascript:;" onclick="document.getElementById('g49').scrollIntoView();"> script中defer和async</a>
+50. <a href="javascript:;" onclick="document.getElementById('g50').scrollIntoView();"> 移动端点击穿透</a>
+51. <a href="javascript:;" onclick="document.getElementById('g51').scrollIntoView();"> CSS 关键字 initial、inherit 和 unset</a>
+52. <a href="javascript:;" onclick="document.getElementById('g52').scrollIntoView();"> CSS css选择器权重</a>
 
 <span id="g1"></span>
 
@@ -2517,7 +2521,7 @@ scrollTo()
 回流必定触发重绘，重绘不一定触发回流。重绘的开销较小，回流的代价较高。
 
 
-<span id='g44'></span>
+<span id='g46'></span>
 
 ### javascript词法分析
 
@@ -2546,11 +2550,16 @@ JavaScript代码自上而下执行，但是在js代码执行前，会首先进�
 3.1 如果AO上没有foot属性，则把函数赋给AO.foot属性
 3.2 如果AO上有foot属性，则会直接覆盖，把函数赋给AO.foot属性
 
+<span id='g47'></span>
+
 ### 原型图
 在Javascript中，每个函数都有一个原型属性prototype指向自身的原型，而由这个函数创建的对象也有一个__proto__属性指向这个原型，而函数的原型是一个对象，所以这个对象也会有一个__proto__指向自己的原型，这样逐层深入直到Object对象的原型，这样就形成了原型链。下面这张图很好的解释了Javascript中的原型和原型链的关系。
 <div align="center"><img width="600"src="http://cdn.inoongt.tech/images/thinkin/prototype.jpg"/></div>
 
 每个函数都是Function函数创建的对象，所以每个函数也有一个__proto__属性指向Function函数的原型。这里需要指出的是，真正形成原型链的是每个对象的__proto__属性，而不是函数的prototype属性，这是很重要的。
+
+
+<span id='g48'></span>
 
 ### 数组去重
 
@@ -2565,3 +2574,78 @@ arr.filter(function(ele,index,array){
     return index===array.indexOf(ele)
 })
 ```
+<span id='g49'></span>
+
+### script中defer和async
+
+  > defer：此布尔属性被设置为向浏览器指示脚本在文档被解析后执行。
+  > async：设置此布尔属性，以指示浏览器如果可能的话，应异步执行脚本。
+
+  #### 相同点
+
+- 加载文件时不阻塞页面渲染
+- 对于inline的script（内联脚本）无效
+- 使用这两个属性的脚本中不能调用document.write方法
+- 有脚本的onload的事件回调
+
+#### 不同点
+- html的版本html4.0中定义了defer；html5.0中定义了async
+- 执行时刻
+
+#### 总结
+
+- 如果async为true，那么脚本在下载完成后异步执行。
+- 如果async为false，defer为true，那么脚本会在页面解析完毕之后执行（有争议，iOS safari白屏）。
+- 如果async和defer都为false，那么脚本会在页面解析中，停止页面解析，立刻下载并且执行。
+
+<span id='g50'></span>
+
+### 移动端点击穿透
+
+http://www.fly63.com/article/detial/695
+
+<span id='g51'></span>
+### CSS 关键字 initial、inherit 和 unset
+
+#### initial
+initial 关键字用于设置 CSS 属性为它的默认值，可作用于任何 CSS 样式。
+
+#### inherit
+每一个 CSS 属性都有一个特性就是，这个属性必然是默认继承的 (inherited: Yes) 或者是默认不继承的 (inherited: no)其中之一，我们可以在 MDN 上通过这个索引查找，判断一个属性的是否继承特性。 
+
+可继承属性：
+
+- 所有元素可继承：visibility 和 cursor
+- 内联元素可继承：letter-spacing、word-spacing、white-space、line-height、color、font、 font-family、font-size、font-style、font-variant、font-weight、text- decoration、text-transform、direction
+- 块状元素可继承：text-indent和text-align
+- 列表元素可继承：list-style、list-style-type、list-style-position、list-style-image
+- 表格元素可继承：border-collapse
+
+#### unset
+
+名如其意，unset 关键字我们可以简单理解为不设置。其实，它是关键字 initial 和 inherit 的组合。
+
+什么意思呢？也就是当我们给一个 CSS 属性设置了 unset 的话：
+
+- 如果该属性是默认继承属性，该值等同于 inherit
+- 如果该属性是非继承属性，该值等同于 initial
+
+<span id='g52'></span>
+
+### css选择器权重
+
+
+| 选择器         | 表达式或示例                    | 说明                   | 权重 |
+| -------------- | ------------------------------- | ---------------------- | ---- |
+| ID选择器       | #aaa                            | ----                   | 100  |
+| 类选择器       | .aaa                            | ----                   | 10   |
+| 标签选择器     | h1                              | tagName                | 1    |
+| 属性选择器     | [title]                         | ----                   | 10   |
+| 相邻选择器     | selecter + selecter             | 拆分为两个选择器再计算 |
+| 兄长选择器     | selecter ~ selecter             | 拆分为两个选择器再计算 |
+| 亲子选择器     | selecter > selecter             | 拆分为两个选择器再计算 |
+| 后代选择器     | selecter selecter               | 拆分为两个选择器再计算 |
+| 通配符选择器   | *                               | ----                   | 0    |
+| 各种伪类选择器 | 如:link，  :hover， :active，等 | ----                   | 10   |
+| 各种伪元素     | 如::after,::before              | ----                   | 1    |
+
