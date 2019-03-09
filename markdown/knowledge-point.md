@@ -44,6 +44,12 @@ Guides:
 40. <a href="javascript:;" onclick="document.getElementById('g40').scrollIntoView();"> HTTP缓存</a>
 41. <a href="javascript:;" onclick="document.getElementById('g41').scrollIntoView();"> JSBridge</a>
 42. <a href="javascript:;" onclick="document.getElementById('g42').scrollIntoView();"> 继承</a>
+43. <a href="javascript:;" onclick="document.getElementById('g43').scrollIntoView();"> 移动端布局</a>
+44. <a href="javascript:;" onclick="document.getElementById('g44').scrollIntoView();"> websocket</a>
+45. <a href="javascript:;" onclick="document.getElementById('g45').scrollIntoView();"> 回流与重绘</a>
+46. <a href="javascript:;" onclick="document.getElementById('g46').scrollIntoView();"> javascript词法分析</a>
+47. <a href="javascript:;" onclick="document.getElementById('g47').scrollIntoView();"> 原型图</a>
+48. <a href="javascript:;" onclick="document.getElementById('g48').scrollIntoView();"> 数组去重</a>
 
 <span id="g1"></span>
 
@@ -719,7 +725,44 @@ p1.then(res=>{
 
 事件捕获与事件冒泡的应用--事件委托,即利用事件冒泡原理，让节点的父级代为执行事件。
 
-#### DOM0级、2级事件
+#### 防止冒泡和捕获
+
+w3c的方法是e.stopPropagation()，IE则是使用e.cancelBubble = true
+
+```javascript 
+function stopBubble(e) { 
+//如果提供了事件对象，则这是一个非IE浏览器 
+if ( e && e.stopPropagation ) 
+    //因此它支持W3C的stopPropagation()方法 
+    e.stopPropagation(); 
+else 
+    //否则，我们需要使用IE的方式来取消事件冒泡 
+    window.event.cancelBubble = true; 
+}
+```
+
+#### 取消默认事件
+
+w3c的方法是e.preventDefault()，IE则是使用e.returnValue = false;
+
+```javascript
+//阻止浏览器的默认行为 
+function stopDefault( e ) { 
+    //阻止默认浏览器动作(W3C) 
+    if ( e && e.preventDefault ) 
+        e.preventDefault(); 
+    //IE中阻止函数器默认动作的方式 
+    else 
+        window.event.returnValue = false; 
+    return false; 
+}
+```
+
+#### return false
+
+javascript的return false只会阻止默认行为，而是用jQuery的话则既阻止默认行为又防止对象冒泡。
+
+#### DOM0级、2级、3级事件
 
 DOM0级:
 ```javascript 
@@ -760,6 +803,17 @@ btn.addEventListener('click',function(event){
 },false)
 ```
 
+##### DOM3级事件
+DOM3级事件模块在DOM2级事件的基础上重新定义了这些事件，也添加了一些新事件。包括IE9在内的主流浏览器都支持DOM2级事件，IE9也支持DOM3级事件。 
+
+
+dom3级是对dom 事件的规范和补充
+
+主要有：
+- 使用 focusin 和focusout 不冒泡 代替冒泡的 focus blur
+- 使用 mouseenter mouseleave 不冒泡代替冒泡的mouseout和mouseover
+
+还支持 wheel事件 还有规范了 textinput系列事件 keyup keypress keydown 等事件中的参数
 
 <span id="g15"></span>
 
@@ -1061,6 +1115,19 @@ pub.publish(dep);
 
 ### vue 双向数据绑定实现原理
 
+
+1. new Vue:
+  - observe=>defineReative
+    - setter =>dep.notify setter发布通知
+      - sub.update=>
+        - 更新node
+        - sub.get=>getter 
+     - getter=>dep.addSup(sub) 收集依赖
+  - compile=>new Watcher 为每个与数据绑定相关的节点生成一个订阅者 watcher，即sub
+    - this.upate(sub.update) 初始化
+
+2. 事件处理=>setter 继续以上流程
+
 [vue 双向数据绑定实现原理](https://juejin.im/entry/59116fa6a0bb9f0058aaaa4c)
 [vue 依赖收集原理](https://juejin.im/post/5b40c8495188251af3632dfa)
 
@@ -1230,14 +1297,23 @@ BFC是block formatting context，也就是块级格式化上下文，是用于�
 
 BFC布局规则：
 1. 内部的盒子(box)会在垂直方向一个接一个地放置
-2. box垂直方向的距离由margin决定，属于同一个BFC的两个相邻box的margin会发生重叠
+2. box垂直方向的距离由margin决定，属于同一个BFC的两个相邻box的margin会发生重叠。
 3. 每个元素margin box左边，与包含块border box的左边相接触（对于从左向右的格式化，否则相反），即使存在浮动也是如此
 4. BFC的区域不会与float box重叠
 5. BFC是页面上的一个隔离的独立容器，容器里面的子元素不会影响到外面的元素
 6. 计算BFC高度时，浮动元素也参与计算
 
-[更多内容](https://www.w3cplus.com/css/understanding-bfc-and-margin-collapse.html)
+BFC应用：
+1. 清除浮动
+2. 防止 margin 重叠
+   - 根据BFC布局规则第二条：Box垂直方向的距离由margin决定。属于同一个BFC的两个相邻Box的margin会发生重叠。
+   我们可以在p外面包裹一层容器，并触发该容器生成一个BFC。那么两个P便不属于同一个BFC，就不会发生margin重叠了。
+3. 多栏布局的一种方式
+   
 
+参考：
+https://www.w3cplus.com/css/understanding-bfc-and-margin-collapse.html
+https://www.jianshu.com/p/fc4c2d8a0018
 <span id="g29"></span>
 
 
@@ -2157,3 +2233,335 @@ ins2.colors.push('black')
 ```
 
 寄生式组合继承比组合式高效,只调用了一次超类构造函数,是一种最理想的继承方式.
+
+<span id='g43'></span>
+
+### 移动端布局
+
+#### 移动端页面渲染过程
+
+打开一个页面，移动端浏览器会自动寻找viewport中的width,如果指定了视窗口的width，就会把页面放到指定width的viewport里面。如果没有指定，则使用默认值（980px），具体根据浏览器来定的。 
+```
+<meta name=”viewport” content=”width=device-width, initial-scale=1, maximum-scale=1″>
+```
+上述代码可以解决这个问题。 
+width：控制 layout viewport 的大小，如 device-width 为设备的宽度（单位为缩放为 100% 时的 CSS 的像素）。
+
+#### 相关概念
+
+##### viewport
+
+移动设备上的viewport就是设备的屏幕上能用来显示我们的网页的那一块区域，在具体一点，就是浏览器上(也可能是一个app中的webview)用来显示网页的那部分区域，但viewport又不局限于浏览器可视区域的大小，它可能比浏览器的可视区域要大，也可能比浏览器的可视区域要小。在默认情况下，一般来讲，移动设备上的viewport都是要大于浏览器可视区域的，这是因为考虑到移动设备的分辨率相对于桌面电脑来说都比较小，所以为了能在移动设备上正常显示那些传统的为桌面浏览器设计的网站，移动设备上的浏览器都会把自己默认的viewport设为980px或1024px（也可能是其它值，这个是由设备自己决定的），但带来的后果就是浏览器会出现横向滚动条，因为浏览器可视区域的宽度是比这个默认的viewport的宽度要小的。
+
+##### 缩放以及initial-scale
+
+缩放是相对于移动设备的屏幕宽度的，所以initial-scale=1.0和width=device-width能达到一样的效果。
+
+##### 物理像素
+
+设备像素又称物理像素（physical pixel），设备能控制显示的最小单位。
+
+##### CSS像素
+
+CSS像素又称为逻辑像素，是为web开发者创造的，在CSS和javascript中使用的一个抽象的层,每一个CSS声明和几乎所有的javascript属性都使用CSS像素.
+
+##### PPI
+
+pixels per inch所表示的是每英寸所拥有的像素（pixel）数目。
+
+##### DPR设备像素比
+
+DPR = 设备像素 / CSS像素(某一方向上)
+
+#### rem计算
+
+> 在W3C官网上是这样描述rem的——“font size of the root element” 。
+
+
+##### 1.媒体查询
+
+```css
+@media screen and (min-width: 375px){
+    html {
+        font-size: 14.0625px;   
+    }
+}
+@media screen and (min-width: 360px){
+    html {
+        font-size: 13.5px;
+    }
+}
+@media screen and (min-width: 320px){
+    html {
+        font-size: 12px;
+    }
+}
+html {
+    font-size: 16px;
+}
+```
+
+
+
+##### 2. js计算
+
+首先需要一个基准，比如750px下为16px，然后根据这个基准响应变化。
+
+简单计算：
+```javascript
+const oHtml = document.getElementsByTagName('html')[0]
+const width = oHtml.clientWidth;
+// 320px的屏幕基准像素为16px
+oHtml.style.fontSize = 16 * (width / 750) + "px";
+```
+
+更复杂的计算:
+[flexible.js](https://github.com/amfe/lib-flexible/blob/2.0/index.js)
+
+
+#### Sass中的pxTorem 
+
+定义基准和rem 函数
+
+```css
+$baseFontSize : 14;
+@function rem($pixels, $context: $baseFontSize) {
+  @if (unitless($pixels)) {
+    $pixels: $pixels * 1px;
+  }
+
+  @if (unitless($context)) {
+    $context: $context * 1px;
+  }
+
+  @return $pixels / $context * 1rem;
+}
+
+.class{
+ font-size:rem(38);
+}
+```
+
+使用
+```css
+.header { font-size: pxTorem(12px); }
+```
+
+如果需要同时设置多个属性值，需要使用mixin
+
+```css
+
+// Remove the unit of a length
+// @param {Number} $number - Number to remove unit from
+// @return {Number} - Unitless number
+@function strip-unit($number) {
+  @if type-of($number) == 'number' and not unitless($number) {
+    //除以一个单位
+    @return $number / ($number * 0 + 1);
+  }
+
+  @return $number;
+}
+
+@mixin remCalc($property, $values...) { 
+   $max: length($values);//返回$values列表的长度值 
+   $pxValues: '';
+   $remValues: '';
+
+   @for $i from 1 through $max { 
+     $value: strip-units(nth($values, $i));//返回$values列表中的第$i个值，并将单位值去掉 
+     $browser-default-font-size: strip-units($browser-default-font-size);
+     $pxValues: #{$pxValues + $value * $browser-default-font-size}px;
+     @if $i < $max {
+        $pxValues: #{$pxValues + " "};
+     } 
+   }
+   
+   @for $i from 1 through $max { 
+     $value: strip-units(nth($values, $i));
+     $remValues: #{$remValues + $value}rem;
+    @if $i < $max { 
+      $remValues: #{$remValues + " "};
+    }
+  }
+
+  #{$property}: $pxValues;
+  #{$property}: $remValues;
+  }
+```
+[查看sass语法](http://sass.bootcss.com/docs/sass-reference/#interpolation_)
+参考：https://www.w3cplus.com/preprocessor/sass-px-to-rem-with-mixin-and-function.html
+
+使用
+```css
+.wrapper { 
+  @include remCalc(width,45);
+  @include remCalc(margin,1,.5,2,3);
+} 
+```
+
+#### vm
+仅使用 vw 单位作为唯一应用的一种 CSS 单位
+
+```css
+//iPhone 7尺寸作为设计稿基准
+$vw_base: 750; 
+@function vw($px) {
+    @return ($px / $vw_base) * 100vw;
+}
+```
+
+
+参考：https://aotu.io/notes/2017/04/28/2017-4-28-CSS-viewport-units/index.html
+
+#### vm+rem
+
+使用vm设置html的字体大小，在使用rem作为单位开发。
+```css
+html{
+    /* 100/750 vm */
+    font-size: calc(13.33333333vw);
+
+    /* 限制最大最小值 */
+    @media screen and (max-width: 320px) {
+        font-size: 64px;
+    }
+    @media screen and (min-width: 540px) {
+        font-size: 108px;
+    }
+}
+```
+
+<span id='g44'></span>
+
+### websocket
+
+#### 原理
+
+WebSocket是HTML5下一种新的协议。它实现了浏览器与服务器全双工通信，能更好的节省服务器资源和带宽并达到实时通讯的目的。它与HTTP一样通过已建立的TCP连接来传输数据，但是它和HTTP最大不同是：
+WebSocket是一种双向通信协议。在建立连接后，WebSocket服务器端和客户端都能主动向对方发送或接收数据，就像Socket一样；
+WebSocket需要像TCP一样，先建立连接，连接成功后才能相互通信。
+
+一旦WebSocket连接建立后，后续数据都以帧序列的形式传输。在客户端断开WebSocket连接或Server端中断连接前，不需要客户端和服务端重新发起连接请求。在海量并发及客户端与服务器交互负载流量大的情况下，极大的节省了网络带宽资源的消耗，有明显的性能优势，且客户端发送和接受消息是在同一个持久连接上发起，实时性优势明显。
+
+
+
+#### 心跳重连
+
+websocket是前后端交互的长连接，前后端也都可能因为一些情况导致连接失效并且相互之间没有反馈提醒。因此为了保证连接的可持续性和稳定性，websocket心跳重连就应运而生。
+
+##### 问题
+
+1. 在使用原生websocket的时候，如果设备网络断开，不会触发websocket的任何事件函数，前端程序无法得知当前连接已经断开。
+
+2. 后端websocket服务也可能出现异常，连接断开后前端也并没有收到通知。
+
+为了解决以上两个问题，以前端作为主动方，前端定时发送心跳消息ping，后端收到ping类型的消息，立马返回pong消息，告知前端连接正常。如果一定时间没收到pong消息，就说明连接不正常，前端便会执行重连。
+
+实现：
+```javascript
+var ws = new WebSocket(url);
+var heartCheck = {
+    timeout: 60000,//60ms
+    timeoutObj: null,
+    reset: function(){
+        clearTimeout(this.timeoutObj);
+　　　　 this.start();
+    },
+    start: function(){
+        this.timeoutObj = setTimeout(function(){
+            ws.send("HeartBeat");
+        }, this.timeout)
+    }
+}
+
+ws.onopen = function () {
+   heartCheck.start();
+};
+ws.onmessage = function (event) {
+    heartCheck.reset();
+}
+```
+
+服务端如何判断客户端是否掉线？
+
+客户端定时每X秒(推荐小于60秒)向服务端发送特定数据，服务端设定为X秒没有收到客户端心跳则认为客户端掉线，并关闭连接触发onClose回调。
+
+<span id='go45'></span>
+
+### 回流与重绘
+
+当元素的样式发生变化时，浏览器需要触发更新，重新绘制元素。这个过程中，有两种类型的操作，即重绘与回流。
+
+
+重绘(repaint): 当元素样式的改变不影响布局时，浏览器将使用重绘对元素进行更新，此时由于只需要UI层面的重新像素绘制，因此 损耗较少
+
+
+回流(reflow): 当元素的尺寸、结构或触发某些属性时，浏览器会重新渲染页面，称为回流。此时，浏览器需要重新经过计算，计算后还需要重新页面布局，因此是较重的操作。会触发回流的操作:
+
+页面初次渲染
+浏览器窗口大小改变
+元素尺寸、位置、内容发生改变
+元素字体大小变化
+添加或者删除可见的 dom 元素
+激活 CSS 伪类（例如：:hover）
+查询某些属性或调用某些方法
+
+clientWidth、clientHeight、clientTop、clientLeft
+offsetWidth、offsetHeight、offsetTop、offsetLeft
+scrollWidth、scrollHeight、scrollTop、scrollLeft
+getComputedStyle()
+getBoundingClientRect()
+scrollTo()
+
+回流必定触发重绘，重绘不一定触发回流。重绘的开销较小，回流的代价较高。
+
+
+<span id='g44'></span>
+
+### javascript词法分析
+
+JavaScript代码自上而下执行，但是在js代码执行前，会首先进行词法分析，所以事实上，js运行要分为词法分析和执行两个阶段。
+
+词法分析
+词法分析主要分为3步：
+第1步：分析形参
+第2步：分析变量声明
+第3步：分析函数声明
+
+如果存在函数嵌套，则从外往内进行词法分析
+
+具体步骤：
+0、在函数执行的一瞬间，生产 Active Object（活动对象）
+
+1、分析形参
+1.1 函数声明的形参，形成AO的属性，默认值是undefined,
+1.2 接收形参，给刚刚形成AO的属性的形参赋值
+
+2、分析变量声明，如 var age;（变量的值是在运行时期决定）
+2.1 如果AO上还没有age属性，则给AO添加age属性，默认值是undefined
+2.2 如果AO上已经有age属性，则不做任何操作。
+
+3、分析函数声明！如 function foot(){}
+3.1 如果AO上没有foot属性，则把函数赋给AO.foot属性
+3.2 如果AO上有foot属性，则会直接覆盖，把函数赋给AO.foot属性
+
+### 原型图
+在Javascript中，每个函数都有一个原型属性prototype指向自身的原型，而由这个函数创建的对象也有一个__proto__属性指向这个原型，而函数的原型是一个对象，所以这个对象也会有一个__proto__指向自己的原型，这样逐层深入直到Object对象的原型，这样就形成了原型链。下面这张图很好的解释了Javascript中的原型和原型链的关系。
+<div align="center"><img width="600"src="http://cdn.inoongt.tech/images/thinkin/prototype.jpg"/></div>
+
+每个函数都是Function函数创建的对象，所以每个函数也有一个__proto__属性指向Function函数的原型。这里需要指出的是，真正形成原型链的是每个对象的__proto__属性，而不是函数的prototype属性，这是很重要的。
+
+### 数组去重
+
+es6：
+```javascript
+[...new Set(arr]
+```
+
+es5:
+```javascript 
+arr.filter(function(ele,index,array){
+    return index===array.indexOf(ele)
+})
+```

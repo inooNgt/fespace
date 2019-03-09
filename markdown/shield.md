@@ -166,6 +166,7 @@ CSRF 攻击者不能获取到 Cookie 等信息，只是使用。
     -   Samesite Cookie
 -   提交时要求附加本域才能获取的信息
     -   CSRF Token
+        -   在 HTTP 请求中以参数的形式加入一个随机产生的 token，并在服务器端建立一个拦截器来验证这个 token，如果请求中没有 token 或者 token 内容不正确，则认为可能是 CSRF 攻击而拒绝该请求。
     -   双重 Cookie 验证
 
 参考文献：
