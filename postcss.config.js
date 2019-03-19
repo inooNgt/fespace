@@ -1,10 +1,11 @@
 const postcssConfig = {
-	plugins: {
-		'postcss-import': {},
-		'postcss-cssnext': {}
-	}
-}
+    plugins: {
+        "postcss-import": {},
+        "postcss-cssnext": {}
+    }
+};
 
-if (process.env.NODE_ENV === 'production') postcssConfig.plugins['cssnano'] = {}
+if (process.env.NODE_ENV === "production")
+    postcssConfig.plugins["cssnano"] = {};
 
-module.exports = postcssConfig    
+module.exports = postcssConfig;

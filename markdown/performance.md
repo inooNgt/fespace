@@ -71,6 +71,10 @@
 
     合并请求的主要目的是减少浏览器对服务器发起的请求数，从而减少在发起请求过程中花费的时间。
 
+### webview
+
+https://tech.meituan.com/2017/06/09/webviewperf.html
+
 ### 最后
 
 终极优化清单：http://cdn.inoongt.tech/images/thinkin/optimization.png

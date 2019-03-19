@@ -53,8 +53,8 @@ Guides:
 49. <a href="javascript:;" onclick="document.getElementById('g49').scrollIntoView();"> script中defer和async</a>
 50. <a href="javascript:;" onclick="document.getElementById('g50').scrollIntoView();"> 移动端点击穿透</a>
 51. <a href="javascript:;" onclick="document.getElementById('g51').scrollIntoView();"> CSS 关键字 initial、inherit 和 unset</a>
-52. <a href="javascript:;" onclick="document.getElementById('g52').scrollIntoView();"> CSS css选择器权重</a>
-
+52. <a href="javascript:;" onclick="document.getElementById('g52').scrollIntoView();"> Css选择器权重</a>
+53. <a href="javascript:;" onclick="document.getElementById('g53').scrollIntoView();"> 查找算法</a>
 <span id="g1"></span>
 
 
@@ -470,6 +470,9 @@ function mergeSort(a) {
   return merge(mergeSort(left), mergeSort(right));
 }
 ```
+
+
+[更多内容](https://juejin.im/post/5c8532ec6fb9a049a42fdd81?utm_source=gold_browser_extension)
 
 
 <span id="g11"></span>
@@ -1508,7 +1511,7 @@ if (!Array.isArray) {
 
 解决方法：
 
-1. JSONP
+#### 1. JSONP
 
 
 在同源策略下，在某个服务器下的页面是无法获取到该服务器以外的数据的，但 img、iframe、script 等标签是个例外，这些标签可以通过 src 属性请求到其他服务器上的数据。利用 script 标签的开放策略，我们可以实现跨域请求数据，当然，也需要服务端的配合。当我们正常地请求一个 JSON 数据的时候，服务端返回的是一串 JSON 类型的数据，而我们使用 JSONP 模式来请求数据的时候，服务端返回的是一段可执行的 JavaScript 代码,而这段代码可以包含数据。例如：
@@ -1538,15 +1541,15 @@ appdendScript("http://a.com&callback=somefun");
 
 
 
-2. CORS
+#### 2. CORS
 
 跨域资源共享标准新增了一组 HTTP 首部字段，允许服务器声明哪些源站有权限访问哪些资源。另外，规范要求，对那些可能对服务器数据产生副作用的 HTTP 请求方法（特别是 GET 以外的 HTTP 请求，或者搭配某些 MIME 类型的 POST 请求），浏览器必须首先使用 OPTIONS 方法发起一个预检请求（preflight request），从而获知服务端是否允许该跨域请求。服务器确认允许之后，才发起实际的 HTTP 请求。在预检请求的返回中，服务器端也可以通知客户端，是否需要携带身份凭证（包括 Cookies 和 HTTP 认证相关数据）。
 
-3. 代理
+#### 3. 代理
 
-4. 修改document.domain来跨子域
+#### 4. 修改document.domain来跨子域
 
-5. window.postMessage实现iframe 跨域通信
+#### 5. window.postMessage实现iframe 跨域通信
 
 在HTML5中，Window.postMessage() 方法可以安全地实现跨源通信。通常，对于两个不同页面的脚本，只有当执行它们的页面位于具有相同的协议（通常为https），端口号（443为https的默认值），以及主机  (两个页面的模数 Document.domain设置为相同的值) 时，这两个脚本才能相互通信。window.postMessage() 方法提供了一种受控机制来规避此限制，只要正确的使用，这种方法就很安全。
 
@@ -1587,7 +1590,65 @@ child.html（http://localhost:1235）
 </script>
 ```
 
+#### 6. window.name
 
+全局变量window有一个特殊的name属性，其有以下特征：
+1）每个窗口都有独立的window.name与之对应；
+2）在一个窗口的生命周期中（被关闭前），窗口载入的所有页面同时共享一个window.name，每个页面对window.name都有读写的权限；
+3）window.name一直存在与当前窗口，即使是有新的页面载入也不会改变window.name的值；
+4）window.name可以存储不超过2M的数据，数据格式按需自定义。
+
+window.name 可以传入json、string,并且会对传入数据做一个toString操作。
+
+window.name跨域原理：
+
+<div align="center"><img width="300"src="http://cdn.inoongt.tech/images/thinkin/windowname.png"/></div>
+
+通过在 iframe 中加载目标页面的资源，将该资源将存储至iframe 的 name 属性。此 name 属性值可被原始页面获取到，以访问 Web 服务发送的信息。但 name 属性仅对相同域名的 iframe 可访问。这意味着为了访问 name 属性，当远程 Web 服务页面被加载后，必须导航 iframe 回到原始域。然而name 属性是不安全的,一旦获得，建议销毁 iframe 。
+
+实例
+
+www.a.com请求www.b.com的数据：
+```javascript
+const getDataByWindowName=(url)=>{
+  let hasLoaded = false;
+  const iframe = document.createElement('iframe');
+  const loadData = function() {
+      if (hasLoaded) {
+          var data = iframe.contentWindow.name;    //获取window.name
+          console.log(data); 
+          //销毁数据   
+          iframe.contentWindow.document.write('');
+          iframe.contentWindow.close();
+          document.body.removeChild(iframe);
+      } else {
+          hasLoaded = true;
+          // iframe载入同域页面
+          iframe.contentWindow.location = 'www.a.com/xxx';    
+      }  
+  };
+  iframe.src = url;
+  if (iframe.attachEvent) {
+      iframe.attachEvent('onload', loadData);
+  } else {
+      iframe.onload  = loadData;
+  }
+  document.body.appendChild(iframe);
+}
+getDataByWindowName('www.b.com/api')
+
+```
+
+www.b.com页面需要将数据存储入window.name中：
+
+```javascript
+window.name='data'
+```
+
+#### X-Frame-Options
+
+从安全角度考虑，如果不想让自己的网页数据被跨域访问，可以设置 X-Frame-Options:DENY/SAMEORIGIN/ALLOW-FROM uri。
+>X-Frame-Options HTTP 响应头是用来给浏览器指示允许一个页面可否在 frame, iframe 或者 object 中展现的标记。网站可以使用此功能，来确保自己网站的内容没有被嵌到别人的网站中去，也从而避免了点击劫持 (clickjacking) 的攻击。
 
 <span id='g34'></span>
 
@@ -2632,7 +2693,7 @@ initial 关键字用于设置 CSS 属性为它的默认值，可作用于任何 
 
 <span id='g52'></span>
 
-### css选择器权重
+### Css选择器权重
 
 
 | 选择器         | 表达式或示例                    | 说明                   | 权重 |
@@ -2649,3 +2710,45 @@ initial 关键字用于设置 CSS 属性为它的默认值，可作用于任何 
 | 各种伪类选择器 | 如:link，  :hover， :active，等 | ----                   | 10   |
 | 各种伪元素     | 如::after,::before              | ----                   | 1    |
 
+<span id='g52'></span>
+
+
+### 查找算法
+
+#### 二分查找
+
+算法思想是：
+（1）确定该区间的中间位置mid
+（2）将查找的值与array[mid]比较,若相等，查找成功返回此位置；否则确定新的查找区域，继续二分查找。
+
+```javascript
+const binarySeach = (arr, n)=> {
+  let low = 0;
+  let high = arr.length - 1;
+  let mid;
+  
+  while (low<high-1) {
+    mid = Math.floor((low + high) / 2);
+    console.log('mid',mid,arr[mid])
+
+    if (n === arr[low]) return low;
+    if (n === arr[high]) return high;
+	  if (n === arr[mid]) return mid;
+
+    if (n > arr[mid]) low = mid;
+    if (n < arr[mid]) high = mid;
+  }
+  return -1;
+};
+
+算法复杂度：
+
+对于N个元素，每次查找的区间大小就是N，N/2，N/4，…，N/2^k，其中k就是循环的次数。 
+
+即k次循环中需要查找的范围是N/2^k，而N/2^k总是大于1。
+
+由N/2^k>=1得k<=logN(以2为底的对数)。
+
+所以时间复杂度为O(logN)
+
+```
