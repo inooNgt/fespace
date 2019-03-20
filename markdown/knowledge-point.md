@@ -53,7 +53,7 @@ Guides:
 49. <a href="javascript:;" onclick="document.getElementById('g49').scrollIntoView();"> script中defer和async</a>
 50. <a href="javascript:;" onclick="document.getElementById('g50').scrollIntoView();"> 移动端点击穿透</a>
 51. <a href="javascript:;" onclick="document.getElementById('g51').scrollIntoView();"> CSS 关键字 initial、inherit 和 unset</a>
-52. <a href="javascript:;" onclick="document.getElementById('g52').scrollIntoView();"> Css选择器权重</a>
+52. <a href="javascript:;" onclick="document.getElementById('g52').scrollIntoView();"> CSS选择器层叠</a>
 53. <a href="javascript:;" onclick="document.getElementById('g53').scrollIntoView();"> 查找算法</a>
 <span id="g1"></span>
 
@@ -2693,22 +2693,55 @@ initial 关键字用于设置 CSS 属性为它的默认值，可作用于任何 
 
 <span id='g52'></span>
 
-### Css选择器权重
+### CSS选择器层叠
 
+#### CSS来源
+样式表可能有3种不同来源：编写者，用户和用户代理
 
-| 选择器         | 表达式或示例                    | 说明                   | 权重 |
-| -------------- | ------------------------------- | ---------------------- | ---- |
-| ID选择器       | #aaa                            | ----                   | 100  |
-| 类选择器       | .aaa                            | ----                   | 10   |
-| 标签选择器     | h1                              | tagName                | 1    |
-| 属性选择器     | [title]                         | ----                   | 10   |
-| 相邻选择器     | selecter + selecter             | 拆分为两个选择器再计算 |
-| 兄长选择器     | selecter ~ selecter             | 拆分为两个选择器再计算 |
-| 亲子选择器     | selecter > selecter             | 拆分为两个选择器再计算 |
-| 后代选择器     | selecter selecter               | 拆分为两个选择器再计算 |
-| 通配符选择器   | *                               | ----                   | 0    |
-| 各种伪类选择器 | 如:link，  :hover， :active，等 | ----                   | 10   |
-| 各种伪元素     | 如::after,::before              | ----                   | 1    |
+- 编写者：编写者根据文档语言约定给源文档指定样式表。例如，HTML中，样式表可以包含在文档中或者从外部链接
+- 用户：用户可能会给某个特定文档指定样式信息。例如，用户可以指定一个含有样式表的文件，或者用户代理可能会提供一个用来生成用户样式表的界面
+- 用户代理: （与CSS规范）一致的用户代理必须应用一份默认样式表。用户代理的默认样式表应该以满足文档语言一般表现预期的方式来呈现文档语言元素（例如，对于可视化浏览器，HTML中EM元素用斜体来表示）。
+
+#### 层叠顺序
+
+为了找出一个元素/属性组合的值，用户代理必须按照下列（步骤）排序：
+
+1. 找出目标媒体类型下，所有适用于该元素和目标属性的声明。
+2. 根据重要性（常规或重要）和来源（编写者，用户或用户代理）排序，升序优先级为：
+   - 用户代理声明
+   - 用户常规声明
+   - 编写者常规声明（!important）
+   - 编写者重要声明
+   - 用户重要声明
+3. 相同重要性和来源的规则根据选择器的特殊性（specificity）排序：更特殊的选择器将重写一般的。伪元素和伪类被分别算作常规元素和类
+4. 最后，根据指定顺序排序：如果两个声明的权重，来源和特殊性都相同，后指定的生效。引入的样式表（译注：这里应该是指'@import'，而不是广义的通过各种方式引入样式表）中的声明被认为在样式表自身的所有声明之前
+
+ #### 计算选择器的特殊性
+
+一个选择器的特殊性是根据下列（规则）计算的：
+
+如果声明来自一个'style'属性而不是一条选择器样式规则，算1，否则就是0 (= a)（HTMl中，一个元素的"style"属性值是样式表规则，这些属性没有选择器，所以a=1，b=0，c=0，d=0）
+计算选择器中ID属性的数量 (= b)
+计算选择器中其它属性和伪类的数量 (= c)
+计算选择器中元素名和伪元素的数量 (= d)
+特殊性只根据选择器的形式来定。特殊的，一个"[id=p33]"形式的选择器被算作一个属性选择器(a=0, b=0, c=1, d=0)，即使id属性在源文档的DTD中被定义为"ID"
+
+4个数连起来a-b-c-d（在一个基数很大的数字系统中（in a number system with a large base））表示特殊性
+
+一些示例：
+
+```
+ *             {}  /* a=0 b=0 c=0 d=0 -> specificity = 0,0,0,0 */
+ li            {}  /* a=0 b=0 c=0 d=1 -> specificity = 0,0,0,1 */
+ li:first-line {}  /* a=0 b=0 c=0 d=2 -> specificity = 0,0,0,2 */
+ ul li         {}  /* a=0 b=0 c=0 d=2 -> specificity = 0,0,0,2 */
+ ul ol+li      {}  /* a=0 b=0 c=0 d=3 -> specificity = 0,0,0,3 */
+ h1 + *[rel=up]{}  /* a=0 b=0 c=1 d=1 -> specificity = 0,0,1,1 */
+ ul ol li.red  {}  /* a=0 b=0 c=1 d=3 -> specificity = 0,0,1,3 */
+ li.red.level  {}  /* a=0 b=0 c=2 d=1 -> specificity = 0,0,2,1 */
+ #x34y         {}  /* a=0 b=1 c=0 d=0 -> specificity = 0,1,0,0 */
+ style=""          /* a=1 b=0 c=0 d=0 -> specificity = 1,0,0,0 */
+```
 
 <span id='g52'></span>
 
