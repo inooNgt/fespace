@@ -1,4 +1,4 @@
-# PWA Demo
+# PWA
 
 ### Native 的缺点
 

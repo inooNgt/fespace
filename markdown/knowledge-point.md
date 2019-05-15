@@ -24,7 +24,7 @@ Guides:
 20. <a href="javascript:;" onclick="document.getElementById('g20').scrollIntoView();"> Express 中间件</a>
 21. <a href="javascript:;" onclick="document.getElementById('g21').scrollIntoView();"> https/http2</a>
 22. <a href="javascript:;" onclick="document.getElementById('g22').scrollIntoView();"> 订阅/发布模式（subscribe&publish）</a>
-23. <a href="javascript:;" onclick="document.getElementById('g23').scrollIntoView();"> vue 双向数据绑定实现原理</a>
+23. <a href="javascript:;" onclick="document.getElementById('g23').scrollIntoView();"> Vue 相关</a>
 24. <a href="javascript:;" onclick="document.getElementById('g24').scrollIntoView();"> 函数模拟 A instanceof B</a>
 25. <a href="javascript:;" onclick="document.getElementById('g25').scrollIntoView();"> typeof 原理</a>
 26. <a href="javascript:;" onclick="document.getElementById('g26').scrollIntoView();"> Iterator</a>
@@ -1110,7 +1110,52 @@ pub.publish(dep);
 
 <span id="g23"></span>
 
-### vue 双向数据绑定实现原理
+### Vue 相关
+
+#### 生命周期
+
+vue 生命周期整体上包含 create、mount、update、destroy
+
+一段 Vue 的源码：
+
+```javascript
+initLifecycle(vm);
+initEvents(vm);
+initRender(vm);
+callHook(vm, "beforeCreate");
+initInjections(vm); // resolve injections before data/props
+initState(vm);
+initProvide(vm); // resolve provide after data/props
+callHook(vm, "created");
+```
+
+1. beforeCreate
+   InitEvents、InitLifecycle 后调用
+2. created
+   initInjections、initState 后调用，initState 中调用 observe 方法对数据进行观察
+
+    ```javascript
+    observe(data, true /_ asRootData _/)
+    ```
+
+3. beforeMount
+   接下来根据 el 或者 template 选项找到模板并编译产生 render function，之后调用 beforeMount
+
+4. mounted
+   执行 render function，挂载 DOM
+
+5. beforeUpdate
+   当 vue 发现 data 中的数据发生了改变，调用 beforeUpdate
+
+6. updated
+   更新虚拟 dom，重新渲染，调用 updated
+
+7. beforeDestroy
+   beforeDestroy 钩子函数在实例销毁之前调用。在这一步，实例仍然完全可用。
+8. destroyed
+   调用后，Vue 实例指示的所有东西都会解绑定，所有的事件监听器会被移除，所有的子实例也会被销毁。
+
+#### 双向绑定
 
 1. new Vue:
 
@@ -1909,7 +1954,6 @@ Function.prototype._bind = function(context) {
 3. 闭包
 4. DOM 外引用
 
-
 参考:
 https://segmentfault.com/a/1190000011411121
 
@@ -1941,7 +1985,6 @@ DOM 元素绑定了事件，但组件销毁时没有移除事件：
             $(document).unbind('mousedown', this.documentHandler);
         }
 ```
-
 
 <span id='g37'></span>
 
@@ -2204,6 +2247,10 @@ ETag 解决了 Last-Modified 无法解决的一些问题。例如文件做周期
 不同操作系统，web 服务器对于 ETag 的计算方法也不同，当使用不同操作系统，不同类型的 web 服务器做负载均衡的时候，如果用 ETag 作为判断条件，在被负载均衡到不同服务器后，则很容易导致缓存失效。
 
 “Last-Modified”和“ETag”两者存在其一，就可以进行缓存协商。
+
+##### 为何 Last-Modified 和 ETag 一起用？
+
+##### 什么时候使用强制缓存，什么时候用协商缓存？
 
 参考：
 
