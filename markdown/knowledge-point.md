@@ -57,6 +57,10 @@ Guides:
 53. <a href="javascript:;" onclick="document.getElementById('g53').scrollIntoView();"> 查找算法</a>
 54. <a href="javascript:;" onclick="document.getElementById('g54').scrollIntoView();"> flatten</a>
     <span id="g1"></span>
+55. <a href="javascript:;" onclick="document.getElementById('g55').scrollIntoView();"> javascript 制作规范</a>
+    <span id="g1"></span>
+56. <a href="javascript:;" onclick="document.getElementById('g55').scrollIntoView();"> Babel 原理</a>
+    <span id="g1"></span>
 
 ### 1、undefined and null
 
@@ -145,6 +149,8 @@ const clone=(obj)=>{
 
 递归
 
+todo：遇到 Date 实例，需要新建一个 Date 实例，赋值，再返回该新实例。
+
 ```javascript
 const clone = obj => {
     if (!obj && typeof obj !== "object") {
@@ -204,19 +210,19 @@ HTTP 劫持很好判断，当年正常访问一个无广告的页面时，页面
 如何防范 HTTP 劫持：
 
 1. 事前加密
-   HTTPS
+HTTPS
 
 很大一部分 HTTP 劫持，主要的原因就是在传输数据时都是明文的，使用了 HTTPS 后，会在 HTTP 协议之上加上 TLS 进行保护，使得传输的数据进行加密，但是使用 HTTPS，一定要注意规范，必须要全站使用 HTTPS，否则只要有一个地方没有使用 HTTPS，明文传输就很有可能会被 HTTP 劫持了。
 
 2. 事中加密
-   拆分 HTTP 请求数据包
+拆分 HTTP 请求数据包
 
 在 HTTP 劫持的步骤中，第一步是标记 TCP 连接，因此只要躲过了标识，那么后续的运营商篡改就不会存在了，有一种方式就是拆分 HTTP 请求
 
 拆分数据包就是把 HTTP 请求的数据包拆分成多个，运营商的旁路设备由于没有完整的 TCP/IP 协议栈，所以就不会被标志，而目标 web 服务器是有完整的 TCP/IP 协议栈，能接收到的数据包拼成完整的 HTTP 请求，不影响服务
 
 3. 事后屏蔽
-   通过浏览器 Api，根据若干规则去匹配 DOM 中的节点，对匹配到的节点作拦截和隐藏
+通过浏览器 Api，根据若干规则去匹配 DOM 中的节点，对匹配到的节点作拦截和隐藏
 
 CSP（内容安全策略），DOM 事件监听等。
 
@@ -257,10 +263,10 @@ DOM 事件监听主要是监听 DOMNodeInserted、DOMContentLoaded、DOMAttrModi
 
 ```
 let str = `
-  <p>第一个</p>
-  <pre><code>console.log(1);</code></pre>
-  <p>第二个</p>
-  <pre><code>console.log(2);</code></pre>`;
+<p>第一个</p>
+<pre><code>console.log(1);</code></pre>
+<p>第二个</p>
+<pre><code>console.log(2);</code></pre>`;
 
 str.match(/(?<=<pre><code>)[\s\S]*?(?=<\/code><\/pre>)/gi);  // 获得,/somePattern*?/是懒惰匹配。
 
@@ -293,11 +299,11 @@ str.replace(/(?<=<pre><code>)[\s\S]*?(?=<\/code><\/pre>)/gi, 'asdf');  // 替换
 
 ```
 const Thunk=(fn)=>{
-	return (...args)=>{
-		return (callback)=>{
-			fn.call(this,...args,callback)
-		}
-	}
+    return (...args)=>{
+        return (callback)=>{
+            fn.call(this,...args,callback)
+        }
+    }
 }
 
 const readFileThunk = Thunk(fs.readFile);
@@ -324,8 +330,8 @@ readFileThunk(path)(callback);
 ```Javascript
 const setCookie=(key,value,expires)=>{
     document.cookie=!expires?
-	    `${key}=${value}`:
-		`${key}=${value};expires=${expires}`;
+        `${key}=${value}`:
+        `${key}=${value};expires=${expires}`;
 
 }
 
@@ -334,7 +340,7 @@ const getCookie=(key)=>{
     let result="";
     let cookie=document.cookie;
     if(cookie){
-    	result=cookie.match(reg)[0]
+        result=cookie.match(reg)[0]
     }
 
     return result;
@@ -363,7 +369,7 @@ Session:
 
 ```
 quickSort = (arr)=> {
-	let mid= arr.splice(Math.floor(arr.length/2),1)[0];
+    let mid= arr.splice(Math.floor(arr.length/2),1)[0];
     let left =[],right=[];
 
     arr.forEach((v,i)=>{
@@ -373,9 +379,9 @@ quickSort = (arr)=> {
             left.push(v)
         }
     })
-  if(left.length>1) left = quickSort(left)
-  if(right.length>1) right = quickSort(right)
-  return [...left,mid,...right]
+if(left.length>1) left = quickSort(left)
+if(right.length>1) right = quickSort(right)
+return [...left,mid,...right]
 };
 
 quickSort([3,5,0,2,4,8,1,9,7,6,2])
@@ -497,168 +503,168 @@ var REJECTED = 2;
 
 class Promise{
 
-	constructor(fn){
+    constructor(fn){
         //promise的状态
         this.state=PENDING; //[PENDING,FULFILLED,REJECTED]
         //FULFILLED 或者 REJECTED 时的返回值
         this.value=null;
         //回调函数
         this.handlers=[];
-		this.resolve=this.resolve.bind(this);
-		this.reject=this.reject.bind(this);
-		this.done=this.done.bind(this);
-		this.handle=this.handle.bind(this);
+        this.resolve=this.resolve.bind(this);
+        this.reject=this.reject.bind(this);
+        this.done=this.done.bind(this);
+        this.handle=this.handle.bind(this);
 
 
 
-		doResolve(fn, this.resolve, this.reject);
-	}
+        doResolve(fn, this.resolve, this.reject);
+    }
 
-	fulfill(value){
-		this.state=FULFILLED;
-		this.value=value;
-		//执行回调
-		this.handlers.forEach(this.handle)
-		this.handlers=null
-		console.log("fulfill: value",value,"state",this.state)
-	}
+    fulfill(value){
+        this.state=FULFILLED;
+        this.value=value;
+        //执行回调
+        this.handlers.forEach(this.handle)
+        this.handlers=null
+        console.log("fulfill: value",value,"state",this.state)
+    }
 
-	reject(error){
-		this.state=REJECTED;
-		this.value=error;
-		//执行回调
-		this.handlers.forEach(this.handle)
-		this.handlers=null
-		console.log("reject",error)
-	}
+    reject(error){
+        this.state=REJECTED;
+        this.value=error;
+        //执行回调
+        this.handlers.forEach(this.handle)
+        this.handlers=null
+        console.log("reject",error)
+    }
 
-	//相当于发布者
-	resolve(value){
-		console.log("in resolve")
-		try{
-			//若value为 Promise 则返回该 Promise 的 then 方法，即value.then
-			var then =getThen(value);
-			if(then){
-				 console.log("value is promise")
-				 //若value为promise，递归 resolve 待解析的 Promise
-				 doResolve(then.bind(value),this.resolve,this.reject);
-				 return;
-			}
-			this.fulfill(value);
-		}catch(e){
-			console.log(e)
-			this.reject(e);
-		}
+    //相当于发布者
+    resolve(value){
+        console.log("in resolve")
+        try{
+            //若value为 Promise 则返回该 Promise 的 then 方法，即value.then
+            var then =getThen(value);
+            if(then){
+                console.log("value is promise")
+                //若value为promise，递归 resolve 待解析的 Promise
+                doResolve(then.bind(value),this.resolve,this.reject);
+                return;
+            }
+            this.fulfill(value);
+        }catch(e){
+            console.log(e)
+            this.reject(e);
+        }
 
-	}
+    }
 
-	//观察者接口
-	then(onFulfilled, onRejected) {
- 	    const self = this
+    //观察者接口
+    then(onFulfilled, onRejected) {
+        const self = this
 
         return new Promise(function (resolve, reject) {
 
         return self.done.call(self,function (result) {
-          if (typeof onFulfilled === 'function') {
+        if (typeof onFulfilled === 'function') {
             try {
-              return resolve(onFulfilled(result))
+            return resolve(onFulfilled(result))
             } catch (ex) {
-              return reject(ex)
+            return reject(ex)
             }
-          } else return resolve(result)
+        } else return resolve(result)
         }, function (error) {
-          if (typeof onRejected === 'function') {
+        if (typeof onRejected === 'function') {
             try {
-              return resolve(onRejected(error))
+            return resolve(onRejected(error))
             } catch (ex) {
-              return reject(ex)
+            return reject(ex)
             }
-          } else return reject(error)
+        } else return reject(error)
         })
-      })
+    })
     }
 
-	//观察者接口
-	done(onFulfilled, onRejected){
-		// 保证 done 总是异步执行
+    //观察者接口
+    done(onFulfilled, onRejected){
+        // 保证 done 总是异步执行
         setTimeout(() =>{
             this.handle({
                 onFulfilled: onFulfilled,
                 onRejected: onRejected
             })
         }, 0)
-	}
+    }
 
-	 // 保证 done 中回调的执行
+    // 保证 done 中回调的执行
     handle (handler) {
 
         if (this.state === PENDING) {
-          this.handlers.push(handler)
-          console.log("push to handlers",this.handlers)
+        this.handlers.push(handler)
+        console.log("push to handlers",this.handlers)
         } else {
-          if (this.state === FULFILLED &&
+        if (this.state === FULFILLED &&
             typeof handler.onFulfilled === 'function') {
             handler.onFulfilled(this.value)
-          }
-          if (this.state === REJECTED &&
+        }
+        if (this.state === REJECTED &&
             typeof handler.onRejected === 'function') {
             handler.onRejected(this.value)
-          }
+        }
         }
     }
 
-	catch(callback){
+    catch(callback){
 
 
-	}
+    }
 }
 
 function getThen(value) {
-  var t = typeof value;
-  if (value && (t === 'object' || t === 'function')) {
+var t = typeof value;
+if (value && (t === 'object' || t === 'function')) {
     var then = value.then;
     if (typeof then === 'function') {
-      return then;
+    return then;
     }
-  }
-  return null;
+}
+return null;
 }
 
 function doResolve(fn, onFulfilled, onRejected) {
-  var done = false;
-  try {
+var done = false;
+try {
     fn(function (value) {
-      if (done) return
-      done = true
-      onFulfilled(value)
+    if (done) return
+    done = true
+    onFulfilled(value)
     }, function (reason) {
-      if (done) return
-      done = true
-      onRejected(reason)
+    if (done) return
+    done = true
+    onRejected(reason)
     })
-  } catch (e) {
-	console.log("doResolve",e)
+} catch (e) {
+    console.log("doResolve",e)
     if (done) return
     done = true
     onRejected(e)
-  }
+}
 }
 
 
 
 
 p1 =new Promise((resolve,reject)=>{
-	console.log("1")
-	setTimeout(()=>{
-		resolve("p1")
-	},1500)
+    console.log("1")
+    setTimeout(()=>{
+        resolve("p1")
+    },1500)
 
 })
 
 
 p1.then(res=>{
-	console.log("res",res)
-	return "then--res"
+    console.log("res",res)
+    return "then--res"
 })
 ```
 
@@ -854,8 +860,8 @@ ES6 明确规定，如果区块中存在 let 和 const 命令，这个区块对�
 var tmp = 123;
 
 if (true) {
-  tmp = 'abc'; // ReferenceError
-  let tmp;
+tmp = 'abc'; // ReferenceError
+let tmp;
 }
 ```
 
@@ -871,12 +877,12 @@ ES6 规定，块级作用域之中，函数声明语句的行为类似于 let，
 // 浏览器的 ES6 环境
 function f() { console.log('I am outside!'); }
 (function () {
-  var f = undefined;
-  if (false) {
+var f = undefined;
+if (false) {
     function f() { console.log('I am inside!'); }
-  }
+}
 
-  f();
+f();
 }());
 ```
 
@@ -1085,9 +1091,9 @@ http2 无论在客户端还是在服务器端都不需要排队，在同一个 t
 ```
 //发布者
 let pub={
-  publish:function(dep){
+publish:function(dep){
     dep.notify();
-  }
+}
 }
 //订阅者
 let sub1={update:()=>{console.log(1)}}
@@ -1095,12 +1101,12 @@ let sub2={update:()=>{console.log(2)}}
 
 //主题
 class Dep{
-  constructor(subs){
+constructor(subs){
     this.subs=subs||[]
-  }
-  notify(){
+}
+notify(){
     this.subs.forEach((sub)=>sub.update())
-  }
+}
 }
 
 let dep =new Dep([sub1,sub2])
@@ -1111,6 +1117,7 @@ pub.publish(dep);
 <span id="g23"></span>
 
 ### Vue 相关
+（具体分析已独立成文）
 
 #### 生命周期
 
@@ -1130,30 +1137,30 @@ callHook(vm, "created");
 ```
 
 1. beforeCreate
-   InitEvents、InitLifecycle 后调用
+InitEvents、InitLifecycle 后调用
 2. created
-   initInjections、initState 后调用，initState 中调用 observe 方法对数据进行观察
+initInjections、initState 后调用，initState 中调用 observe 方法对数据进行观察
 
     ```javascript
     observe(data, true /_ asRootData _/)
     ```
 
 3. beforeMount
-   接下来根据 el 或者 template 选项找到模板并编译产生 render function，之后调用 beforeMount
+接下来根据 el 或者 template 选项找到模板并编译产生 render function，之后调用 beforeMount
 
 4. mounted
-   执行 render function，挂载 DOM
+执行 render function，挂载 DOM
 
 5. beforeUpdate
-   当 vue 发现 data 中的数据发生了改变，调用 beforeUpdate
+当 vue 发现 data 中的数据发生了改变，调用 beforeUpdate
 
 6. updated
-   更新虚拟 dom，重新渲染，调用 updated
+更新虚拟 dom，重新渲染，调用 updated
 
 7. beforeDestroy
-   beforeDestroy 钩子函数在实例销毁之前调用。在这一步，实例仍然完全可用。
+beforeDestroy 钩子函数在实例销毁之前调用。在这一步，实例仍然完全可用。
 8. destroyed
-   调用后，Vue 实例指示的所有东西都会解绑定，所有的事件监听器会被移除，所有的子实例也会被销毁。
+调用后，Vue 实例指示的所有东西都会解绑定，所有的事件监听器会被移除，所有的子实例也会被销毁。
 
 #### 双向绑定
 
@@ -1172,6 +1179,53 @@ callHook(vm, "created");
 
 [vue 双向数据绑定实现原理](https://juejin.im/entry/59116fa6a0bb9f0058aaaa4c)
 [vue 依赖收集原理](https://juejin.im/post/5b40c8495188251af3632dfa)
+
+#### EventBus
+
+EventBus 又称为事件总线。在 Vue 中可以使用 EventBus 来作为沟通桥梁的概念，就像是所有组件共用相同的事件中心，可以向该中心注册发送事件或接收事件，所以组件都可以上下平行地通知其他组件。
+
+参考：https://juejin.im/post/5bb355dae51d450ea4020b42#heading-0
+
+#### 依赖收集和通知更新
+
+Vue 的双向绑定有三大核心：Observer,Dep,Watcher
+
+##### Dep
+
+Dep 主要负责依赖的收集,get 时触发收集，set 时通知 watcher 通信：
+##### Watcher
+
+Watcher 负责数据变更之后调用 Vue 的 diff 进行视图的更新
+
+##### Observer
+
+Observer负责数据侦听
+
+Vue 在执行方法 initState->initData 后调用 observe 方法进行数据侦听：
+
+```javascript
+vm.$options.data;
+observe(data, true /* asRootData */);
+```
+
+#### 计算属性 computed 原理
+
+计算属性提供的函数将被作为相应属性的 getter 函数。若依赖的其他属性改变，此属性也会自动更新。此外，计算属性也可以设置 setter。
+
+计算属性和方法的区别：计算值会被缓存，依赖的 data 值改变时才会从新计算；方法每次都需要执行。
+
+计算属性和的侦听属性的区别:计算属性辑清晰，方便于管理；侦听属性很容易滥用。
+
+-   initComputed 创建 watcher
+-   获取值 computedGetter 的同时通过 watcher.depend()进行依赖收集
+-   改变 data，触发 setter
+-   dep.notify 发布通知，dep.subs 中的每个 watcher 都执行 update 方法
+-   update->watcher.get ,call Getter 再执行 Getter 函数重新计算 computed
+
+
+#### watch 原理
+
+#### $emit 原理
 
 <span id="g24"></span>
 
@@ -1341,7 +1395,7 @@ BFC 应用：
 1. 清除浮动
 2. 防止 margin 重叠
     - 根据 BFC 布局规则第二条：Box 垂直方向的距离由 margin 决定。属于同一个 BFC 的两个相邻 Box 的 margin 会发生重叠。
-      我们可以在 p 外面包裹一层容器，并触发该容器生成一个 BFC。那么两个 P 便不属于同一个 BFC，就不会发生 margin 重叠了。
+    我们可以在 p 外面包裹一层容器，并触发该容器生成一个 BFC。那么两个 P 便不属于同一个 BFC，就不会发生 margin 重叠了。
 3. 多栏布局的一种方式
 
 参考：
@@ -1534,9 +1588,9 @@ Array.isArray(a); // true
 
 ```
 if (!Array.isArray) {
-  Array.isArray = function(arg) {
+Array.isArray = function(arg) {
     return Object.prototype.toString.call(arg) === '[object Array]';
-  };
+};
 }
 ```
 
@@ -1592,17 +1646,17 @@ index.html（http://localhost:1234）
 
 ```html
 <script type="text/javascript">
-  // 页面加载完后才能获取dom节点（iframe）
-  window.onload = function(){
+// 页面加载完后才能获取dom节点（iframe）
+window.onload = function(){
     // 向目标源发送数据
     document.getElementsByTagName('iframe')[0].contentWindow.postMessage({"age":10}, '*');
     // window.frames[0].contentWindow.postMessage({"age":10}, '*');
-  };
+};
 
-  // 监听有没有数据发送过来
-  window.addEventListener('message', function(e) {
-      console.log('parent received:',e);
-  });
+// 监听有没有数据发送过来
+window.addEventListener('message', function(e) {
+    console.log('parent received:',e);
+});
 </script>
 <iframe src="http://localhost:1235" name='frame'></iframe>
 ```
@@ -1611,16 +1665,16 @@ child.html（http://localhost:1235）
 
 ```html
 <script type="text/javascript">
-  // 监听有没有数据发送过来
-  window.addEventListener('message', function(e){
-      // 判断数据发送方是否是可靠的地址
-      if(e.origin !== 'http://localhost:1234')
+// 监听有没有数据发送过来
+window.addEventListener('message', function(e){
+    // 判断数据发送方是否是可靠的地址
+    if(e.origin !== 'http://localhost:1234')
         return;
     // 打印数据格式
     console.log('child received',e);
     // 回发数据
     e.source.postMessage('hello world', e.origin);
-  }, false);
+}, false);
 </script>
 ```
 
@@ -1973,7 +2027,7 @@ https://segmentfault.com/a/1190000011411121
 DOM 元素绑定了事件，但组件销毁时没有移除事件：
 
 ```javascript
-   created: function () {
+created: function () {
             that.documentHandler = function (event) {
                 // 处理函数
             };
@@ -1994,7 +2048,7 @@ html 结构：
 
 ```html
 <div class='wrap'>
-  <div class='box'></div>
+<div class='box'></div>
 </div>
 ```
 
@@ -2121,11 +2175,11 @@ css 代码：
 ```
 
 ```html
-  <div class="container">
+<div class="container">
     <div class='left'>左右定宽</div>
     <div class='main'>中间自适应</div>
     <div class='right'>左右定宽</div>
-  </div>
+</div>
 ```
 
 #### 2.flex
@@ -2147,11 +2201,11 @@ css 代码：
 ```
 
 ```html
-  <div class="container">
+<div class="container">
     <div class='left'>左右定宽</div>
     <div class='main'>中间自适应</div>
     <div class='right'>左右定宽</div>
-  </div>
+</div>
 ```
 
 #### 3.BFC+ float
@@ -2209,13 +2263,13 @@ css 代码：
 ```
 
 ```html
-  <div class="container">
+<div class="container">
     <div class='center'>
-     <div class="content">中间自适应</div>
- 	</div>
+    <div class="content">中间自适应</div>
+    </div>
     <div class='left'>左右定宽</div>
     <div class='right'>左右定宽</div>
-  </div>
+</div>
 ```
 
 <span id='g40'></span>
@@ -2736,6 +2790,43 @@ ws.onmessage = function(event) {
 
 客户端定时每 X 秒(推荐小于 60 秒)向服务端发送特定数据，服务端设定为 X 秒没有收到客户端心跳则认为客户端掉线，并关闭连接触发 onClose 回调。
 
+#### [websocket协议详解](https://juejin.im/post/5ce8976151882533441ecc20?utm_source=gold_browser_extension#heading-0)
+
+#### 连接过程
+1. 客户端: 申请协议升级
+```
+GET / HTTP/1.1
+Host: localhost:8080
+Origin: http://127.0.0.1:3000
+Connection: Upgrade
+Upgrade: websocket
+Sec-WebSocket-Version: 13
+Sec-WebSocket-Key: w4v7O6xFTi36lq3RNcgctw==
+```
+2. 服务器: 响应协议升级
+```
+HTTP/1.1 101 Switching Protocols
+Connection:Upgrade
+Upgrade: websocket
+Sec-WebSocket-Accept: Oy4NRAQ13jhfONC7bP8dTKb4PTU=
+```
+
+其中：
+- Sec-WebSocket-Key值由一个随机生成的16字节的随机数通过base64编码得到的
+- 而Sec-WebSocket-Accept值的计算方式为:
+    将Sec-Websocket-Key的值和258EAFA5-E914-47DA-95CA-C5AB0DC85B11拼接
+    通过SHA1计算出摘要, 并转成base64字符串
+
+Sec-WebSocket-Key的作用:
+- Key可以避免服务器收到非法的WebSocket连接, 比如http请求连接到websocket, 此时服务端可以直接拒绝
+- Key可以用来初步确保服务器认识ws协议, 但也不能排除有的http服务器只处理Sec-WebSocket-Key, 并不实现ws协议
+- Key可以避免反向代理缓存
+- 在浏览器中发起ajax请求, Sec-Websocket-Key以及相关header是被禁止的, 这样可以避免客户端发送ajax请求时, 意外请求协议升级
+
+Sec-WebSocket-Key/Accept并不是用来保证数据的安全性, 因为其计算/转换公式都是公开的, 而且非常简单, 最主要的作用是预防一些意外的情况
+
+
+
 <span id='go45'></span>
 
 ### 回流与重绘
@@ -2921,16 +3012,16 @@ initial 关键字用于设置 CSS 属性为它的默认值，可作用于任何 
 一些示例：
 
 ```
- *             {}  /* a=0 b=0 c=0 d=0 -> specificity = 0,0,0,0 */
- li            {}  /* a=0 b=0 c=0 d=1 -> specificity = 0,0,0,1 */
- li:first-line {}  /* a=0 b=0 c=0 d=2 -> specificity = 0,0,0,2 */
- ul li         {}  /* a=0 b=0 c=0 d=2 -> specificity = 0,0,0,2 */
- ul ol+li      {}  /* a=0 b=0 c=0 d=3 -> specificity = 0,0,0,3 */
- h1 + *[rel=up]{}  /* a=0 b=0 c=1 d=1 -> specificity = 0,0,1,1 */
- ul ol li.red  {}  /* a=0 b=0 c=1 d=3 -> specificity = 0,0,1,3 */
- li.red.level  {}  /* a=0 b=0 c=2 d=1 -> specificity = 0,0,2,1 */
- #x34y         {}  /* a=0 b=1 c=0 d=0 -> specificity = 0,1,0,0 */
- style=""          /* a=1 b=0 c=0 d=0 -> specificity = 1,0,0,0 */
+*             {}  /* a=0 b=0 c=0 d=0 -> specificity = 0,0,0,0 */
+li            {}  /* a=0 b=0 c=0 d=1 -> specificity = 0,0,0,1 */
+li:first-line {}  /* a=0 b=0 c=0 d=2 -> specificity = 0,0,0,2 */
+ul li         {}  /* a=0 b=0 c=0 d=2 -> specificity = 0,0,0,2 */
+ul ol+li      {}  /* a=0 b=0 c=0 d=3 -> specificity = 0,0,0,3 */
+h1 + *[rel=up]{}  /* a=0 b=0 c=1 d=1 -> specificity = 0,0,1,1 */
+ul ol li.red  {}  /* a=0 b=0 c=1 d=3 -> specificity = 0,0,1,3 */
+li.red.level  {}  /* a=0 b=0 c=2 d=1 -> specificity = 0,0,2,1 */
+#x34y         {}  /* a=0 b=1 c=0 d=0 -> specificity = 0,1,0,0 */
+style=""          /* a=1 b=0 c=0 d=0 -> specificity = 1,0,0,0 */
 ```
 
 <span id='g53'></span>
@@ -2945,22 +3036,22 @@ initial 关键字用于设置 CSS 属性为它的默认值，可作用于任何 
 
 ```javascript
 const binarySeach = (arr, n)=> {
-  let low = 0;
-  let high = arr.length - 1;
-  let mid;
+let low = 0;
+let high = arr.length - 1;
+let mid;
 
-  while (low<high-1) {
+while (low<high-1) {
     mid = Math.floor((low + high) / 2);
     console.log('mid',mid,arr[mid])
 
     if (n === arr[low]) return low;
     if (n === arr[high]) return high;
-	  if (n === arr[mid]) return mid;
+    if (n === arr[mid]) return mid;
 
     if (n > arr[mid]) low = mid;
     if (n < arr[mid]) high = mid;
-  }
-  return -1;
+}
+return -1;
 };
 
 算法复杂度：
@@ -2974,7 +3065,7 @@ const binarySeach = (arr, n)=> {
 所以时间复杂度为O(logN)
 ```
 
-<span id=54 />
+<span id=g54 />
 
 ### flatten
 
@@ -3014,3 +3105,49 @@ function flatten(arr) {
     }, []);
 }
 ```
+
+<span id=g55 />
+
+### javascript 制作规范
+
+#### javascript 版本
+
+javascript 是网景公司开发的一种脚本语言，1996 年的时候以 ECMAScript 的名字正式成为一种标准。2007 年的时候发布了版本 es5，然后在随后近 10 年里 js 并没有大的变化。所以现在的浏览器都可以很好的支持 es5。这一局面直到 2015 年被打破。2015 年 6 月，TC39（javascript 标准的制定组织）公布了新版本的 js 语言——ES6。而且从 ES6 开始，TC39 规定每年都要发布一个 js 的新版本，新版本将包含年号，都是以 ESxxxx 的方式进行命名。所以 2015 年发布的 ES6 又叫 ES2015，2016 年发布的新的 js 版本就叫 ES2016，2017 年发布的新的 js 版本就叫 ES2017……。
+
+因为版本都是向前兼容的，就是老版本 js 版本中规定的语法和 api 在新版本的 js 中同样也会合理的。所以我们可以想到后面的规范肯定是包含前面的规范的，也就是 ES2016 版本的 js 规范是包含 ES2015(ES6)规范的，ES2017 是包含 ES2016 的也包含 ES2015 的。针对不同的规范，Babel 也提供了对应的转换器。
+
+babel-preset-es2015 将 es2015 版本的 js 转译为 es5。
+babel-preset-es2016 将 es2016 版本的 js 转译为 es5。
+babel-preset-es2017 将 es2017 版本的 js 转译为 es5。
+在转译过程中遇到更高版本的 js 语法，babel 是会直接忽略的。
+
+#### js 新规范的制作过程
+
+js 规范的制作分 4 个阶段：
+
+-   Stage0 ：任何尚未提交为正式提案的讨论，想法，改变或对已有规范的补充建议都被认为是一个稻草人草案（“strawman” proposal），但只有 TC39 成员可以提出此阶段的草案。
+-   Stage1 ：此阶段，稻草人草案升级为正式化的提案，并将逐步解决多部门关切的问题，如与其他提案的相互之间会有什么影响，这一草案具体该如何实施等问题。人们需要对这些问题提供具体的解决方案。- stage1 的提案通常还需要包括 API 描述，拥有说明性使用示例，并对语义和算法进行讨论，一般来说草案在这一阶段会经历巨大的变化。
+-   Stage2 ：此阶段，草案就有了初始的规范。通过 polyfill（打补丁。编写一些代码实现浏览器之前不支持的功能），开发者可以开始使用这一阶段的草案了，一些浏览器引擎也会逐步对这一阶段的规范的提供原生支持，此外通过使用构建工具（类似 babel 的工具）也可以编译源代码为现有引擎可以执行的代码，这些方法都使得这一阶段的草案可以开始被使用了。
+-   State3 ：此阶段的规范就属于候选推荐规范了，这一阶段之后变化就不会那么大了，要达到这一阶段需要满足以下条件：
+    -   规范的编辑和指定的审阅者必须在最终规范上签字；
+    -   用户也应该对该提议感兴趣；
+    -   提案必须至少被一个浏览器原生支持；
+    -   拥有高效的 ployfill，或者被 Babel 支持；
+-   Stage4 ：此阶段的提案必须有两个独立的通过验收测试的实现，进入第 4 阶段的提案将包含在 ECMAScript 的下一个修订版中。
+
+针对 js 规范的不同阶段，babel 也提供了对应的转译器
+
+-   Stage0：preset-stage-0
+-   Stage1：preset-stage-1
+-   Stage2：preset-stage-2
+-   Stage3：preset-stage-3
+    不同阶段的转译器之间是包含的关系，preset-stage-0 转译器除了包含了 preset-stage-1 的所有功能还增加了 transform-do-expressions 插件和 transform-function-bind 插件，同样 preset-stage-1 转译器除了包含 preset-stage-2 的全部功能外还增加了一些额外的功能……。
+
+<span id=g55 />
+### Babel原理
+
+参考：
+
+[babel-handbook](https://github.com/jamiebuilds/babel-handbook/blob/master/translations/zh-Hans/plugin-handbook.md)
+
+[编写 babel 插件](https://juejin.im/post/5a17d51851882531b15b2dfc#heading-0)
