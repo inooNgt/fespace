@@ -1,8 +1,8 @@
 {
-    "name": "inooNgt",
+    "name": "fespace",
     "version": "1.0.0",
-    "description": "inooNgt.github.io",
-    "main": "webpack.config.js",
+    "description": "fespace",
+    "main": "build/webpack.config.js",
     "scripts": {
         "dev-node": "set NODE_ENV=development&&node build/webpack.dev.config.js",
         "dev": "set NODE_ENV=development&&webpack-dev-server --config build/webpack.config.js --content-base public/ --host localhost --port 9001 --inline --history-api-fallback ",
@@ -12,7 +12,10 @@
         "precommit": "lint-staged"
     },
     "lint-staged": {
-        "static/**/*.js": ["prettier --write", "git add"]
+        "static/**/*.js": [
+            "prettier --write",
+            "git add"
+        ]
     },
     "author": "",
     "license": "ISC",
