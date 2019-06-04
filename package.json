@@ -1,6 +1,6 @@
 {
     "name": "fespace",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "fespace",
     "main": "build/webpack.config.js",
     "scripts": {
