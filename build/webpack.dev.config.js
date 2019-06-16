@@ -13,7 +13,7 @@ const options = {
     open: true,
     inline: true,
     host: HOST,
-    contentBase: "./public",
+    contentBase: "./dist",
     historyApiFallback: {
         index: "./index.html" //router为broswerHistory时刷新页面始终回到index
     },

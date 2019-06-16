@@ -9,17 +9,19 @@ const HappyPack = require("happypack");
 const os = require("os");
 const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
 
+const _resolve = dir => path.resolve(__dirname, dir);
+
 const isDev = process.env.NODE_ENV === "development";
 
 console.log("isDev:", isDev);
 
 const config = {
     entry: {
-        main: ["@babel/polyfill", path.resolve(__dirname, "../src/main.js")]
+        main: ["@babel/polyfill", _resolve("../src/main.js")]
     },
     output: {
-        publicPath: "/dist/", //虚拟目录，自动指向path编译目录('./public/dist')
-        path: path.resolve(__dirname, "../public/dist"),
+        publicPath: "/static/", //虚拟目录，自动指向path编译目录('./dist/static')
+        path: _resolve("../dist/static"),
         chunkFilename: isDev ? "js/[name].js" : "js/[name]-[hash:6].js",
         filename: "js/[name].js"
     },
@@ -57,10 +59,10 @@ const config = {
                 }
             ]
         }),
-        new CleanWebpackPlugin(path.resolve(__dirname, "../public/dist")),
+        new CleanWebpackPlugin(_resolve("../public/dist")),
         new HtmlwebpackPlugin({
             title: "test",
-            template: path.resolve(__dirname, "../src/template/index.html"),
+            template: _resolve("../src/template/index.html"),
             filename: "../index.html", //相对于webpackConfig.output.path
             hash: true
         }),
