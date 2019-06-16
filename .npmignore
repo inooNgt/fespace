@@ -1,6 +1,7 @@
+.git
 *.iml
 .idea
 target
 node_modules
 logs
-*.log
+*.logs

@@ -4,7 +4,7 @@ const marked = require("marked");
 const file = require("./file");
 
 let articles = file.getAllFiles(path.resolve(__dirname, "../markdown")),
-    prepath = path.resolve(__dirname, "../static/pages/Posts/routes"),
+    prepath = path.resolve(__dirname, "../src/pages/Posts/routes"),
     componentTpl = fs.readFileSync(
         path.resolve(__dirname, "./templet/components/Index.js"),
         {

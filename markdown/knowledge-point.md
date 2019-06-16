@@ -12,7 +12,7 @@ Guides:
 8.  <a href="javascript:;" onclick="document.getElementById('g8').scrollIntoView();"> this 指向</a>
 9.  <a href="javascript:;" onclick="document.getElementById('g9').scrollIntoView();"> Cookie</a>
 10. <a href="javascript:;" onclick="document.getElementById('g10').scrollIntoView();"> 排序算法</a>
-11. <a href="javascript:;" onclick="document.getElementById('g11').scrollIntoView();"> 执行上下文(Execution Context)</a>
+11. <a href="javascript:;" onclick="document.getElementById('g11').scrollIntoView();"> 代码解释器运行原理</a>
 12. <a href="javascript:;" onclick="document.getElementById('g12').scrollIntoView();"> Promise 的实现</a>
 13. <a href="javascript:;" onclick="document.getElementById('g13').scrollIntoView();"> 闭包</a>
 14. <a href="javascript:;" onclick="document.getElementById('g14').scrollIntoView();"> DOM 事件</a>
@@ -59,7 +59,11 @@ Guides:
     <span id="g1"></span>
 55. <a href="javascript:;" onclick="document.getElementById('g55').scrollIntoView();"> javascript 制作规范</a>
     <span id="g1"></span>
-56. <a href="javascript:;" onclick="document.getElementById('g55').scrollIntoView();"> Babel 原理</a>
+56. <a href="javascript:;" onclick="document.getElementById('g56').scrollIntoView();"> Babel 原理</a>
+    <span id="g1"></span>
+57. <a href="javascript:;" onclick="document.getElementById('g57').scrollIntoView();"> Node 命令行开发</a>
+    <span id="g1"></span>
+58. <a href="javascript:;" onclick="document.getElementById('g58').scrollIntoView();"> node.js 模块解析算法</a>
     <span id="g1"></span>
 
 ### 1、undefined and null
@@ -452,8 +456,9 @@ function mergeSort(a) {
 
 <span id="g11"></span>
 
-### 11、执行上下文(Execution Context)
+### 11、代码解释器运行原理
 
+#### 执行栈 
 js 的运行有三种环境：
 
 -   Global Code, JavaScript 代码开始运行的默认环境
@@ -468,7 +473,7 @@ js 的运行有三种环境：
 -   作用域链（Scope chain）
 -   this
 
-解释器执行代码的伪逻辑:
+#### 解释器执行代码的伪逻辑
 
 1.  查找调用函数的代码
 2.  执行代码之前，先进入创建上下文阶段
@@ -483,11 +488,19 @@ js 的运行有三种环境：
 3.  执行代码阶段
     -   在当前上下文上运行/解释函数代码，并随着代码一行行执行指派变量的值。
 
-VO 对应第二阶段，AO 对应第三阶段。
+#### AO
+VO/AO 代表局部作用域,
+VO 对应伪逻辑第二阶段，AO 对应第三阶段。
 
-作用域链：
+#### GO 
 
-对于自由变量，即当前作用域中没有定义的变量，需要向父级作用域寻找,
+GO 代表全局作用域
+
+#### 作用域链 [[Scopes]]
+
+[[Scopes]] 是一个链式数组结构：[AO1,AO2,...,GO],最前端是当前函数的活动对象AO。
+
+对于自由变量，即当前作用域中没有定义的变量，需要向父级作用域寻找（AO2）,
 如果父级中没有找到，则再一层一层向上查找，直到全局作用域。这种一层一层间的关系，就是作用域链。
 
 注意：自由变量的查找依据的是函数定义时的作用域，而不是执行时的作用域,例如闭包。
@@ -2870,7 +2883,7 @@ JavaScript 代码自上而下执行，但是在 js 代码执行前，会首先�
 
 具体步骤：
 0、在函数执行的一瞬间，生产 Active Object（活动对象）
-
+ - 0.5  初始化内置隐士对象 this/arguments 
 1、分析形参
 1.1 函数声明的形参，形成 AO 的属性，默认值是 undefined,
 1.2 接收形参，给刚刚形成 AO 的属性的形参赋值
@@ -3143,7 +3156,7 @@ js 规范的制作分 4 个阶段：
 -   Stage3：preset-stage-3
     不同阶段的转译器之间是包含的关系，preset-stage-0 转译器除了包含了 preset-stage-1 的所有功能还增加了 transform-do-expressions 插件和 transform-function-bind 插件，同样 preset-stage-1 转译器除了包含 preset-stage-2 的全部功能外还增加了一些额外的功能……。
 
-<span id=g55 />
+<span id=g56 />
 ### Babel原理
 
 参考：
@@ -3151,3 +3164,144 @@ js 规范的制作分 4 个阶段：
 [babel-handbook](https://github.com/jamiebuilds/babel-handbook/blob/master/translations/zh-Hans/plugin-handbook.md)
 
 [编写 babel 插件](https://juejin.im/post/5a17d51851882531b15b2dfc#heading-0)
+
+<span id=g57 />
+
+### Node 命令行开发
+
+1. bin目录下 添加 #!/usr/bin/env node，shell 使用nodejs去执行这个脚本
+```javascript
+#!/usr/bin/env node
+
+console.log('IN bin ', process.argv)
+```
+2. 配置package.json
+```
+"bin": {
+    "webtest": "./bin/index.js"
+  }
+```
+3. 将脚本装载到全局环境上 
+```shell
+npm install -g
+```
+4. npm link(可选)
+
+命令的目录和你正在工作的项目目录是不同的.为了避免这种情况,在你的项目文件夹中运行 npm link ,这样会在你执行的命令和目录之间自动建立联系.
+
+#### npm link
+symlink(符号链接)一个package文件夹。
+
+#### 概括
+```
+npm link (in package dir)
+npm link [<@scope>/]<pkg>[@<version>]
+```
+####  描述
+package 链接过程分为两步
+1. npm link 将会在全局包{prefix}/lib/node_modules/下面创建一个指向命令执行的地方的符号链接。同时也会创建一个{prefix}/bin/{name}下面对应的bin包。
+2. npm link package-name 将会创建一个从global包指向当前文件夹node_modules/下对应的链接。
+注意：package-name是依据package.json的name而非文件名称。
+
+包名称可以选择以任意作用域为前缀。 详情请查看npm-scope。 作用域必须以@-symbol开头，后跟斜杠。
+
+在npm publish创建tarballs时，会通过解析符号链接将被链接的包“快照”到其当前状态。
+安装自己的东西很方便，所以很方便基于其迭代开发测试，不需要重新build。
+例如：
+```
+cd ~/projects/node-redis    # go into the package directory
+npm link                    # creates global link
+cd ~/projects/node-bloggy   # go into some other package directory.
+npm link redis              # link-install the package
+```
+现在，所有对~/projects/node-redis的更改都会映射到~/projects/node-bloggy/node_modules/node-redis/。需要注意的是，link的是包的名称而非文件夹名称。
+#### 总结
+npm link的用途可以用于自己本地开发的模块调试过程
+避免每次都publish npm包，然后安装调试。
+
+参考：
+https://docs.npmjs.com/cli/link
+
+### node.js 模块解析算法
+
+#### 包管理器的技巧
+
+Node.js 的 require() 函数的语义被设计得足够通用化，可以支持许多合理的目录结构。 包管理器程序（如 dpkg、 rpm 和 npm）可以不用修改就能够从 Node.js 模块构建本地包。
+
+以下是一个推荐的目录结构：
+
+假设想要在 /usr/lib/node/<some-package>/<some-version> 目录中保存一个特定版本的包的内容。
+
+包可以依赖于其他包。 为了安装包 foo，可能需要安装一个指定版本的 bar 包。 bar 包也可能有依赖，且在某些情况下，依赖可能有冲突或形成循环。
+
+因为 Node.js 会查找它所加载的模块的实际路径（也就是说会解析符号链接），然后在 node_modules 目录中寻找它们的依赖，如下所述，这种情况使用以下体系结构很容易解决：
+
+/usr/lib/node/foo/1.2.3/ - foo 包的内容，版本 1.2.3。
+/usr/lib/node/bar/4.3.2/ - foo 依赖的 bar 包的内容。
+/usr/lib/node/foo/1.2.3/node_modules/bar - /usr/lib/node/bar/4.3.2/ 的符号链接。
+/usr/lib/node/bar/4.3.2/node_modules/* - bar 所依赖的包的符号链接
+因此，即便存在循环依赖或依赖冲突，每个模块还是可以获得它所依赖的包的一个可用版本。
+
+当 foo 包中的代码调用 require('bar')，它会获得符号链接 /usr/lib/node/foo/1.2.3/node_modules/bar 指向的版本。 然后，当 bar 包中的代码调用 require('queue')，它会获得符号链接 /usr/lib/node/bar/4.3.2/node_modules/quux 指向的版本。
+
+此外，为了进一步优化模块查找过程，不要将包直接放在 /usr/lib/node 目录中，而是将它们放在 /usr/lib/node_modules/<name>/<version> 目录中。 这样 Node.js 就不会在 /usr/node_modules 或 /node_modules 目录中查找缺失的依赖。
+
+为了使模块在 Node.js 的 REPL 中可用，可能需要将 /usr/lib/node_modules 目录添加到 $NODE_PATH 环境变量中。 由于在 node_modules 目录中查找模块使用的是相对路径，而调用 require() 的文件是基于实际路径的，因此包本身可以放在任何地方
+
+#### require算法
+
+想要获得调用 require() 时加载的确切的文件名，使用 require.resolve() 函数。
+
+以下用伪代码描述的高级算法，解释 require.resolve() 做了些什么：
+```
+require(X) from module at path Y
+1. If X is a core module,
+   a. return the core module
+   b. STOP
+2. If X begins with '/'
+   a. set Y to be the filesystem root
+3. If X begins with './' or '/' or '../'
+   a. LOAD_AS_FILE(Y + X)
+   b. LOAD_AS_DIRECTORY(Y + X)
+4. LOAD_NODE_MODULES(X, dirname(Y))
+5. THROW "not found"
+
+LOAD_AS_FILE(X)
+1. If X is a file, load X as JavaScript text.  STOP
+2. If X.js is a file, load X.js as JavaScript text.  STOP
+3. If X.json is a file, parse X.json to a JavaScript Object.  STOP
+4. If X.node is a file, load X.node as binary addon.  STOP
+
+LOAD_INDEX(X)
+1. If X/index.js is a file, load X/index.js as JavaScript text.  STOP
+2. If X/index.json is a file, parse X/index.json to a JavaScript object. STOP
+3. If X/index.node is a file, load X/index.node as binary addon.  STOP
+
+LOAD_AS_DIRECTORY(X)
+1. If X/package.json is a file,
+   a. Parse X/package.json, and look for "main" field.
+   b. If "main" is a falsy value, GOTO 2.
+   c. let M = X + (json main field)
+   d. LOAD_AS_FILE(M)
+   e. LOAD_INDEX(M)
+   f. LOAD_INDEX(X) DEPRECATED
+   g. THROW "not found"
+2. LOAD_INDEX(X)
+
+LOAD_NODE_MODULES(X, START)
+1. let DIRS = NODE_MODULES_PATHS(START)
+2. for each DIR in DIRS:
+   a. LOAD_AS_FILE(DIR/X)
+   b. LOAD_AS_DIRECTORY(DIR/X)
+
+NODE_MODULES_PATHS(START)
+1. let PARTS = path split(START)
+2. let I = count of PARTS - 1
+3. let DIRS = [GLOBAL_FOLDERS]
+4. while I >= 0,
+   a. if PARTS[I] = "node_modules" CONTINUE
+   b. DIR = path join(PARTS[0 .. I] + "node_modules")
+   c. DIRS = DIRS + DIR
+   d. let I = I - 1
+5. return DIRS
+```

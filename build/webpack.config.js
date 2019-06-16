@@ -15,7 +15,7 @@ console.log("isDev:", isDev);
 
 const config = {
     entry: {
-        main: ["@babel/polyfill", path.resolve(__dirname, "../static/main.js")]
+        main: ["@babel/polyfill", path.resolve(__dirname, "../src/main.js")]
     },
     output: {
         publicPath: "/dist/", //虚拟目录，自动指向path编译目录('./public/dist')
@@ -60,7 +60,7 @@ const config = {
         new CleanWebpackPlugin(path.resolve(__dirname, "../public/dist")),
         new HtmlwebpackPlugin({
             title: "test",
-            template: path.resolve(__dirname, "../static/template/index.html"),
+            template: path.resolve(__dirname, "../src/template/index.html"),
             filename: "../index.html", //相对于webpackConfig.output.path
             hash: true
         }),
