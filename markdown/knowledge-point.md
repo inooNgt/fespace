@@ -6,7 +6,7 @@ Guides:
 2.  <a href="javascript:;" onclick="document.getElementById('g2').scrollIntoView();">浏览器 Event loop 事件循环</a>
 3.  <a href="javascript:;" onclick="document.getElementById('g3').scrollIntoView();">对象深拷贝</a>
 4.  <a href="javascript:;" onclick="document.getElementById('g4').scrollIntoView();"> DNS 劫持及 HTTP 劫持</a>
-5.  <a href="javascript:;" onclick="document.getElementById('g5').scrollIntoView();"> 正则表达式之后向引用</a>
+5.  <a href="javascript:;" onclick="document.getElementById('g5').scrollIntoView();"> 正则表达式</a>
 6.  <a href="javascript:;" onclick="document.getElementById('g6').scrollIntoView();"> React/Vue 不同组件之间的通信方式</a>
 7.  <a href="javascript:;" onclick="document.getElementById('g7').scrollIntoView();"> Thunk 函数</a>
 8.  <a href="javascript:;" onclick="document.getElementById('g8').scrollIntoView();"> this 指向</a>
@@ -56,15 +56,14 @@ Guides:
 52. <a href="javascript:;" onclick="document.getElementById('g52').scrollIntoView();"> CSS 选择器层叠</a>
 53. <a href="javascript:;" onclick="document.getElementById('g53').scrollIntoView();"> 查找算法</a>
 54. <a href="javascript:;" onclick="document.getElementById('g54').scrollIntoView();"> flatten</a>
-    <span id="g1"></span>
 55. <a href="javascript:;" onclick="document.getElementById('g55').scrollIntoView();"> javascript 制作规范</a>
-    <span id="g1"></span>
 56. <a href="javascript:;" onclick="document.getElementById('g56').scrollIntoView();"> Babel 原理</a>
-    <span id="g1"></span>
 57. <a href="javascript:;" onclick="document.getElementById('g57').scrollIntoView();"> Node 命令行开发</a>
-    <span id="g1"></span>
-58. <a href="javascript:;" onclick="document.getElementById('g58').scrollIntoView();"> node.js 模块解析算法</a>
-    <span id="g1"></span>
+58. <a href="javascript:;" onclick="document.getElementById('g58').scrollIntoView();"> Node 模块解析算法</a>
+59. <a href="javascript:;" onclick="document.getElementById('g59').scrollIntoView();"> URL操作</a>
+60. <a href="javascript:;" onclick="document.getElementById('g60').scrollIntoView();"> 计算缓存架构方案</a>
+
+<span id="g1"></span>
 
 ### 1、undefined and null
 
@@ -236,13 +235,71 @@ DOM 事件监听主要是监听 DOMNodeInserted、DOMContentLoaded、DOMAttrModi
 
 <span id="g5"></span>
 
-### 5、 正则表达式之后向引用
+### 5、 正则表达式
 
 #### 分组
 
-组的定义：
+1. 匿名捕获分组:
+正则表达式通过使用括号将表达式分为不同的分组，识别的方法是通过从左至右搜寻左半括号，
+遇到第一个左半括号时，则该左半括号与对应的右半括号所包含的内容即为第一分组，以此类推 。
+例如，在表达式((A)(B(C)))，有四个这样的组：((A)(B(C)))、(A)、(B(C))、(C)
+```javascript
+/* “日-月-年”互换“月-日-年” */
+function toLocalDate(date) {
+  return date.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2-$1-$3")
+}
+```
+2. 命名捕获分组:
+命名捕获分组自身的语法是 (?\<name>...)，比普通的分组多了一个 ?<name> 字样
+```javascript
+function toLocalDate(date){
+  return date.replace(/(?<month>\d{2})-(?<day>\d{2})-(?<year>\d{4})/, "$<day>-$<month>-$<year>")
+}
+```
+反向引用一个命名分组的语法是 \k<name>，注意命名分组同样可以通过数字索引来反向引用，比如：
+```javascript
+/(?<foo>a)\k<foo>\1/.test("aaa") // true
+"abc".replace(/(?<foo>a)/, "$<foo>-") // "a-bc"，同样 $1 仍然可用
+```
+命名分组相关的有三种语法，分别是 ?<name>、\k<name>、$<name>，相同点是都用尖括号包裹着分组名。
 
-正则表达式通过使用括号将表达式分为不同的分组，识别的方法是通过从左至右搜寻左半括号，遇到第一个左半括号时，则该左半括号与对应的右半括号所包含的内容即为第一分组，以此类推 。例如，在表达式((A)(B(C)))，有四个这样的组：((A)(B(C)))、(A)、(B(C))、(C)
+参考：
+https://tc39.es/proposal-regexp-named-groups/
+
+#### 方法
+1. RegExp.prototype.exec
+exec() 方法在一个指定字符串中执行一个搜索匹配。返回一个结果数组或 null。
+
+返回值：
+- 如果匹配成功，exec() 方法返回一个数组，并更新正则表达式对象的属性。返回的数组将完全匹配成功的文本作为第一项，将正则括号里匹配成功的作为数组填充到后面。
+
+- 如果匹配失败，exec() 方法返回 null。
+
+```javascript
+var regex1 = RegExp('foo*','g');
+var str1 = 'table football, foosball';
+var array1;
+
+while ((array1 = regex1.exec(str1)) !== null) {
+  console.log(`Found ${array1[0]}. Next starts at ${regex1.lastIndex}.`);
+  // expected output: "Found foo. Next starts at 9."
+  // expected output: "Found foo. Next starts at 19."
+}
+
+```
+
+2. String.prototype.match()
+ 
+match() 方法检索返回一个字符串匹配正则表达式的的结果。
+返回值:
+- 如果使用g标志，则将返回与完整正则表达式匹配的所有结果（Array），但不会返回捕获组，或者未匹配 null。
+- 如果未使用g标志，则仅返回第一个完整匹配及其相关的捕获组（Array）。 在这种情况下，返回的项目将具有如下所述的其他属性，或者未匹配 null。
+    - groups: 一个捕获组数组 或 undefined（如果没有定义命名捕获组）。
+    - index: 匹配的结果的开始位置
+    - input: 搜索的字符串.
+
+如果正则表达式不包含 g 标志，str.match() 将返回与 RegExp.exec(). 相同的结果。
+
 
 #### 位置类元数据
 
@@ -251,7 +308,7 @@ DOM 事件监听主要是监听 DOMNodeInserted、DOMContentLoaded、DOMAttrModi
 #### 零宽断言
 
 \b,^,$那样用于指定一个位置，这个位置应该满足一定的条件（即断言），因此它们也被称为零宽断言。
-
+#### 向后引用
 -   (?=exp) 匹配 exp 前面的位置，比如\b\w+(?=ing\b)，匹配以 ing 结尾的单词的前面部分(除了 ing 以外的部分)
 -   (?<=exp) 匹配 exp 后面的位置，比如(?<=\bre)\w+\b 会匹配以 re 开头的单词的后半部分(除了 re 以外的部分)
 -   (?!exp) 匹配后面跟的不是 exp 的位置
@@ -259,9 +316,11 @@ DOM 事件监听主要是监听 DOMNodeInserted、DOMContentLoaded、DOMAttrModi
 
 #### 贪婪与懒惰
 
-当正则表达式中包含能接受重复的限定符时，通常的行为是（在使整个表达式能得到匹配的前提下）匹配尽可能多的字符。以这个表达式为例：a.\*b，它将会匹配最长的以 a 开始，以 b 结束的字符串。被称为贪婪匹配。
+当正则表达式中包含能接受重复的限定符时，通常的行为是（在使整个表达式能得到匹配的前提下）匹配尽可能多的字符。
+以这个表达式为例：a.\*b，它将会匹配最长的以 a 开始，以 b 结束的字符串。被称为贪婪匹配。
 
-有时，我们更需要懒惰匹配，也就是匹配尽可能少的字符。要在它后面加上一个问号?。这样.\*?就意味着匹配任意数量的重复，但是在能使整个匹配成功的前提下使用最少的重复。
+有时，我们更需要懒惰匹配，也就是匹配尽可能少的字符。要在它后面加上一个问号?。
+这样.\*?就意味着匹配任意数量的重复，但是在能使整个匹配成功的前提下使用最少的重复。
 
 例子：
 
@@ -3222,7 +3281,9 @@ npm link的用途可以用于自己本地开发的模块调试过程
 参考：
 https://docs.npmjs.com/cli/link
 
-### node.js 模块解析算法
+<span id=g58 />
+
+### Node 模块解析算法
 
 #### 包管理器的技巧
 
@@ -3305,3 +3366,177 @@ NODE_MODULES_PATHS(START)
    d. let I = I - 1
 5. return DIRS
 ```
+<span id=g59 />
+
+### URL操作
+
+#### 操作方法
+```javascript 
+/**
+ * [getParam ]
+ * @param  {String} name 
+ * @param  {String} url   [default:location.href]
+ * @return {String|Boolean}  
+ */
+function getParam(name, url) {
+    if(typeof name !== 'string') return false;
+    if (!url) url = window.location.href;
+    // 当遇到name[xx]时，对方括号做一下转义为 name\[xxx\]，因为下面还需要使用name做正则
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
+    var results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+getParam('query','https://juejin.im/search?query=hello&time=2017-11-12')
+
+/**
+ * [setParam 设置单个参数]
+ * @param {String} name
+ * @param {String|Number} val  
+ * @return {String|Boolean}  
+ */
+function setParam(name, val, url) {
+    if(typeof name !== 'string') return false;
+    if (!url) url = window.location.href;
+    var _name = name.replace(/[\[\]]/g, '\\$&');
+    var value = name + '=' + encodeURIComponent(val);
+    var regex = new RegExp(_name + '=[^&]*');
+    var urlArr = url.split('#');
+    var result = '';
+
+    if(regex.exec(url)){
+        result =  url.replace(regex, value);
+    }else{
+        result = urlArr[0]+'&'+value+ (urlArr[1] || '');
+    }
+
+    return result
+}
+setParam('query','world','https://juejin.im/search?query=hello&time=2017-11-12')
+
+/**
+ * [removeParam 移除单个参数]
+ * @param  {String} name 
+ * @param  {String} url   [default:location.href]
+ * @return {String|Boolean}      
+ */
+function removeParam(name, url) {
+    if(typeof name !== 'string') return false;
+    if (!url) url = window.location.href;
+    var urlparts = url.split('?');
+    var prefix = encodeURIComponent(name + '=');
+    var pars = urlparts[1].split(/[&;]/g);
+    var i = 0, len = pars.length;
+
+    for (; i < len; i++) {
+        if (encodeURIComponent(pars[i]).lastIndexOf(prefix, 0) !== -1) {
+            pars.splice(i, 1);
+        }
+    }
+
+    url = urlparts[0] + (pars.length > 0 ? '?' + pars.join('&') : '');
+
+    return url;
+}
+removeParam('query','https://juejin.im/search?query=hello&time=2017-11-12')
+
+```
+
+#### [URLSearchParams](https://developer.mozilla.org/zh-CN/docs/Web/API/URLSearchParams) 
+
+URLSearchParams 接口定义了一些实用的方法来处理 URL 的查询字符串。
+
+```javascript
+var paramsString = "q=URLUtils.searchParams&topic=api"
+var searchParams = new URLSearchParams(paramsString);
+
+for (let p of searchParams) {
+  console.log(p);
+}
+
+searchParams.has("topic") === true; // true
+searchParams.get("topic") === "api"; // true
+searchParams.getAll("topic"); // ["api"]
+searchParams.get("foo") === ""; // true
+searchParams.append("topic", "webdev");
+searchParams.toString(); // "q=URLUtils.searchParams&topic=api&topic=webdev"
+searchParams.set("topic", "More webdev");
+searchParams.toString(); // "q=URLUtils.searchParams&topic=More+webdev"
+searchParams.delete("topic");
+searchParams.toString(); // "q=URLUtils.searchParams"
+```
+一个实现了 URLSearchParams 的对象可以直接用在 for...of 结构中。
+```javascript
+for (var p of mySearchParams);
+for (var p of mySearchParams.entries());
+```
+Object.entries()方法返回一个给定对象自身可枚举属性的键值对数组(迭代器)，其排列与使用 for...in 循环遍历该对象时返回的顺序一致（区别在于 for-in 循环也枚举原型链中的属性）。
+
+<span id=60 />
+
+### 计算缓存架构方案
+```javascript
+function memorize(fn, callback) {
+  let cache = {}
+  return function() {
+    let key = callback.apply(this, arguments)
+    let hasCache = key in cache
+    if (hasCache) {
+      return cache[key]
+    } else {
+      return (cache[key] = fn.apply(this, arguments))
+    }
+  }
+}
+
+/* 
+ * 测试代码
+ */
+const add = function(a, b) {
+  return a + b
+}
+const memorizedAdd = memorize(add, function() {
+  let args = Array.prototype.slice.call(arguments)
+  return JSON.stringify(args)
+})
+const factorial=function(n){
+	if(n===1) return 1
+	return n*factorial(n-1)
+}
+const memorizedGactorial = memorize(factorial, function() {
+  let args = Array.prototype.slice.call(arguments)
+  return JSON.stringify(args)
+})
+
+const testcount=1000
+console.time('not use memorize')
+for (let i = 0; i < testcount; i++) {
+  add(1, 2)
+}
+console.timeEnd('not use memorize')
+console.time('use memorize')
+for (let i = 0; i < testcount; i++) {
+  memorizedAdd(1, 2)
+}
+console.timeEnd('use memorize')
+
+console.time('factorial not use memorize')
+for (let i = 0; i < testcount; i++) {
+  factorial(9999)
+}
+console.timeEnd('factorial not use memorize')
+console.time('factorial use memorize')
+for (let i = 0; i < testcount; i++) {
+  memorizedGactorial(9999)
+}
+console.timeEnd('factorial use memorize')
+
+// not use memorize: 1.56103515625ms
+// use memorize: 19.787841796875ms
+// factorial not use memorize: 1796.18701171875ms
+// factorial use memorize: 17.037109375ms
+```
+
+计算量小的情况下使用计算缓存会消耗更多得到时间，计算缓存只适用于大规模计算的场景,如阶乘的计算。
