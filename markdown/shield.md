@@ -82,32 +82,32 @@ XSS 往往和字符编码有着密切的联系，理解浏览器的字符解析�
 
 ```javascript
 // 将 & < > " ' / 转义为实体字符（或者十进制、十六进制）。
-function encodeForHTML(str, kwargs){
-    return ('' + str)
-      .replace(/&/g, '&')
-      .replace(/</g, '<')
-      .replace(/>/g, '>')
-      .replace(/"/g, '"')
-      .replace(/'/g, ''')
-      .replace(/\//g, '/');
-  };
+function encodeForHTML(str, kwargs) {
+    return ("" + str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;")
+        .replace(/\//g, "&frasl;");
+}
 // 除字母数字字符外，使用xHH格式（二位十六进制）转义ASCII码小于256的所有字符
 function encodeForJavascript(str, kwargs) {
-    let encoded = '';
-    for(let i = 0; i < str.length; i++) {
-      let cc = hex = str[i];
-      if (!/[A-Za-z0-9]/.test(str[i]) && str.charCodeAt(i) < 256) {
-        hex = '\\x' + cc.charCodeAt().toString(16);
-      }
-      encoded += hex;
+    let encoded = "";
+    for (let i = 0; i < str.length; i++) {
+        let cc = (hex = str[i]);
+        if (!/[A-Za-z0-9]/.test(str[i]) && str.charCodeAt(i) < 256) {
+            hex = "\\x" + cc.charCodeAt().toString(16);
+        }
+        encoded += hex;
     }
     return encoded;
-  };
+}
 
-  // encodeURIComponent 编码
-  function encodeForURL(str, kwargs){
+// encodeURIComponent 编码
+function encodeForURL(str, kwargs) {
     return encodeURIComponent(str);
-  };
+}
 ```
 
 2. 过滤
