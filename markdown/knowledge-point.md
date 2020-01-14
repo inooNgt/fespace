@@ -2,66 +2,66 @@
 
 Guides:
 
-1.  <a href="javascript:;" onclick="document.getElementById('g1').scrollIntoView();">undefined and null</a>
-2.  <a href="javascript:;" onclick="document.getElementById('g2').scrollIntoView();">浏览器 Event loop 事件循环</a>
-3.  <a href="javascript:;" onclick="document.getElementById('g3').scrollIntoView();">对象深拷贝</a>
-4.  <a href="javascript:;" onclick="document.getElementById('g4').scrollIntoView();"> DNS 劫持及 HTTP 劫持</a>
-5.  <a href="javascript:;" onclick="document.getElementById('g5').scrollIntoView();"> 正则表达式</a>
-6.  <a href="javascript:;" onclick="document.getElementById('g6').scrollIntoView();"> React/Vue 不同组件之间的通信方式</a>
-7.  <a href="javascript:;" onclick="document.getElementById('g7').scrollIntoView();"> Thunk 函数</a>
-8.  <a href="javascript:;" onclick="document.getElementById('g8').scrollIntoView();"> this 指向</a>
-9.  <a href="javascript:;" onclick="document.getElementById('g9').scrollIntoView();"> Cookie</a>
-10. <a href="javascript:;" onclick="document.getElementById('g10').scrollIntoView();"> 排序算法</a>
-11. <a href="javascript:;" onclick="document.getElementById('g11').scrollIntoView();"> 代码解释器运行原理</a>
-12. <a href="javascript:;" onclick="document.getElementById('g12').scrollIntoView();"> Promise 的实现</a>
-13. <a href="javascript:;" onclick="document.getElementById('g13').scrollIntoView();"> 闭包</a>
-14. <a href="javascript:;" onclick="document.getElementById('g14').scrollIntoView();"> DOM 事件</a>
-15. <a href="javascript:;" onclick="document.getElementById('g15').scrollIntoView();"> 服务端渲染</a>
-16. <a href="javascript:;" onclick="document.getElementById('g16').scrollIntoView();"> 浮点数知识</a>
-17. <a href="javascript:;" onclick="document.getElementById('g17').scrollIntoView();"> const 、let、块级作用域</a>
-18. <a href="javascript:;" onclick="document.getElementById('g18').scrollIntoView();"> DocumentFragment</a>
-19. <a href="javascript:;" onclick="document.getElementById('g19').scrollIntoView();"> 同源策咯</a>
-20. <a href="javascript:;" onclick="document.getElementById('g20').scrollIntoView();"> Express 中间件</a>
-21. <a href="javascript:;" onclick="document.getElementById('g21').scrollIntoView();"> https/http2</a>
-22. <a href="javascript:;" onclick="document.getElementById('g22').scrollIntoView();"> 订阅/发布模式（subscribe&publish）</a>
-23. <a href="javascript:;" onclick="document.getElementById('g23').scrollIntoView();"> Vue 相关</a>
-24. <a href="javascript:;" onclick="document.getElementById('g24').scrollIntoView();"> 函数模拟 A instanceof B</a>
-25. <a href="javascript:;" onclick="document.getElementById('g25').scrollIntoView();"> typeof 原理</a>
-26. <a href="javascript:;" onclick="document.getElementById('g26').scrollIntoView();"> Iterator</a>
-27. <a href="javascript:;" onclick="document.getElementById('g27').scrollIntoView();"> ToPrimitive</a>
-28. <a href="javascript:;" onclick="document.getElementById('g28').scrollIntoView();"> BFC 布局</a>
-29. <a href="javascript:;" onclick="document.getElementById('g29').scrollIntoView();"> 大整数相加</a>
-30. <a href="javascript:;" onclick="document.getElementById('g30').scrollIntoView();"> Object.assign 模拟实现</a>
-31. <a href="javascript:;" onclick="document.getElementById('g31').scrollIntoView();"> Http 幂等性</a>
-32. <a href="javascript:;" onclick="document.getElementById('g32').scrollIntoView();"> 判断一个对象是否是数组</a>
-33. <a href="javascript:;" onclick="document.getElementById('g33').scrollIntoView();"> 跨域</a>
-34. <a href="javascript:;" onclick="document.getElementById('g34').scrollIntoView();"> Debounce and Throllte</a>
-35. <a href="javascript:;" onclick="document.getElementById('g35').scrollIntoView();"> Session and SessionStorage</a>
-36. <a href="javascript:;" onclick="document.getElementById('g36').scrollIntoView();"> Bind 的实现</a>
-37. <a href="javascript:;" onclick="document.getElementById('g37').scrollIntoView();"> 内存管理</a>
-38. <a href="javascript:;" onclick="document.getElementById('g38').scrollIntoView();"> 水平垂直居中方案</a>
-39. <a href="javascript:;" onclick="document.getElementById('g39').scrollIntoView();"> CSS 三列布局</a>
-40. <a href="javascript:;" onclick="document.getElementById('g40').scrollIntoView();"> HTTP 缓存</a>
-41. <a href="javascript:;" onclick="document.getElementById('g41').scrollIntoView();"> JSBridge</a>
-42. <a href="javascript:;" onclick="document.getElementById('g42').scrollIntoView();"> 继承</a>
-43. <a href="javascript:;" onclick="document.getElementById('g43').scrollIntoView();"> 移动端布局</a>
-44. <a href="javascript:;" onclick="document.getElementById('g44').scrollIntoView();"> websocket</a>
-45. <a href="javascript:;" onclick="document.getElementById('g45').scrollIntoView();"> 回流与重绘</a>
-46. <a href="javascript:;" onclick="document.getElementById('g46').scrollIntoView();"> javascript 词法分析</a>
-47. <a href="javascript:;" onclick="document.getElementById('g47').scrollIntoView();"> 原型图</a>
-48. <a href="javascript:;" onclick="document.getElementById('g48').scrollIntoView();"> 数组去重</a>
-49. <a href="javascript:;" onclick="document.getElementById('g49').scrollIntoView();"> script 中 defer 和 async</a>
-50. <a href="javascript:;" onclick="document.getElementById('g50').scrollIntoView();"> 移动端点击穿透</a>
-51. <a href="javascript:;" onclick="document.getElementById('g51').scrollIntoView();"> CSS 关键字 initial、inherit 和 unset</a>
-52. <a href="javascript:;" onclick="document.getElementById('g52').scrollIntoView();"> CSS 选择器层叠</a>
-53. <a href="javascript:;" onclick="document.getElementById('g53').scrollIntoView();"> 查找算法</a>
-54. <a href="javascript:;" onclick="document.getElementById('g54').scrollIntoView();"> flatten</a>
-55. <a href="javascript:;" onclick="document.getElementById('g55').scrollIntoView();"> javascript 制作规范</a>
-56. <a href="javascript:;" onclick="document.getElementById('g56').scrollIntoView();"> Babel 原理</a>
-57. <a href="javascript:;" onclick="document.getElementById('g57').scrollIntoView();"> Node 命令行开发</a>
-58. <a href="javascript:;" onclick="document.getElementById('g58').scrollIntoView();"> Node 模块解析算法</a>
-59. <a href="javascript:;" onclick="document.getElementById('g59').scrollIntoView();"> URL操作</a>
-60. <a href="javascript:;" onclick="document.getElementById('g60').scrollIntoView();"> 计算缓存架构方案</a>
+1.  <a href="#g1">undefined and null</a>
+2.  <a href="#g2">浏览器 Event loop 事件循环</a>
+3.  <a href="#g3">对象深拷贝</a>
+4.  <a href="#g4"> DNS 劫持及 HTTP 劫持</a>
+5.  <a href="#g5"> 正则表达式</a>
+6.  <a href="#g6"> React/Vue 不同组件之间的通信方式</a>
+7.  <a href="#g7"> Thunk 函数</a>
+8.  <a href="#g8"> this 指向</a>
+9.  <a href="#g9"> Cookie</a>
+10. <a href="#g10"> 排序算法</a>
+11. <a href="#g11"> 代码解释器运行原理</a>
+12. <a href="#g12"> Promise 的实现</a>
+13. <a href="#g13"> 闭包</a>
+14. <a href="#g14"> DOM 事件</a>
+15. <a href="#g15"> 服务端渲染</a>
+16. <a href="#g16"> 浮点数知识</a>
+17. <a href="#g17"> const 、let、块级作用域</a>
+18. <a href="#g18"> DocumentFragment</a>
+19. <a href="#g19"> 同源策咯</a>
+20. <a href="#g20"> Express 中间件</a>
+21. <a href="#g21"> https/http2</a>
+22. <a href="#g22"> 订阅/发布模式（subscribe&publish）</a>
+23. <a href="#g23"> Vue 相关</a>
+24. <a href="#g24"> 函数模拟 A instanceof B</a>
+25. <a href="#g25"> typeof 原理</a>
+26. <a href="#g26"> Iterator</a>
+27. <a href="#g27"> ToPrimitive</a>
+28. <a href="#g28"> BFC 布局</a>
+29. <a href="#g29"> 大整数相加</a>
+30. <a href="#g30"> Object.assign 模拟实现</a>
+31. <a href="#g31"> Http 幂等性</a>
+32. <a href="#g32"> 判断一个对象是否是数组</a>
+33. <a href="#g33"> 跨域</a>
+34. <a href="#g34"> Debounce and Throllte</a>
+35. <a href="#g35"> Session and SessionStorage</a>
+36. <a href="#g36"> Bind 的实现</a>
+37. <a href="#g37"> 内存管理</a>
+38. <a href="#g38"> 水平垂直居中方案</a>
+39. <a href="#g39"> CSS 三列布局</a>
+40. <a href="#g40"> HTTP 缓存</a>
+41. <a href="#g41"> JSBridge</a>
+42. <a href="#g42"> 继承</a>
+43. <a href="#g43"> 移动端布局</a>
+44. <a href="#g44"> websocket</a>
+45. <a href="#g45"> 回流与重绘</a>
+46. <a href="#g46"> javascript 词法分析</a>
+47. <a href="#g47"> 原型图</a>
+48. <a href="#g48"> 数组去重</a>
+49. <a href="#g49"> script 中 defer 和 async</a>
+50. <a href="#g50"> 移动端点击穿透</a>
+51. <a href="#g51"> CSS 关键字 initial、inherit 和 unset</a>
+52. <a href="#g52"> CSS 选择器层叠</a>
+53. <a href="#g53"> 查找算法</a>
+54. <a href="#g54"> flatten</a>
+55. <a href="#g55"> javascript 制作规范</a>
+56. <a href="#g56"> Babel 原理</a>
+57. <a href="#g57"> Node 命令行开发</a>
+58. <a href="#g58"> Node 模块解析算法</a>
+59. <a href="#g59"> URL操作</a>
+60. <a href="#60"> 计算缓存架构方案</a>
 
 <span id="g1"></span>
 
@@ -300,6 +300,17 @@ match() 方法检索返回一个字符串匹配正则表达式的的结果。
 
 如果正则表达式不包含 g 标志，str.match() 将返回与 RegExp.exec(). 相同的结果。
 
+例：
+匹配div标签内的任意字符
+```js
+str=`
+<div>
+    <div>hello</div>
+</div>
+`
+str.match(/<div[^>]*>([\s\S]*)<\/div>/i)
+```
+
 
 #### 位置类元数据
 
@@ -313,6 +324,20 @@ match() 方法检索返回一个字符串匹配正则表达式的的结果。
 -   (?<=exp) 匹配 exp 后面的位置，比如(?<=\bre)\w+\b 会匹配以 re 开头的单词的后半部分(除了 re 以外的部分)
 -   (?!exp) 匹配后面跟的不是 exp 的位置
 -   (?<!exp) 匹配前面不是 exp 的位置
+
+#### 反向引用
+
+对一个正则表达式模式或部分模式两边添加圆括号将导致相关匹配存储到一个临时缓冲区中，所捕获的每个子匹配都按照在正则表达式模式中从左到右出现的顺序存储。缓冲区编号从 1 开始，最多可存储 99 个捕获的子表达式。每个缓冲区都可以使用 \n 访问，其中 n 为一个标识特定缓冲区的一位或两位十进制数。
+
+可以使用非捕获元字符 ?:、?= 或 ?! 来重写捕获，忽略对相关匹配的保存。
+
+反向引用的最简单的、最有用的应用之一，是提供查找文本中两个相同的相邻单词的匹配项的能力。以下面的句子为例：
+```js
+var str = "Is is the cost of of gasoline going up up";
+var patt1 = /\b([a-z]+) \1\b/ig;
+console.log(str.match(patt1));
+//  ["Is is", "of of", "up up"]
+```
 
 #### 贪婪与懒惰
 
