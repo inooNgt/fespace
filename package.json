@@ -7,8 +7,6 @@
         "dev-node": "set NODE_ENV=development&&node build/webpack.dev.config.js",
         "dev": "set NODE_ENV=development&&webpack-dev-server --config build/webpack.config.js --content-base dist/ --host localhost --port 9001 --inline --history-api-fallback ",
         "build": "set NODE_ENV=production&&webpack -p --config build/webpack.config.js ",
-        "marked": "cd build && node parser.js",
-        "copy": "cd build && node copy.js",
         "precommit": "lint-staged"
     },
     "lint-staged": {
