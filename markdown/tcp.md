@@ -1,10 +1,10 @@
-# TCP 连接建立和释放
+# TCP 基础
 
 ### TCP 数据段格式
 
 TCP 通过数据段的交互来建立连接、传输数据、发出确认、进行差错控制、流量控制及关闭连接。整个 TCP 数据段也分为“数据段头”和“数据”两部分（这也是绝大多数报文封装的方式），所谓“数据段头”就是 TCP 为了实现端到端可靠传输而加上的 TCP 控制信息，而“数据”部分则是指由高层（即 TCP/IP 体系结构中的“应用层”）来的用户数据。TCP 数据段格式如下：
 
-<div align="center"><img width='500'  src="http://cdn.inoongt.tech/images/thinkin/tcp_structure.jpg"/></div>
+<div align="center"><img width='500'  src="./img/tcp_structure.jpg"/></div>
 
 部分字段的描述：
 
@@ -16,7 +16,7 @@ TCP 通过数据段的交互来建立连接、传输数据、发出确认、进�
 
 ### Socket 原语
 
-<div align="center"><img width='500'  src="http://cdn.inoongt.tech/images/thinkin/tcp_socket.jpg"/></div>
+<div align="center"><img width='500'  src="./img/tcp_socket.jpg"/></div>
 
 ### 三次握手
 
@@ -24,7 +24,7 @@ TCP 是面向连接的传输层协议，提供可靠的传输服务。为了准�
 
 TCP 建立过程如下：
 
-<div align="center"><img width='500'  src="http://cdn.inoongt.tech/images/thinkin/tcp_connect.jpg"/></div>
+<div align="center"><img width='500'  src="./img/tcp_connect.jpg"/></div>
 
 -   客户端发送带 SYN 标志的数据段给服务端
     -   seq=1 表示本次客户端向服务端发送的数据段序号为 i
@@ -39,15 +39,23 @@ TCP 建立过程如下：
 
 TCP 释放过程如下：
 
-<div align="center"><img width='500'  src="http://cdn.inoongt.tech/images/thinkin/tcp_release.jpg"/></div>
+<div align="center"><img width='500'  src="./img/tcp_release.jpg"/></div>
 
 -   主动关闭方发送一个 FIN，告诉被动关闭方：我已经不会再给你发数据了(当然，在 fin 包之前发送出去的数据，如果没有收到对应的 ack 确认报文，主动关闭方依然会重发这些数据)，但是，此时主动关闭方还可以接受数据
 -   被动关闭方收到 FIN 包后，发送一个 ACK 给对方，确认序号为收到序号+1（与 SYN 相同，一个 FIN 占用一个序号）
 -   被动关闭方发送一个 FIN，也就是告诉主动关闭方，我的数据也发送完了，不会再给你发数据了
 -   主动关闭方收到 FIN 后，发送一个 ACK 给被动关闭方，确认序号为收到序号+1，至此，完成四次挥手
 
-### 超时重传
-
 ### 滑动窗口
 
+### 超时重传
+
+检测丢失片段并对之重传的方法概念上是很简单的。每一次发送一个片段，就开启一个重传计时器。计时器有一个初始值并随时间递减。如果在片段接收到确认之前计时器超时，就重传片段。TCP 使用了这一基本技术，但实现方式稍有不同。原因在于为了提高效率需要一次处理多个未被确认的片段，以保证每一个在恰当的时间重传。TCP 按照以下特定顺序工作：
+**放置于重传队列中，计时器开始** 包含数据的片段一经发送，片段的一份复制就放在名为重传队列的数据结构中，此时启动重传计时器。因此，在某些时间点，每一个片段都会放在队列里。队列按照重传计时器的剩余时间来排列，因此 TCP 软件可追踪那几个计时器在最短时间内超时。
+**确认处理** 如果在计时器超时之前收到了确认信息，则该片段从重传队列中移除。
+**重传超时** 如果在计时器超时之前没有收到确认信息，则发生重传超时，片段自动重传。当然，相比于原片段，对于重传片段并没有更多的保障机制。因此，重传之后该片段还是保留在重传队列里。重传计时器被重启，重新开始倒计时。如果重传之后没有收到确认，则片段会再次重传并重复这一过程。在某些情况下重传也会失败。我们不想要 TCP 永远重传下去，因此 TCP 只会重传一定数量的次数，并判断出现故障终止连接。
+
 ### 拥塞控制
+
+参考：
+https://wizardforcel.gitbooks.io/network-basic/0.html
