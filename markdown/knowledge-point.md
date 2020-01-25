@@ -1871,32 +1871,37 @@ function debounce(fn, wait) {
 Throttle:
 
 ```javascript
-function throttle(fn, wait) {
-    var timer;
-    var lastTime = 0;
-    var throttled = function() {
-        var currTime = Date.now();
-        var args = Array.prototype.slice.call(arguments);
-        var context = this;
-        var remaining = currTime - lastTime;
+function throttle(func, wait) {
+    var timeout, result;
+    var previous = 0;
 
-        if (remaining <= 0 || remaining >= wait) {
-            if (timer) {
-                clearTimeout(timer);
-                timer = null;
+    var later = function( context, args) {
+        previous = +new Date();
+        timeout = null;
+        func.apply(context, args);
+    };
+
+    var throttled = function() {
+        var now = +new Date();
+        var remaining = wait - (now - previous);
+        var context = this;
+        var args = arguments;
+        // wait 毫秒内首次触发或者系统时间被修改
+        if (remaining <= 0 || remaining > wait) {
+            if (timeout) {
+                clearTimeout(timeout);
+                timeout = null;
             }
-            lastTime = currTime;
-            return fn.apply(this, args);
-        } else {
-            clearTimeout(timer);
-            // 保证在当前时间区间结束后，再执行一次 fn
-            timer = setTimeout(function() {
-                // lastTime=Date.now() //? or currTime
-                fn.apply(this, args);
+            previous = now;
+            func.apply(context, args);
+        } else if (!timeout) {
+            timeout = setTimeout(function(){
+                timeout = null;
+                previous =now;
+                func.apply(context, args);
             }, remaining);
         }
     };
-
     return throttled;
 }
 ```
