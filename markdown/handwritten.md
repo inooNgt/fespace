@@ -4,7 +4,8 @@
 
 -   [防抖-debounce](#防抖-debounce)
 -   [节流-throttle](#节流-throttle)
--   [迭代器与&nbsp;for...of](#迭代器与-for...of)
+-   [迭代器](#迭代器)
+-   [for...of](#for...of)
 
 ### 防抖-debounce
 
@@ -236,9 +237,7 @@ function throttle(func, wait, options) {
 }
 ```
 
-### 迭代器与&nbsp;for...of
-
-#### 迭代器
+### 迭代器
 
 JavaScript 原有的表示“集合”的数据结构，主要是数组（Array）和对象（Object），ES6 又添加了 Map 和 Set。
 遍历器（Iterator）就是这样一种机制。它是一种接口，为各种不同的数据结构提供统一的访问机制。
@@ -274,6 +273,8 @@ it.next(); // { value: "a", done: false }
 it.next(); // { value: "b", done: false }
 it.next(); // { value: undefined, done: true }
 ```
+
+### for...of
 
 一个数据结构只要部署了 Symbol.iterator 属性，就被视为具有 iterator 接口，就可以用 for...of 循环遍历它的成员。也就是说，for...of 循环内部调用的是数据结构的 Symbol.iterator 方法。
 
