@@ -1,10 +1,10 @@
 # 手写 Javascript 代码
 
-### 目录
+### Table of contents
 
--   <a href="#防抖（debounce）">防抖（debounce）</a>
--   <a href="#节流（throttle）">防抖（debounce）节流（throttle）</a>
--   <a href="#迭代器与 for...of">迭代器与 for...of</a>
+-   [防抖（debounce）](#防抖（debounce）)
+-   [节流（throttle）](#节流（throttle）)
+-   [迭代器与 for...of](#迭代器与-for...of)
 
 ### 防抖（debounce）
 
