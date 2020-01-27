@@ -2,9 +2,11 @@
 
 ### 目录
 
-[防抖(debounce)](<防抖(debounce)>)
-[节流(throttle)](<节流(throttle)>)
-[迭代器与 for...of](迭代器与for...of)
+-   [防抖(debounce)](<防抖(debounce)>)
+
+-   [节流(throttle)](<节流(throttle)>)
+
+-   [迭代器与 for...of](迭代器与for...of)
 
 ### 防抖(debounce)
 
