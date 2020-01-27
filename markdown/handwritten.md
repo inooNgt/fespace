@@ -2,11 +2,11 @@
 
 ### Table of contents
 
--   [防抖（debounce）](#防抖（debounce）)
--   [节流（throttle）](#节流（throttle）)
+-   [防抖-debounce](#防抖-debounce)
+-   [节流-throttle](#节流-throttle)
 -   [迭代器与 for...of](#迭代器与-for...of)
 
-### 防抖（debounce）
+### 防抖-debounce
 
 功能：
 
@@ -103,7 +103,7 @@ _.delay = restArguments(function(func, wait, args) {
 });
 ```
 
-### 节流（throttle）
+### 节流-throttle
 
 实现一：
 
