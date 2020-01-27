@@ -4,6 +4,7 @@
 
 [防抖(debounce)](<防抖(debounce)>)
 [节流(throttle)](<节流(throttle)>)
+[迭代器与 for...of](迭代器与for...of)
 
 ### 防抖(debounce)
 
@@ -233,4 +234,76 @@ function throttle(func, wait, options) {
     };
     return throttled;
 }
+```
+
+### 迭代器与 for...of
+
+#### 迭代器
+
+JavaScript 原有的表示“集合”的数据结构，主要是数组（Array）和对象（Object），ES6 又添加了 Map 和 Set。
+遍历器（Iterator）就是这样一种机制。它是一种接口，为各种不同的数据结构提供统一的访问机制。
+
+Iterator 的作用有三个：一是为各种数据结构，提供一个统一的、简便的访问接口；二是使得数据结构的成员能够按某种次序排列；三是 ES6 创造了一种新的遍历命令 for...of 循环，Iterator 接口主要供 for...of 消费。
+
+Iterator 的遍历过程是这样的。
+
+-   创建一个指针对象，指向当前数据结构的起始位置。也就是说，遍历器对象本质上，就是一个指针对象。
+-   第一次调用指针对象的 next 方法，可以将指针指向数据结构的第一个成员。
+-   第二次调用指针对象的 next 方法，指针就指向数据结构的第二个成员。
+-   不断调用指针对象的 next 方法，直到它指向数据结构的结束位置。
+
+每一次调用 next 方法，都会返回数据结构的当前成员的信息。具体来说，就是返回一个包含 value 和 done 两个属性的对象。
+
+模拟实现：
+
+```js
+function makeIterator(array) {
+    var nextIndex = 0;
+    return {
+        next: function() {
+            return nextIndex < array.length
+                ? { value: array[nextIndex++], done: false }
+                : { value: undefined, done: true };
+        }
+    };
+}
+
+var it = makeIterator(["a", "b"]);
+
+it.next(); // { value: "a", done: false }
+it.next(); // { value: "b", done: false }
+it.next(); // { value: undefined, done: true }
+```
+
+一个数据结构只要部署了 Symbol.iterator 属性，就被视为具有 iterator 接口，就可以用 for...of 循环遍历它的成员。也就是说，for...of 循环内部调用的是数据结构的 Symbol.iterator 方法。
+
+for...of 循环可以使用的范围包括:
+
+-   Array
+-   Set
+-   Map
+-   类数组的对象（比如 arguments 对象、DOM NodeList 对象）
+-   Generator 对象
+-   String
+
+```js
+function forOf(obj, cb) {
+    let iterable, result;
+
+    if (typeof obj[Symbol.iterator] !== "function")
+        throw new TypeError(result + " is not iterable");
+    if (typeof cb !== "function") throw new TypeError("cb must be callable");
+
+    iterable = obj[Symbol.iterator]();
+
+    result = iterable.next();
+    while (!result.done) {
+        cb(result.value);
+        result = iterable.next();
+    }
+}
+
+forOf([1, 2, 3], item => {
+    console.log(item);
+});
 ```

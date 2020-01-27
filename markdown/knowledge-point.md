@@ -3005,6 +3005,12 @@ es6：
 [...new Set(arr]
 ```
 
+注意：
+```js
+Array.from(new Set([NaN,NaN]))
+// [NaN]
+```
+
 es5:
 
 ```javascript
