@@ -6,6 +6,7 @@
 -   [节流-throttle](#节流-throttle)
 -   [迭代器](#迭代器)
 -   [for...of](#for...of)
+-   [深拷贝](#深拷贝)
 
 ### 防抖-debounce
 
@@ -307,4 +308,50 @@ function forOf(obj, cb) {
 forOf([1, 2, 3], item => {
     console.log(item);
 });
+```
+
+### 深拷贝
+
+#### 简单版
+
+-   判断是否是对象，若否则直接返回原始值
+-   判断对象是否是数组,初始化返回值数据结构
+-   遍历对象,递归拷贝直到属性为原始类型
+
+```js
+function deepClone(obj) {
+    // 非对象，返回原值
+    if (typeof obj !== "object" || typeof obj === null) {
+        return obj;
+    }
+    let result = Array.isArray(obj) ? [] : {};
+    Object.keys(obj).forEach(key => (result[key] = deepClone(obj[key])));
+    return result;
+}
+obj1 = { a: 1, b: { b1: 2 }, c: [1, 3, { c3: 3 }] };
+obj2 = deepClone(obj1);
+```
+
+#### 避免循环引用
+
+为避免出现循环引用，拷贝对象时先判断存储空间中是否存在当前对象，如果有就直接返回
+
+```js
+function deepClone(obj, cache = new WeakMap()) {
+    if (typeof obj !== "object" || typeof obj === null) {
+        return obj;
+    }
+    if (cache.get(obj)) {
+        return obj;
+    }
+    let result = Array.isArray(obj) ? [] : {};
+    cache.set(obj, result);
+    Object.keys(obj).forEach(key => (result[key] = deepClone(obj[key], cache)));
+    return result;
+}
+
+obj1 = { a: 1, b: { b1: 2 }, c: [1, 3, { c3: 3 }] };
+obj0 = { d: 11, e: obj1 };
+obj1.d = obj0;
+obj2 = deepClone(obj1);
 ```
