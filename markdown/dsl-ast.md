@@ -21,9 +21,9 @@ DSL 的构建与编程语言其实比较类似，想想我们在重新实现编�
 
 实现 DSL 总共有这么两个需要完成的工作：
 
--   设计语法和语义，定义 DSL 中的元素是什么样的，元素代表什么意思
--   实现 parser，对 DSL 解析，最终通过解释器来执行
-    以 HTML 为例，HTML 中所有的元素都是包含在尖括号 <> 中的，尖括号中不同的元素代表了不同的标签，而这些标签会被浏览器解析成 DOM 树，再经过一系列的过程调用 Native 的图形 API 进行绘制。
+- 设计语法和语义，定义 DSL 中的元素是什么样的，元素代表什么意思
+- 实现 parser，对 DSL 解析，最终通过解释器来执行
+  以 HTML 为例，HTML 中所有的元素都是包含在尖括号 <> 中的，尖括号中不同的元素代表了不同的标签，而这些标签会被浏览器解析成 DOM 树，再经过一系列的过程调用 Native 的图形 API 进行绘制。
 
 ![Alt builddsl](./img/build-dsl.png)
 
@@ -47,26 +47,26 @@ DSL 的构建与编程语言其实比较类似，想想我们在重新实现编�
 如
 
 ```js
-const a = 5;
+const a = 5
 ```
 
 ```json
 {
-    "type": "VariableDeclaration",
-    "declarations": [
-        {
-            "type": "VariableDeclaration",
-            "kind": "const",
-            "id": {
-                "type": "Identifier",
-                "name": "a"
-            },
-            "init": {
-                "type": "Literal",
-                "value": 5
-            }
-        }
-    ]
+  "type": "VariableDeclaration",
+  "declarations": [
+    {
+      "type": "VariableDeclaration",
+      "kind": "const",
+      "id": {
+        "type": "Identifier",
+        "name": "a"
+      },
+      "init": {
+        "type": "Literal",
+        "value": 5
+      }
+    }
+  ]
 }
 ```
 
@@ -86,7 +86,7 @@ CSS 语法：
  * +? *? 最小匹配模式， 即偷懒模式
  * + * 默认贪婪模式
  */
-let cssGramaRule = /([\s\S]+?)\{([\s\S]*?)\s*?\}/gi;
+let cssGramaRule = /([\s\S]+?)\{([\s\S]*?)\s*?\}/gi
 let css = `
 .foo{
   color:red;
@@ -95,35 +95,35 @@ let css = `
 body{
   background:green;
 }
-`;
-css = css.replace(/[\s\n]/g, "");
-console.log();
+`
+css = css.replace(/[\s\n]/g, '')
+console.log()
 
-let matchRule = {};
-let rules = [];
+let matchRule = {}
+let rules = []
 
 while ((matchRule = cssGramaRule.exec(css))) {
-    console.log("matchRule:", matchRule);
-    rules.push({
-        selector: matchRule[1],
-        style: parseProperty(matchRule[2]),
-        cssText: matchRule[0]
-    });
+  console.log('matchRule:', matchRule)
+  rules.push({
+    selector: matchRule[1],
+    style: parseProperty(matchRule[2]),
+    cssText: matchRule[0]
+  })
 }
 
-console.log("rules:", rules);
+console.log('rules:', rules)
 
 function parseProperty(expr) {
-    let exprList = expr.split(";");
-    let result = {};
-    exprList.forEach(item => {
-        if (item.match(":")) {
-            let kv = item.split(":");
-            result[kv[0]] = kv[1];
-        }
-    });
+  let exprList = expr.split(';')
+  let result = {}
+  exprList.forEach(item => {
+    if (item.match(':')) {
+      let kv = item.split(':')
+      result[kv[0]] = kv[1]
+    }
+  })
 
-    return result;
+  return result
 }
 ```
 
@@ -131,10 +131,10 @@ function parseProperty(expr) {
 
 相关工具：
 
--   ES6 Code -Acorn 解析
--   Parse AST -BabaIon/esprima 生成 AST
--   Transform AST -Babel-traverse 转换
--   Generate ES5 Code -Babel-generator 生成代码
+- ES6 Code -Acorn 解析
+- Parse AST -BabaIon/esprima 生成 AST
+- Transform AST -Babel-traverse 转换
+- Generate ES5 Code -Babel-generator 生成代码
 
 Babel 的三个主要处理步骤分别是： 解析（parse），转换（transform），生成（generate）。
 
@@ -203,3 +203,5 @@ https://draveness.me/dsl
 http://jartto.wang/2018/11/17/about-ast/
 
 https://github.com/jamiebuilds/babel-handbook/blob/master/translations/zh-Hans/plugin-handbook.md#toc-asts
+
+https://github.com/estree/estree

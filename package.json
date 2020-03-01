@@ -1,22 +1,22 @@
 {
-    "name": "fespace",
-    "version": "1.4.0",
-    "description": "fespace",
-    "main": "build/webpack.config.js",
-    "scripts": {
-        "dev-node": "set NODE_ENV=development&&node build/webpack.dev.config.js",
-        "dev": "set NODE_ENV=development&&webpack-dev-server --config build/webpack.config.js --content-base dist/ --host localhost --port 9001 --inline --history-api-fallback ",
-        "build": "set NODE_ENV=production&&webpack -p --config build/webpack.config.js ",
-        "precommit": "lint-staged"
-    },
-    "lint-staged": {
-        "src/**/*.js": [
-            "prettier --write",
-            "git add"
-        ]
-    },
-    "author": "",
-    "license": "ISC",
-    "dependencies": {},
-    "devDependencies": {}
+  "name": "fespace",
+  "version": "1.4.1",
+  "description": "fespace",
+  "main": "build/webpack.config.js",
+  "scripts": {
+    "dev-node": "set NODE_ENV=development&&node build/webpack.dev.config.js",
+    "dev": "set NODE_ENV=development&&webpack-dev-server --config build/webpack.config.js --content-base dist/ --host localhost --port 9001 --inline --history-api-fallback ",
+    "build": "set NODE_ENV=production&&webpack -p --config build/webpack.config.js ",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "src/**/*.js": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {}
 }
