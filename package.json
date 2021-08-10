@@ -1,7 +1,7 @@
 {
   "name": "fespace",
-  "version": "1.4.1",
-  "description": "fespace",
+  "version": "3.0.3",
+  "description": "space",
   "main": "build/webpack.config.js",
   "scripts": {
     "dev-node": "set NODE_ENV=development&&node build/webpack.dev.config.js",
