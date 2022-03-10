@@ -155,17 +155,16 @@ const clone=(obj)=>{
 todo：遇到 Date 实例，需要新建一个 Date 实例，赋值，再返回该新实例。
 
 ```javascript
-const clone = obj => {
+const clone = (obj) => {
   if (!obj && typeof obj !== 'object') {
-    return obj
+    return obj;
   }
-  let result = obj.constructor === Object ? {} : []
+  let result = obj.constructor === Object ? {} : [];
   for (let key in obj) {
-    result[key] =
-      obj[key] && typeof obj[key] === 'object' ? clone(obj[key]) : obj[key]
+    result[key] = obj[key] && typeof obj[key] === 'object' ? clone(obj[key]) : obj[key];
   }
-  return result
-}
+  return result;
+};
 ```
 
 <span id="g4"></span>
@@ -245,7 +244,7 @@ DOM 事件监听主要是监听 DOMNodeInserted、DOMContentLoaded、DOMAttrModi
 ```javascript
 /* “日-月-年”互换“月-日-年” */
 function toLocalDate(date) {
-  return date.replace(/(\d{2})-(\d{2})-(\d{4})/, '$2-$1-$3')
+  return date.replace(/(\d{2})-(\d{2})-(\d{4})/, '$2-$1-$3');
 }
 ```
 
@@ -254,18 +253,15 @@ function toLocalDate(date) {
 
 ```javascript
 function toLocalDate(date) {
-  return date.replace(
-    /(?<month>\d{2})-(?<day>\d{2})-(?<year>\d{4})/,
-    '$<day>-$<month>-$<year>'
-  )
+  return date.replace(/(?<month>\d{2})-(?<day>\d{2})-(?<year>\d{4})/, '$<day>-$<month>-$<year>');
 }
 ```
 
 反向引用一个命名分组的语法是 \k<name>，注意命名分组同样可以通过数字索引来反向引用，比如：
 
 ```javascript
-;/(?<foo>a)\k<foo>\1/.test('aaa') // true
-'abc'.replace(/(?<foo>a)/, '$<foo>-') // "a-bc"，同样 $1 仍然可用
+/(?<foo>a)\k<foo>\1/.test('aaa'); // true
+'abc'.replace(/(?<foo>a)/, '$<foo>-'); // "a-bc"，同样 $1 仍然可用
 ```
 
 命名分组相关的有三种语法，分别是 ?<name>、\k<name>、\$<name>，相同点是都用尖括号包裹着分组名。
@@ -285,12 +281,12 @@ https://tc39.es/proposal-regexp-named-groups/
 - 如果匹配失败，exec() 方法返回 null。
 
 ```javascript
-var regex1 = RegExp('foo*', 'g')
-var str1 = 'table football, foosball'
-var array1
+var regex1 = RegExp('foo*', 'g');
+var str1 = 'table football, foosball';
+var array1;
 
 while ((array1 = regex1.exec(str1)) !== null) {
-  console.log(`Found ${array1[0]}. Next starts at ${regex1.lastIndex}.`)
+  console.log(`Found ${array1[0]}. Next starts at ${regex1.lastIndex}.`);
   // expected output: "Found foo. Next starts at 9."
   // expected output: "Found foo. Next starts at 19."
 }
@@ -317,8 +313,8 @@ str = `
 <div>
     <div>hello</div>
 </div>
-`
-str.match(/<div[^>]*>([\s\S]*)<\/div>/i)
+`;
+str.match(/<div[^>]*>([\s\S]*)<\/div>/i);
 ```
 
 #### 位置类元数据
@@ -345,9 +341,9 @@ str.match(/<div[^>]*>([\s\S]*)<\/div>/i)
 反向引用的最简单的、最有用的应用之一，是提供查找文本中两个相同的相邻单词的匹配项的能力。以下面的句子为例：
 
 ```js
-var str = 'Is is the cost of of gasoline going up up'
-var patt1 = /\b([a-z]+) \1\b/gi
-console.log(str.match(patt1))
+var str = 'Is is the cost of of gasoline going up up';
+var patt1 = /\b([a-z]+) \1\b/gi;
+console.log(str.match(patt1));
 //  ["Is is", "of of", "up up"]
 ```
 
@@ -467,24 +463,25 @@ Session:
 
 实现：
 
-```
-quickSort = (arr)=> {
-    let mid= arr.splice(Math.floor(arr.length/2),1)[0];
-    let left =[],right=[];
+```js
+quickSort = (arr) => {
+  let mid = arr.splice(Math.floor(arr.length / 2), 1)[0];
+  let left = [],
+    right = [];
 
-    arr.forEach((v,i)=>{
-        if(v>mid){
-            right.push(v)
-        }else{
-            left.push(v)
-        }
-    })
-if(left.length>1) left = quickSort(left)
-if(right.length>1) right = quickSort(right)
-return [...left,mid,...right]
+  arr.forEach((v, i) => {
+    if (v > mid) {
+      right.push(v);
+    } else {
+      left.push(v);
+    }
+  });
+  if (left.length > 1) left = quickSort(left);
+  if (right.length > 1) right = quickSort(right);
+  return [...left, mid, ...right];
 };
 
-quickSort([3,5,0,2,4,8,1,9,7,6,2])
+quickSort([3, 5, 0, 2, 4, 8, 1, 9, 7, 6, 2]);
 ```
 
 时间复杂度： O(nlogn)
@@ -499,16 +496,16 @@ quickSort([3,5,0,2,4,8,1,9,7,6,2])
 ```javascript
 function BubbleSort(arr) {
   if (Object.prototype.toString.call(arr) !== '[object Array]') {
-    throw TypeError('argument type error!')
+    throw TypeError('argument type error!');
   }
   for (var i = 0; i < arr.length; i++) {
     for (var j = 0; j < arr.length - i - 1; j++) {
       if (arr[j] > arr[j + 1]) {
-        ;[arr[j], arr[j + 1]] = [arr[j + 1], arr[j]]
+        [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
       }
     }
   }
-  return arr
+  return arr;
 }
 ```
 
@@ -527,24 +524,24 @@ function BubbleSort(arr) {
 
 ```javascript
 function merge(left, right) {
-  var tmp = []
+  var tmp = [];
 
   while (left.length && right.length) {
-    if (left[0] < right[0]) tmp.push(left.shift())
-    else tmp.push(right.shift())
+    if (left[0] < right[0]) tmp.push(left.shift());
+    else tmp.push(right.shift());
   }
 
-  return tmp.concat(left, right)
+  return tmp.concat(left, right);
 }
 
 function mergeSort(a) {
-  if (a.length === 1) return a
+  if (a.length === 1) return a;
 
   var mid = ~~(a.length / 2),
     left = a.slice(0, mid),
-    right = a.slice(mid)
+    right = a.slice(mid);
 
-  return merge(mergeSort(left), mergeSort(right))
+  return merge(mergeSort(left), mergeSort(right));
 }
 ```
 
@@ -831,9 +828,9 @@ function stopBubble(e) {
   //如果提供了事件对象，则这是一个非IE浏览器
   if (e && e.stopPropagation)
     //因此它支持W3C的stopPropagation()方法
-    e.stopPropagation()
+    e.stopPropagation();
   //否则，我们需要使用IE的方式来取消事件冒泡
-  else window.event.cancelBubble = true
+  else window.event.cancelBubble = true;
 }
 ```
 
@@ -845,10 +842,10 @@ w3c 的方法是 e.preventDefault()，IE 则是使用 e.returnValue = false;
 //阻止浏览器的默认行为
 function stopDefault(e) {
   //阻止默认浏览器动作(W3C)
-  if (e && e.preventDefault) e.preventDefault()
+  if (e && e.preventDefault) e.preventDefault();
   //IE中阻止函数器默认动作的方式
-  else window.event.returnValue = false
-  return false
+  else window.event.returnValue = false;
+  return false;
 }
 ```
 
@@ -861,9 +858,9 @@ javascript 的 return false 只会阻止默认行为，而是用 jQuery 的话�
 DOM0 级:
 
 ```javascript
-btn.onclick = function(event) {
-  console.log(event) //  事件对象
-}
+btn.onclick = function (event) {
+  console.log(event); //  事件对象
+};
 ```
 
 DOM0 级可以认为 onclick 是 btn 的一个属性。
@@ -897,11 +894,11 @@ DOM2 级:
 ```javascript
 btn.addEventListener(
   'click',
-  function(event) {
-    console.log(event)
+  function (event) {
+    console.log(event);
   },
   false
-)
+);
 ```
 
 ##### DOM3 级事件
@@ -1070,13 +1067,13 @@ Express 是一个路由和中间件 Web 框架，其自身只具有最低程度�
 例如：
 
 ```javascript
-var express = require('express')
-var app = express()
-app.use('/user', function(req, res, next) {
+var express = require('express');
+var app = express();
+app.use('/user', function (req, res, next) {
   //TODO
-  next()
-})
-app.listen(8080)
+  next();
+});
+app.listen(8080);
 ```
 
 #### app.use 做了什么？
@@ -1088,7 +1085,7 @@ express 内部维护一个函数数组，这个函数数组表示在发出响应
 #### 实现简单的 Express 中间件
 
 ```javascript
-var http = require('http')
+var http = require('http');
 
 /**
  * express实现中间件机制
@@ -1096,32 +1093,32 @@ var http = require('http')
  * @return {app}
  */
 function express() {
-  var funcs = [] // 待执行的函数数组
+  var funcs = []; // 待执行的函数数组
 
-  var app = function(req, res) {
-    var i = 0
+  var app = function (req, res) {
+    var i = 0;
 
     function next() {
-      var task = funcs[i++] // 取出函数数组里的下一个函数
+      var task = funcs[i++]; // 取出函数数组里的下一个函数
       if (!task) {
         // 如果函数不存在,return
-        return
+        return;
       }
-      task(req, res, next) // 否则,执行下一个函数
+      task(req, res, next); // 否则,执行下一个函数
     }
 
-    next()
-  }
+    next();
+  };
 
   /**
    * use方法就是把函数添加到函数数组中
    * @param task
    */
-  app.use = function(task) {
-    funcs.push(task)
-  }
+  app.use = function (task) {
+    funcs.push(task);
+  };
 
-  return app // 返回实例
+  return app; // 返回实例
 }
 ```
 
@@ -1238,14 +1235,14 @@ vue 生命周期整体上包含 create、mount、update、destroy
 一段 Vue 的源码：
 
 ```javascript
-initLifecycle(vm)
-initEvents(vm)
-initRender(vm)
-callHook(vm, 'beforeCreate')
-initInjections(vm) // resolve injections before data/props
-initState(vm)
-initProvide(vm) // resolve provide after data/props
-callHook(vm, 'created')
+initLifecycle(vm);
+initEvents(vm);
+initRender(vm);
+callHook(vm, 'beforeCreate');
+initInjections(vm); // resolve injections before data/props
+initState(vm);
+initProvide(vm); // resolve provide after data/props
+callHook(vm, 'created');
 ```
 
 1.  beforeCreate
@@ -1317,8 +1314,8 @@ Observer 负责数据侦听
 Vue 在执行方法 initState->initData 后调用 observe 方法进行数据侦听：
 
 ```javascript
-vm.$options.data
-observe(data, true /* asRootData */)
+vm.$options.data;
+observe(data, true /* asRootData */);
 ```
 
 #### 计算属性 computed 原理
@@ -1348,14 +1345,14 @@ js 原生的 instanceof 可以检测某个对象是不是另一个对象的实�
 
 ```javascript
 function _instanceof(A, B) {
-  let _prototype = B.prototype
-  let _proto = A.__proto__
+  let _prototype = B.prototype;
+  let _proto = A.__proto__;
 
   while (true) {
     //Object.prototype.__proto__ === null
-    if (_proto === null) return false
-    if (_proto === _prototype) return true
-    _proto = _proto.__proto__
+    if (_proto === null) return false;
+    if (_proto === _prototype) return true;
+    _proto = _proto.__proto__;
   }
 }
 ```
@@ -1396,39 +1393,39 @@ Iterator 的遍历过程:
 数组有内置的 iterator，可以通过 Symbol.iterator 获取：
 
 ```javascript
-let myArray = [1, 2, 3]
-it = myArray[Symbol.iterator]()
-it.next()
-it.next()
-it.next()
-it.next() //{done:true}
+let myArray = [1, 2, 3];
+it = myArray[Symbol.iterator]();
+it.next();
+it.next();
+it.next();
+it.next(); //{done:true}
 ```
 
 而对象没有内置的 iterator，可以自己定义：
 
 ```javascript
-let myObject = { a: 1, b: 2 }
+let myObject = { a: 1, b: 2 };
 Object.defineProperty(myObject, Symbol.iterator, {
   enumerable: false,
   writable: false,
   configurable: true,
-  value: function() {
-    let o = this
-    let index = 0
-    let keys = Object.keys(o)
+  value: function () {
+    let o = this;
+    let index = 0;
+    let keys = Object.keys(o);
     return {
-      next: function() {
+      next: function () {
         return {
           value: o[keys[index++]],
           done: index > keys.length
-        }
+        };
       }
-    }
+    };
   }
-})
+});
 
-let it = myObject[Symbol.iterator]()
-it.next()
+let it = myObject[Symbol.iterator]();
+it.next();
 ```
 
 <span id="g27"></span>
@@ -1459,16 +1456,16 @@ Date 类型的对象会被设置为 String，
 
 ```javascript
 var obj = {
-  valueOf: function() {
-    console.log('valueOf')
-    return {} // not a primitive
+  valueOf: function () {
+    console.log('valueOf');
+    return {}; // not a primitive
   },
-  toString: function() {
-    console.log('toString')
-    return {} // not a primitive
+  toString: function () {
+    console.log('toString');
+    return {}; // not a primitive
   }
-}
-Number(obj)
+};
+Number(obj);
 ```
 
 [更多内容](https://justjavac.com/javascript/2012/12/20/object-plus-object.html)
@@ -1526,43 +1523,43 @@ function sumStrings(a, b) {
   //通过补零让a和b对齐
   //若a比b短，则对a补零
   while (a.length < b.length) {
-    a = '0' + a
+    a = '0' + a;
   }
   //若b比a短，则对b补零
   while (b.length < a.length) {
-    b = '0' + b
+    b = '0' + b;
   }
   //是否有进位
-  var addOne = 0
+  var addOne = 0;
   //结果数组
-  var result = []
+  var result = [];
   //从个位开始相加
   for (var i = a.length - 1; i >= 0; i--) {
-    var c1 = a.charAt(i) - 0
-    var c2 = b.charAt(i) - 0
-    var sum = c1 + c2 + addOne
+    var c1 = a.charAt(i) - 0;
+    var c2 = b.charAt(i) - 0;
+    var sum = c1 + c2 + addOne;
     //若数字相加大于9，则进位
     if (sum > 9) {
-      result.unshift(sum - 10)
-      addOne = 1
+      result.unshift(sum - 10);
+      addOne = 1;
     } else {
-      result.unshift(sum)
-      addOne = 0
+      result.unshift(sum);
+      addOne = 0;
     }
   }
   //应付下面的情况：
   //"99" + "11" => "110"
   //它最后仍然要进位
   if (addOne) {
-    result.unshift(addOne)
+    result.unshift(addOne);
   }
   //应付如下的情况
   //"01" + "01" => "2"
   //而不是"02"，所以移除第一位的"0"
   if (!result[0]) {
-    result.splice(0, 1)
+    result.splice(0, 1);
   }
-  return result.join('')
+  return result.join('');
 }
 ```
 
@@ -1586,28 +1583,28 @@ if (!Object.assign) {
     configurable: true,
     enumerable: false,
     writable: false,
-    value: function(targetObj) {
+    value: function (targetObj) {
       if (targetObj == null) {
-        throw new TypeError('Cannot convert undefined or null to object')
+        throw new TypeError('Cannot convert undefined or null to object');
       }
       /**
        * Object.assign('',{a:1}) 返回 String {"", a: 1, length: 0}
        */
-      var result = Object(targetObj)
+      var result = Object(targetObj);
 
       for (var i = 1; i < arguments.length; i++) {
-        var nextSource = arguments[i]
+        var nextSource = arguments[i];
         if (nextSource && typeof nextSource === 'object') {
           for (var key in nextSource) {
             if (Object.prototype.hasOwnProperty.call(nextSource, key)) {
-              result[key] = nextSource[key]
+              result[key] = nextSource[key];
             }
           }
         }
       }
-      return result
+      return result;
     }
-  })
+  });
 }
 ```
 
@@ -1752,18 +1749,16 @@ index.html（http://localhost:1234）
 ```html
 <script type="text/javascript">
   // 页面加载完后才能获取dom节点（iframe）
-  window.onload = function() {
+  window.onload = function () {
     // 向目标源发送数据
-    document
-      .getElementsByTagName('iframe')[0]
-      .contentWindow.postMessage({ age: 10 }, '*')
+    document.getElementsByTagName('iframe')[0].contentWindow.postMessage({ age: 10 }, '*');
     // window.frames[0].contentWindow.postMessage({"age":10}, '*');
-  }
+  };
 
   // 监听有没有数据发送过来
-  window.addEventListener('message', function(e) {
-    console.log('parent received:', e)
-  })
+  window.addEventListener('message', function (e) {
+    console.log('parent received:', e);
+  });
 </script>
 <iframe src="http://localhost:1235" name="frame"></iframe>
 ```
@@ -1775,16 +1770,16 @@ child.html（http://localhost:1235）
   // 监听有没有数据发送过来
   window.addEventListener(
     'message',
-    function(e) {
+    function (e) {
       // 判断数据发送方是否是可靠的地址
-      if (e.origin !== 'http://localhost:1234') return
+      if (e.origin !== 'http://localhost:1234') return;
       // 打印数据格式
-      console.log('child received', e)
+      console.log('child received', e);
       // 回发数据
-      e.source.postMessage('hello world', e.origin)
+      e.source.postMessage('hello world', e.origin);
     },
     false
-  )
+  );
 </script>
 ```
 
@@ -1809,38 +1804,38 @@ window.name 跨域原理：
 www.a.com 请求 www.b.com 的数据：
 
 ```javascript
-const getDataByWindowName = url => {
-  let hasLoaded = false
-  const iframe = document.createElement('iframe')
-  const loadData = function() {
+const getDataByWindowName = (url) => {
+  let hasLoaded = false;
+  const iframe = document.createElement('iframe');
+  const loadData = function () {
     if (hasLoaded) {
-      var data = iframe.contentWindow.name //获取window.name
-      console.log(data)
+      var data = iframe.contentWindow.name; //获取window.name
+      console.log(data);
       //销毁数据
-      iframe.contentWindow.document.write('')
-      iframe.contentWindow.close()
-      document.body.removeChild(iframe)
+      iframe.contentWindow.document.write('');
+      iframe.contentWindow.close();
+      document.body.removeChild(iframe);
     } else {
-      hasLoaded = true
+      hasLoaded = true;
       // iframe载入同域页面
-      iframe.contentWindow.location = 'www.a.com/xxx'
+      iframe.contentWindow.location = 'www.a.com/xxx';
     }
-  }
-  iframe.src = url
+  };
+  iframe.src = url;
   if (iframe.attachEvent) {
-    iframe.attachEvent('onload', loadData)
+    iframe.attachEvent('onload', loadData);
   } else {
-    iframe.onload = loadData
+    iframe.onload = loadData;
   }
-  document.body.appendChild(iframe)
-}
-getDataByWindowName('www.b.com/api')
+  document.body.appendChild(iframe);
+};
+getDataByWindowName('www.b.com/api');
 ```
 
 www.b.com 页面需要将数据存储入 window.name 中：
 
 ```javascript
-window.name = 'data'
+window.name = 'data';
 ```
 
 #### X-Frame-Options
@@ -1864,20 +1859,20 @@ Debounce：
 
 ```javascript
 function debounce(fn, wait) {
-  var timer
+  var timer;
 
-  var result = function() {
-    var args = Array.prototype.slice.call(arguments)
-    var context = this
+  var result = function () {
+    var args = Array.prototype.slice.call(arguments);
+    var context = this;
 
-    clearTimeout(timer)
+    clearTimeout(timer);
 
-    timer = setTimeout(function() {
-      fn.apply(this, args)
-    }, wait)
-  }
+    timer = setTimeout(function () {
+      fn.apply(this, args);
+    }, wait);
+  };
 
-  return result
+  return result;
 }
 ```
 
@@ -1885,37 +1880,37 @@ Throttle:
 
 ```javascript
 function throttle(func, wait) {
-  var timeout, result
-  var previous = 0
+  var timeout, result;
+  var previous = 0;
 
-  var later = function(context, args) {
-    previous = +new Date()
-    timeout = null
-    func.apply(context, args)
-  }
+  var later = function (context, args) {
+    previous = +new Date();
+    timeout = null;
+    func.apply(context, args);
+  };
 
-  var throttled = function() {
-    var now = +new Date()
-    var remaining = wait - (now - previous)
-    var context = this
-    var args = arguments
+  var throttled = function () {
+    var now = +new Date();
+    var remaining = wait - (now - previous);
+    var context = this;
+    var args = arguments;
     // wait 毫秒内首次触发或者系统时间被修改
     if (remaining <= 0 || remaining > wait) {
       if (timeout) {
-        clearTimeout(timeout)
-        timeout = null
+        clearTimeout(timeout);
+        timeout = null;
       }
-      previous = now
-      func.apply(context, args)
+      previous = now;
+      func.apply(context, args);
     } else if (!timeout) {
-      timeout = setTimeout(function() {
-        timeout = null
-        previous = now
-        func.apply(context, args)
-      }, remaining)
+      timeout = setTimeout(function () {
+        timeout = null;
+        previous = now;
+        func.apply(context, args);
+      }, remaining);
     }
-  }
-  return throttled
+  };
+  return throttled;
 }
 ```
 
@@ -1927,78 +1922,78 @@ function throttle(func, wait) {
 // as much as it can, without ever going more than once per `wait` duration;
 // but if you'd like to disable the execution on the leading edge, pass
 // `{leading: false}`. To disable execution on the trailing edge, ditto.
-_.throttle = function(func, wait, options) {
-  var timeout, context, args, result
-  var previous = 0
-  if (!options) options = {}
+_.throttle = function (func, wait, options) {
+  var timeout, context, args, result;
+  var previous = 0;
+  if (!options) options = {};
 
-  var later = function() {
-    previous = options.leading === false ? 0 : _.now()
-    timeout = null
-    result = func.apply(context, args)
-    if (!timeout) context = args = null
-  }
+  var later = function () {
+    previous = options.leading === false ? 0 : _.now();
+    timeout = null;
+    result = func.apply(context, args);
+    if (!timeout) context = args = null;
+  };
 
-  var throttled = function() {
-    var now = _.now()
-    if (!previous && options.leading === false) previous = now
-    var remaining = wait - (now - previous)
-    context = this
-    args = arguments
+  var throttled = function () {
+    var now = _.now();
+    if (!previous && options.leading === false) previous = now;
+    var remaining = wait - (now - previous);
+    context = this;
+    args = arguments;
     if (remaining <= 0 || remaining > wait) {
       if (timeout) {
-        clearTimeout(timeout)
-        timeout = null
+        clearTimeout(timeout);
+        timeout = null;
       }
-      previous = now
-      result = func.apply(context, args)
-      if (!timeout) context = args = null
+      previous = now;
+      result = func.apply(context, args);
+      if (!timeout) context = args = null;
     } else if (!timeout && options.trailing !== false) {
-      timeout = setTimeout(later, remaining)
+      timeout = setTimeout(later, remaining);
     }
-    return result
-  }
+    return result;
+  };
 
-  throttled.cancel = function() {
-    clearTimeout(timeout)
-    previous = 0
-    timeout = context = args = null
-  }
-  return throttled
-}
+  throttled.cancel = function () {
+    clearTimeout(timeout);
+    previous = 0;
+    timeout = context = args = null;
+  };
+  return throttled;
+};
 
 // Returns a function, that, as long as it continues to be invoked, will not
 // be triggered. The function will be called after it stops being called for
 // N milliseconds. If `immediate` is passed, trigger the function on the
 // leading edge, instead of the trailing.
-_.debounce = function(func, wait, immediate) {
-  var timeout, result
+_.debounce = function (func, wait, immediate) {
+  var timeout, result;
 
-  var later = function(context, args) {
-    timeout = null
-    if (args) result = func.apply(context, args)
-  }
+  var later = function (context, args) {
+    timeout = null;
+    if (args) result = func.apply(context, args);
+  };
 
-  var debounced = restArguments(function(args) {
-    if (timeout) clearTimeout(timeout)
+  var debounced = restArguments(function (args) {
+    if (timeout) clearTimeout(timeout);
     if (immediate) {
-      var callNow = !timeout
-      timeout = setTimeout(later, wait)
-      if (callNow) result = func.apply(this, args)
+      var callNow = !timeout;
+      timeout = setTimeout(later, wait);
+      if (callNow) result = func.apply(this, args);
     } else {
-      timeout = _.delay(later, wait, this, args)
+      timeout = _.delay(later, wait, this, args);
     }
 
-    return result
-  })
+    return result;
+  });
 
-  debounced.cancel = function() {
-    clearTimeout(timeout)
-    timeout = null
-  }
+  debounced.cancel = function () {
+    clearTimeout(timeout);
+    timeout = null;
+  };
 
-  return debounced
-}
+  return debounced;
+};
 ```
 
 <span id='g35'></span>
@@ -2052,46 +2047,46 @@ localStorage 的同源策略限制、本地存储、存储方式、存储上限�
 下面是容量探测代码，可以精确到 1K。
 
 ```js
-const add10KStr = new Array(1024).fill('0000000000').join('') // 10240 Byte => 10K
-const add1KStr = new Array(1024).fill('1').join('') // 1024 Byte => 1K
-const storageKey = 'QuotaTest'
+const add10KStr = new Array(1024).fill('0000000000').join(''); // 10240 Byte => 10K
+const add1KStr = new Array(1024).fill('1').join(''); // 1024 Byte => 1K
+const storageKey = 'QuotaTest';
 
 function localStorageQuota() {
-  localStorage.clear()
+  localStorage.clear();
   function setText(str) {
-    console.log(str)
+    console.log(str);
   }
-  let total = ''
-  let interval = null
+  let total = '';
+  let interval = null;
   interval = setInterval(() => {
     try {
-      setText(`数据插入中 => ${total.length / 1024}K`)
-      localStorage.removeItem(storageKey)
-      localStorage.setItem(storageKey, total + add1KStr)
-      total += add10KStr
+      setText(`数据插入中 => ${total.length / 1024}K`);
+      localStorage.removeItem(storageKey);
+      localStorage.setItem(storageKey, total + add1KStr);
+      total += add10KStr;
     } catch (e) {
-      clearInterval(interval)
+      clearInterval(interval);
       if (e && e.code === 22) {
-        setText('超过容量(10K增加)')
-        setText(`当前存储了${total.length / 1024}K`)
+        setText('超过容量(10K增加)');
+        setText(`当前存储了${total.length / 1024}K`);
         interval = setInterval(() => {
           try {
-            setText(`数据插入中 => ${total.length / 1024}K`)
+            setText(`数据插入中 => ${total.length / 1024}K`);
 
-            localStorage.removeItem(storageKey)
-            localStorage.setItem(storageKey, total + add1KStr)
-            total += add1KStr
+            localStorage.removeItem(storageKey);
+            localStorage.setItem(storageKey, total + add1KStr);
+            total += add1KStr;
           } catch (ee) {
-            clearInterval(interval)
+            clearInterval(interval);
             if (ee && ee.code === 22) {
-              setText('超过容量(1K增加)')
-              setText(`当前存储了${total.length / 1024}K`)
+              setText('超过容量(1K增加)');
+              setText(`当前存储了${total.length / 1024}K`);
             }
           }
-        }, 0)
+        }, 0);
       }
     }
-  }, 0)
+  }, 0);
 }
 ```
 
@@ -2114,18 +2109,18 @@ event 包含的关键信息：
 
 ```js
 // https://a.com/a.html
-localStorage.setItem('name', 'a')
-window.addEventListener('storage', e => {
-  console.log('e', e)
-})
+localStorage.setItem('name', 'a');
+window.addEventListener('storage', (e) => {
+  console.log('e', e);
+});
 ```
 
 ```js
 // https://a.com/b.html
-localStorage.setItem('name', 'b')
-window.addEventListener('storage', e => {
-  console.log('e', e)
-})
+localStorage.setItem('name', 'b');
+window.addEventListener('storage', (e) => {
+  console.log('e', e);
+});
 ```
 
 ### Bind 的实现
@@ -2141,21 +2136,21 @@ window.addEventListener('storage', e => {
 5. 通过 new 调用 bind 返回的函数时，需要返回被调用的函数的实例
 
 ```javascript
-Function.prototype._bind = function(context) {
+Function.prototype._bind = function (context) {
   if (typeof this !== 'function') {
-    throw TypeError('argument error')
+    throw TypeError('argument error');
   }
-  var fn = this
-  var args = Array.prototype.slice.call(arguments).slice(1)
+  var fn = this;
+  var args = Array.prototype.slice.call(arguments).slice(1);
 
   return function F() {
     //通过new调用bind返回的函数，返回fn的实例
     if (this instanceof F) {
-      return new fn(...args, ...arguments)
+      return new fn(...args, ...arguments);
     }
-    return fn.apply(context, args.concat(...arguments))
-  }
-}
+    return fn.apply(context, args.concat(...arguments));
+  };
+};
 ```
 
 <span id='g37'></span>
@@ -2545,19 +2540,19 @@ Native 调用 JavaScript，其实就是执行拼接 JavaScript 字符串，从�
 ```javascript
 window.JSBridge = {
   // 调用 Native
-  invoke: function(bridgeName, data) {
+  invoke: function (bridgeName, data) {
     // 判断环境，获取不同的 nativeBridge
     nativeBridge.postMessage({
       bridgeName: bridgeName,
       data: data || {}
-    })
+    });
   },
-  receiveMessage: function(msg) {
+  receiveMessage: function (msg) {
     var bridgeName = msg.bridgeName,
-      data = msg.data || {}
+      data = msg.data || {};
     // 具体逻辑
   }
-}
+};
 ```
 
 参考：
@@ -2576,18 +2571,18 @@ Javascript 的继承是通过原型链实现的。
 
 ```javascript
 function Parent() {
-  this.type = 'man'
+  this.type = 'man';
 }
-Parent.prototype.say = function() {
-  console.log('say')
-}
+Parent.prototype.say = function () {
+  console.log('say');
+};
 function Child() {
-  this.age = 20
+  this.age = 20;
 }
-Child.prototype = new Parent()
-var p = new Parent()
-var c = new Child()
-console.log(c)
+Child.prototype = new Parent();
+var p = new Parent();
+var c = new Child();
+console.log(c);
 ```
 
 原型继承的问题：
@@ -2602,19 +2597,19 @@ console.log(c)
 
 ```javascript
 function SuperType() {
-  this.colors = ['red', 'green']
+  this.colors = ['red', 'green'];
 }
 
 function SubType() {
-  SuperType.call(this)
+  SuperType.call(this);
 }
 
-var ins1 = new SubType()
+var ins1 = new SubType();
 
-ins1.colors.push('blue')
-var ins2 = new SubType()
+ins1.colors.push('blue');
+var ins2 = new SubType();
 
-ins2.colors.push('black')
+ins2.colors.push('black');
 ```
 
 SubType 的每个实例会拥有自己的 colors 副本，互不影响。
@@ -2629,29 +2624,29 @@ SubType 的每个实例会拥有自己的 colors 副本，互不影响。
 
 ```javascript
 function SuperType(name) {
-  this.name = name
-  this.colors = ['red', 'green']
+  this.name = name;
+  this.colors = ['red', 'green'];
 }
 
-SuperType.prototype.sayName = function() {
-  console.log(this.name)
-}
+SuperType.prototype.sayName = function () {
+  console.log(this.name);
+};
 
 function SubType(name, age) {
-  SuperType.call(this, name)
+  SuperType.call(this, name);
 
-  this.age = age
+  this.age = age;
 }
 
-SubType.prototype = new SuperType()
-SubType.prototype.constructor = SubType
+SubType.prototype = new SuperType();
+SubType.prototype.constructor = SubType;
 
-var ins1 = new SubType('a', 18)
+var ins1 = new SubType('a', 18);
 
-ins1.colors.push('blue')
-var ins2 = new SubType('b', 19)
+ins1.colors.push('blue');
+var ins2 = new SubType('b', 19);
 
-ins2.colors.push('black')
+ins2.colors.push('black');
 ```
 
 组合继承避免了原型链继承和借用构造函数的缺点，是最常用的模式。
@@ -2663,19 +2658,19 @@ ins2.colors.push('black')
 ```javascript
 function object(o) {
   function F() {}
-  F.prototype = o
-  return new F()
+  F.prototype = o;
+  return new F();
 }
 
 var person = {
   name: 'sam',
   colors: ['red', 'green']
-}
+};
 
-var o1 = object(person)
-o1.colors.push('blue')
-var o2 = object(person)
-o2.colors.push('black')
+var o1 = object(person);
+o1.colors.push('blue');
+var o2 = object(person);
+o2.colors.push('black');
 ```
 
 缺点：
@@ -2687,11 +2682,11 @@ o2.colors.push('black')
 
 ```javascript
 function createAnother(o) {
-  var ins = object(o)
-  ins.sayHi = function() {
-    console.log('hi')
-  }
-  return ins
+  var ins = object(o);
+  ins.sayHi = function () {
+    console.log('hi');
+  };
+  return ins;
 }
 ```
 
@@ -2704,34 +2699,34 @@ function createAnother(o) {
 
 ```javascript
 function inheritPrototype(subType, superType) {
-  var prototype = object(subType, superType)
-  prototype.constructor = subType
-  subType.prototype = prototype
+  var prototype = object(subType, superType);
+  prototype.constructor = subType;
+  subType.prototype = prototype;
 }
 
 function SuperType(name) {
-  this.name = name
-  this.colors = ['red', 'green']
+  this.name = name;
+  this.colors = ['red', 'green'];
 }
 
-SuperType.prototype.sayName = function() {
-  console.log(this.name)
-}
+SuperType.prototype.sayName = function () {
+  console.log(this.name);
+};
 
 function SubType(name, age) {
-  SuperType.call(this, name)
+  SuperType.call(this, name);
 
-  this.age = age
+  this.age = age;
 }
 
-inheritPrototype(SubType, SuperType)
+inheritPrototype(SubType, SuperType);
 
-var ins1 = new SubType('a', 18)
+var ins1 = new SubType('a', 18);
 
-ins1.colors.push('blue')
-var ins2 = new SubType('b', 19)
+ins1.colors.push('blue');
+var ins2 = new SubType('b', 19);
 
-ins2.colors.push('black')
+ins2.colors.push('black');
 ```
 
 寄生式组合继承比组合式高效,只调用了一次超类构造函数,是一种最理想的继承方式.
@@ -2811,10 +2806,10 @@ html {
 简单计算：
 
 ```javascript
-const oHtml = document.getElementsByTagName('html')[0]
-const width = oHtml.clientWidth
+const oHtml = document.getElementsByTagName('html')[0];
+const width = oHtml.clientWidth;
 // 320px的屏幕基准像素为16px
-oHtml.style.fontSize = 16 * (width / 750) + 'px'
+oHtml.style.fontSize = 16 * (width / 750) + 'px';
 ```
 
 更复杂的计算:
@@ -2872,9 +2867,7 @@ $baseFontSize: 14;
   $remValues: '';
 
   @for $i from 1 through $max {
-    $value: strip-units(
-      nth($values, $i)
-    ); //返回$values列表中的第$i个值，并将单位值去掉
+    $value: strip-units(nth($values, $i)); //返回$values列表中的第$i个值，并将单位值去掉
     $browser-default-font-size: strip-units($browser-default-font-size);
     $pxValues: #{$pxValues + $value * $browser-default-font-size}px;
     @if $i < $max {
@@ -2967,27 +2960,27 @@ websocket 是前后端交互的长连接，前后端也都可能因为一些情�
 实现：
 
 ```javascript
-var ws = new WebSocket(url)
+var ws = new WebSocket(url);
 var heartCheck = {
   timeout: 60000, //60ms
   timeoutObj: null,
-  reset: function() {
-    clearTimeout(this.timeoutObj)
-    this.start()
+  reset: function () {
+    clearTimeout(this.timeoutObj);
+    this.start();
   },
-  start: function() {
-    this.timeoutObj = setTimeout(function() {
-      ws.send('HeartBeat')
-    }, this.timeout)
+  start: function () {
+    this.timeoutObj = setTimeout(function () {
+      ws.send('HeartBeat');
+    }, this.timeout);
   }
-}
+};
 
-ws.onopen = function() {
-  heartCheck.start()
-}
-ws.onmessage = function(event) {
-  heartCheck.reset()
-}
+ws.onopen = function () {
+  heartCheck.start();
+};
+ws.onmessage = function (event) {
+  heartCheck.reset();
+};
 ```
 
 服务端如何判断客户端是否掉线？
@@ -3115,16 +3108,16 @@ es6：
 注意：
 
 ```js
-Array.from(new Set([NaN, NaN]))
+Array.from(new Set([NaN, NaN]));
 // [NaN]
 ```
 
 es5:
 
 ```javascript
-arr.filter(function(ele, index, array) {
-  return index === array.indexOf(ele)
-})
+arr.filter(function (ele, index, array) {
+  return index === array.indexOf(ele);
+});
 ```
 
 <span id='g49'></span>
@@ -3289,34 +3282,34 @@ return -1;
 
 ```javascript
 function flatten(arr) {
-  let result = []
-  arr.forEach(v => {
-    result = Array.isArray(v) ? result.concat(flatten(v)) : result.concat(v)
-  })
-  return result
+  let result = [];
+  arr.forEach((v) => {
+    result = Array.isArray(v) ? result.concat(flatten(v)) : result.concat(v);
+  });
+  return result;
 }
 
 function flattenMd(arr) {
-  var result = []
+  var result = [];
   function flatten(arr) {
     for (var i = 0; i < arr.length; i++) {
       if (Array.isArray(arr[i])) {
-        flatten(arr[i])
+        flatten(arr[i]);
       } else {
-        result.push(arr[i])
+        result.push(arr[i]);
       }
     }
   }
-  flatten(arr)
-  return result
+  flatten(arr);
+  return result;
 }
 ```
 
 ```javascript
 function flatten(arr) {
   return arr.reduce((acc, v, i) => {
-    return prev.concat(Array.isArray(item) ? flatten(item) : item)
-  }, [])
+    return prev.concat(Array.isArray(item) ? flatten(item) : item);
+  }, []);
 }
 ```
 
@@ -3375,7 +3368,7 @@ js 规范的制作分 4 个阶段：
 ```javascript
 #!/usr/bin/env node
 
-console.log('IN bin ', process.argv)
+console.log('IN bin ', process.argv);
 ```
 
 2. 配置 package.json
@@ -3539,17 +3532,17 @@ NODE_MODULES_PATHS(START)
  * @return {String|Boolean}
  */
 function getParam(name, url) {
-  if (typeof name !== 'string') return false
-  if (!url) url = window.location.href
+  if (typeof name !== 'string') return false;
+  if (!url) url = window.location.href;
   // 当遇到name[xx]时，对方括号做一下转义为 name\[xxx\]，因为下面还需要使用name做正则
-  name = name.replace(/[\[\]]/g, '\\$&')
-  var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)')
-  var results = regex.exec(url)
-  if (!results) return null
-  if (!results[2]) return ''
-  return decodeURIComponent(results[2].replace(/\+/g, ' '))
+  name = name.replace(/[\[\]]/g, '\\$&');
+  var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
+  var results = regex.exec(url);
+  if (!results) return null;
+  if (!results[2]) return '';
+  return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
-getParam('query', 'https://juejin.im/search?query=hello&time=2017-11-12')
+getParam('query', 'https://juejin.im/search?query=hello&time=2017-11-12');
 
 /**
  * [setParam 设置单个参数]
@@ -3558,27 +3551,23 @@ getParam('query', 'https://juejin.im/search?query=hello&time=2017-11-12')
  * @return {String|Boolean}
  */
 function setParam(name, val, url) {
-  if (typeof name !== 'string') return false
-  if (!url) url = window.location.href
-  var _name = name.replace(/[\[\]]/g, '\\$&')
-  var value = name + '=' + encodeURIComponent(val)
-  var regex = new RegExp(_name + '=[^&]*')
-  var urlArr = url.split('#')
-  var result = ''
+  if (typeof name !== 'string') return false;
+  if (!url) url = window.location.href;
+  var _name = name.replace(/[\[\]]/g, '\\$&');
+  var value = name + '=' + encodeURIComponent(val);
+  var regex = new RegExp(_name + '=[^&]*');
+  var urlArr = url.split('#');
+  var result = '';
 
   if (regex.exec(url)) {
-    result = url.replace(regex, value)
+    result = url.replace(regex, value);
   } else {
-    result = urlArr[0] + '&' + value + (urlArr[1] || '')
+    result = urlArr[0] + '&' + value + (urlArr[1] || '');
   }
 
-  return result
+  return result;
 }
-setParam(
-  'query',
-  'world',
-  'https://juejin.im/search?query=hello&time=2017-11-12'
-)
+setParam('query', 'world', 'https://juejin.im/search?query=hello&time=2017-11-12');
 
 /**
  * [removeParam 移除单个参数]
@@ -3587,25 +3576,25 @@ setParam(
  * @return {String|Boolean}
  */
 function removeParam(name, url) {
-  if (typeof name !== 'string') return false
-  if (!url) url = window.location.href
-  var urlparts = url.split('?')
-  var prefix = encodeURIComponent(name + '=')
-  var pars = urlparts[1].split(/[&;]/g)
+  if (typeof name !== 'string') return false;
+  if (!url) url = window.location.href;
+  var urlparts = url.split('?');
+  var prefix = encodeURIComponent(name + '=');
+  var pars = urlparts[1].split(/[&;]/g);
   var i = 0,
-    len = pars.length
+    len = pars.length;
 
   for (; i < len; i++) {
     if (encodeURIComponent(pars[i]).lastIndexOf(prefix, 0) !== -1) {
-      pars.splice(i, 1)
+      pars.splice(i, 1);
     }
   }
 
-  url = urlparts[0] + (pars.length > 0 ? '?' + pars.join('&') : '')
+  url = urlparts[0] + (pars.length > 0 ? '?' + pars.join('&') : '');
 
-  return url
+  return url;
 }
-removeParam('query', 'https://juejin.im/search?query=hello&time=2017-11-12')
+removeParam('query', 'https://juejin.im/search?query=hello&time=2017-11-12');
 ```
 
 #### [URLSearchParams](https://developer.mozilla.org/zh-CN/docs/Web/API/URLSearchParams)
@@ -3613,23 +3602,23 @@ removeParam('query', 'https://juejin.im/search?query=hello&time=2017-11-12')
 URLSearchParams 接口定义了一些实用的方法来处理 URL 的查询字符串。
 
 ```javascript
-var paramsString = 'q=URLUtils.searchParams&topic=api'
-var searchParams = new URLSearchParams(paramsString)
+var paramsString = 'q=URLUtils.searchParams&topic=api';
+var searchParams = new URLSearchParams(paramsString);
 
 for (let p of searchParams) {
-  console.log(p)
+  console.log(p);
 }
 
-searchParams.has('topic') === true // true
-searchParams.get('topic') === 'api' // true
-searchParams.getAll('topic') // ["api"]
-searchParams.get('foo') === '' // true
-searchParams.append('topic', 'webdev')
-searchParams.toString() // "q=URLUtils.searchParams&topic=api&topic=webdev"
-searchParams.set('topic', 'More webdev')
-searchParams.toString() // "q=URLUtils.searchParams&topic=More+webdev"
-searchParams.delete('topic')
-searchParams.toString() // "q=URLUtils.searchParams"
+searchParams.has('topic') === true; // true
+searchParams.get('topic') === 'api'; // true
+searchParams.getAll('topic'); // ["api"]
+searchParams.get('foo') === ''; // true
+searchParams.append('topic', 'webdev');
+searchParams.toString(); // "q=URLUtils.searchParams&topic=api&topic=webdev"
+searchParams.set('topic', 'More webdev');
+searchParams.toString(); // "q=URLUtils.searchParams&topic=More+webdev"
+searchParams.delete('topic');
+searchParams.toString(); // "q=URLUtils.searchParams"
 ```
 
 一个实现了 URLSearchParams 的对象可以直接用在 for...of 结构中。
@@ -3647,59 +3636,59 @@ Object.entries()方法返回一个给定对象自身可枚举属性的键值对�
 
 ```javascript
 function memorize(fn, callback) {
-  let cache = {}
-  return function() {
-    let key = callback.apply(this, arguments)
-    let hasCache = key in cache
+  let cache = {};
+  return function () {
+    let key = callback.apply(this, arguments);
+    let hasCache = key in cache;
     if (hasCache) {
-      return cache[key]
+      return cache[key];
     } else {
-      return (cache[key] = fn.apply(this, arguments))
+      return (cache[key] = fn.apply(this, arguments));
     }
-  }
+  };
 }
 
 /*
  * 测试代码
  */
-const add = function(a, b) {
-  return a + b
-}
-const memorizedAdd = memorize(add, function() {
-  let args = Array.prototype.slice.call(arguments)
-  return JSON.stringify(args)
-})
-const factorial = function(n) {
-  if (n === 1) return 1
-  return n * factorial(n - 1)
-}
-const memorizedGactorial = memorize(factorial, function() {
-  let args = Array.prototype.slice.call(arguments)
-  return JSON.stringify(args)
-})
+const add = function (a, b) {
+  return a + b;
+};
+const memorizedAdd = memorize(add, function () {
+  let args = Array.prototype.slice.call(arguments);
+  return JSON.stringify(args);
+});
+const factorial = function (n) {
+  if (n === 1) return 1;
+  return n * factorial(n - 1);
+};
+const memorizedGactorial = memorize(factorial, function () {
+  let args = Array.prototype.slice.call(arguments);
+  return JSON.stringify(args);
+});
 
-const testcount = 1000
-console.time('not use memorize')
+const testcount = 1000;
+console.time('not use memorize');
 for (let i = 0; i < testcount; i++) {
-  add(1, 2)
+  add(1, 2);
 }
-console.timeEnd('not use memorize')
-console.time('use memorize')
+console.timeEnd('not use memorize');
+console.time('use memorize');
 for (let i = 0; i < testcount; i++) {
-  memorizedAdd(1, 2)
+  memorizedAdd(1, 2);
 }
-console.timeEnd('use memorize')
+console.timeEnd('use memorize');
 
-console.time('factorial not use memorize')
+console.time('factorial not use memorize');
 for (let i = 0; i < testcount; i++) {
-  factorial(9999)
+  factorial(9999);
 }
-console.timeEnd('factorial not use memorize')
-console.time('factorial use memorize')
+console.timeEnd('factorial not use memorize');
+console.time('factorial use memorize');
 for (let i = 0; i < testcount; i++) {
-  memorizedGactorial(9999)
+  memorizedGactorial(9999);
 }
-console.timeEnd('factorial use memorize')
+console.timeEnd('factorial use memorize');
 
 // not use memorize: 1.56103515625ms
 // use memorize: 19.787841796875ms
